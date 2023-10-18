@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                style="@style/prop_tenManHinh"
+                android:text="Đăng ký"
+                android:layout_marginBottom="30dp"/>
+            <EditText
+                android:id="@+id/edtSoDienThoai"
+                style="@style/prop_editText"
+                android:hint="Số điện thoại"
+                android:inputType="phone"/>
+            <EditText
+                android:id="@+id/edtTenNguoiDKBanHang"
+                style="@style/prop_editText"
+                android:hint="Tên người đăng ký bán hàng"
+                android:inputType="text"/>
+            <EditText
+                android:id="@+id/edtTenCuaHang"
+                style="@style/prop_editText"
+                android:hint="Tên cửa hàng"
+                android:inputType="text"/>
+            <EditText
+                android:id="@+id/edtDiaChiCuaHang"
+                style="@style/prop_editText"
+                android:hint="Địa chỉ cửa hàng"
+                android:inputType="text"/>
+            <EditText
+                android:id="@+id/edtEmailCuaHang"
+                style="@style/prop_editText"
+                android:hint="Email"
+                android:inputType="textEmailAddress"/>
+            <EditText
+                android:id="@+id/edtMaSoThue"
+                style="@style/prop_editText"
+                android:hint="Mã số thuế"
+                android:inputType="number"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#B0B0B0"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CCCD/CMND"
+                android:textColor="#000"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_margin="10dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/imgCCCDFront"
+                    style="@style/prop_cccd"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/cccdfront"/>
+                <ImageView
+                    android:id="@+id/imgCCCDBack"
+                    style="@style/prop_cccd"
+                    android:background="@drawable/cccdback"/>
+            </LinearLayout>
+            <CheckBox
+                android:id="@+id/chkDongYDieuKhoan"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:textStyle="bold|italic"
+                android:text="Đồng ý với các điều khoản dịch vụ"/>
+            <Button
+                android:id="@+id/btn_tiepTuc"
+                style="@style/prop_Button"
+                android:text="Tiếp tục"
+                android:background="@drawable/bg_btntieptuc_clicked"/>
+            <TextView
+                android:id="@+id/tvDaCoTaiKhoan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:gravity="center"
+                android:text="Đã có tài khoản? Đăng nhập ngay"
+                android:textStyle="bold|italic"
+                android:textColor="#000"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
