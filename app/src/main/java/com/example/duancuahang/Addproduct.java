@@ -3,9 +3,12 @@ package com.example.duancuahang;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.duancuahang.Adapter.CategorySpinerAdapter;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 public class Addproduct extends AppCompatActivity {
 
     Spinner spCategory,spManuface_AddProduct;
+    LinearLayout vMain_AddProduct;
     private DatabaseReference databaseReference;
     ArrayList<Category> arrCategory = new ArrayList<>();
     CategorySpinerAdapter categorySpinnerAdapter;
@@ -56,9 +60,6 @@ public class Addproduct extends AppCompatActivity {
         arrManuface.add(manuface);
         manufaceSpinerAdapter = new ManufacSpinerAdapter(arrManuface,this);
         spManuface_AddProduct.setAdapter(manufaceSpinerAdapter);
-
-
-
     }
 
 //    hàm bắt sự kiện
@@ -81,12 +82,30 @@ public class Addproduct extends AppCompatActivity {
 
             }
         });
+
+//        bắt sự kiện ẩn bàn phím nếu người dùng nhấn vào bên ngoài
+        vMain_AddProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideKeyboard();
+            }
+        });
     }
 
 //hàm ánh xạ
     private void setControl() {
         spCategory = findViewById(R.id.spCategory_AddProduct);
         spManuface_AddProduct = findViewById(R.id.spManuface_AddProduct);
+        vMain_AddProduct = findViewById(R.id.vMain_AddProduct);
+    }
+
+//    hàm ẩn bàn phím
+    private void hideKeyboard(){
+        View view = getCurrentFocus();
+        if (view != null){
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
     }
 
 //    hàm lấy danh sách danh mục sản phẩm -----------------Category

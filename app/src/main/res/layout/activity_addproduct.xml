@@ -8,87 +8,95 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"
+        >
 
         <LinearLayout
             android:id="@+id/vMain_AddProduct"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/ivProduct_addProduct"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+            android:orientation="vertical"
+            >
+            <androidx.cardview.widget.CardView
+                android:layout_width="230dp"
+                android:layout_height="300dp"
                 android:layout_gravity="center"
                 android:layout_marginVertical="10dp"
-                android:src="@drawable/ic_launcher_background" />
+                android:background="@drawable/bg_imageview_showimageproduct"
+                >
+                <ImageView
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginVertical="5dp"
+                    android:id="@+id/ivProduct_addProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_launcher_background"
+                    />
+            </androidx.cardview.widget.CardView>
 
+<!--            Linearlayout content-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-                <!--             ten san pham-->
+                android:orientation="vertical"
+                >
+                <!--             LinearLayout quản lý tên sản phẩm-->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    style="@style/style_linearLayoutManagerInput"
+                    >
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/style_titleAddProduct"
                         android:text="Tên sản phẩm"
-                        android:textSize="18dp"
-                        android:textStyle="italic|bold" />
+                        />
 
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
-                        android:hint="Nhập tên sản phẩm" />
+                        android:hint="Nhập tên sản phẩm..."
+                        />
                 </LinearLayout>
 
-                <!--             Mô tả sản phẩm-->
+                <!--       LinearLayout quản lý Mô tả sản phẩm-->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    style="@style/style_linearLayoutManagerInput"
+                    >
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/style_titleAddProduct"
                         android:text="Mô tả sản phẩm"
-                        android:textSize="18dp"
-                        android:textStyle="italic|bold" />
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:background="#E4DDDD"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_marginHorizontal="10dp"
+                        >
 
                         <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Mô tả sản phẩm"
+                            android:hint="Mô tả sản phẩm..."
                             android:layout_marginHorizontal="10dp"
                             android:background="@drawable/bg_edt_clearbodernormal"
                             />
                     </LinearLayout>
                 </LinearLayout>
 
-<!--                Loai san pham-->
+<!--             LinearLayout quan ly Loai san pham-->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    style="@style/style_linearLayoutManagerInput"
                     >
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/style_titleAddProduct"
                         android:text="Danh mục"
-                        android:textSize="18dp"
-                        android:textStyle="italic|bold"
+
                         />
                    <Spinner
                        android:id="@+id/spCategory_AddProduct"
@@ -101,16 +109,11 @@
 
 <!--                Hang san xuat-->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    style="@style/style_linearLayoutManagerInput"
                     >
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/style_titleAddProduct"
                         android:text="Hãng sản xuất"
-                        android:textSize="18dp"
-                        android:textStyle="italic|bold"
                         />
                     <Spinner
                        android:id="@+id/spManuface_AddProduct"
@@ -121,16 +124,12 @@
 
 <!--                Gía sản phẩm-->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    style="@style/style_linearLayoutManagerInput"
                     >
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/style_titleAddProduct"
                         android:text="Giá sản phẩm"
-                        android:textSize="18dp"
-                        android:textStyle="italic|bold"
+
                         />
                     <EditText
                         android:layout_marginHorizontal="10dp"
@@ -141,17 +140,14 @@
                         />
                 </LinearLayout>
 
+<!--                LinearLayout quan lys so luong san pham-->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    style="@style/style_linearLayoutManagerInput"
                     >
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/style_titleAddProduct"
                         android:text="Số lượng"
-                        android:textSize="18dp"
-                        android:textStyle="italic|bold"
+
                         />
                     <EditText
                         android:layout_width="match_parent"

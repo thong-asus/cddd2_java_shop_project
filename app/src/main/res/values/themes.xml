@@ -37,4 +37,26 @@
         <item name="android:layout_width">150dp</item>
         <item name="android:layout_height">80dp</item>
     </style>
+
+<!--    style linearlayout quản lý giá trị input người dùng-->
+    <style name="style_linearLayoutManagerInput">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+    
+<!--    style title add Product-->
+    <style name="style_titleAddProduct">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">italic|bold</item>
+        <item name="android:textColor">#000</item>
+        <item name="android:shadowDx">7</item>
+        <item name="android:shadowDy">7</item>
+        <item name="android:shadowRadius">10</item>
+        <item name="android:shadowColor">#252121</item>
+
+    </style>
 </resources>

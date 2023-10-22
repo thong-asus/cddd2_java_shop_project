@@ -44,16 +44,16 @@ public class ManufacSpinerAdapter extends BaseAdapter {
         }
         LinearLayout vMainItemCategory = view.findViewById(R.id.vMainItemCategoryAdapter);
         if (i == 0){
-            vMainItemCategory.setBackgroundResource(R.drawable.bg_item_spinner_category_introduce);
+            vMainItemCategory.setBackgroundResource(R.drawable.bg_item_spinner_item_introduce);
         }
-        else {
-            if (i % 2 == 0 && i != 0){
-                vMainItemCategory.setBackgroundResource(R.drawable.bg_item_spiner_category_ietmselection);
-            }
-            else {
-                vMainItemCategory.setBackgroundResource(R.drawable.bg_item_spinner_category_itemselection_02);
-            }
-        }
+//        else {
+//            if (i % 2 == 0 && i != 0){
+//                vMainItemCategory.setBackgroundResource(R.drawable.bg_item_spiner_custom_ietmselection01);
+//            }
+//            else {
+//                vMainItemCategory.setBackgroundResource(R.drawable.bg_item_spinner_custom_itemselection_02);
+//            }
+//        }
         TextView tvNameCategoryItem = view.findViewById(R.id.tvNameCategory_SpinerCategory_Addproduct);
         tvNameCategoryItem.setText(manufaces.get(i).getNameManuface());
         return view;
