@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Productlist">
+    tools:context=".Productlist"
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
@@ -44,6 +45,7 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/ivAddProduct_ProductList"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="right|bottom"

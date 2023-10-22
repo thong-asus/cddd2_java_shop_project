@@ -1,6 +1,5 @@
 package com.example.duancuahang.Fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.duancuahang.Adapter.ProductInOfStockAdapter;
+import com.example.duancuahang.RecyclerView.Product_InOfStockAdapter;
 import com.example.duancuahang.Class.Product;
 import com.example.duancuahang.R;
 
@@ -21,7 +20,7 @@ import java.util.List;
 
 public class ProductisinofstockFragment extends Fragment {
     RecyclerView rcvProductisinstock_ScreenPRoductList;
-    ProductInOfStockAdapter productInOfStockAdapter;
+    Product_InOfStockAdapter productInOfStockAdapter;
     List<Product> products = new ArrayList<>();
     @Nullable
     @Override
@@ -40,13 +39,13 @@ public class ProductisinofstockFragment extends Fragment {
         products.add(product1);
         products.add(product2);
         products.add(product);
-        productInOfStockAdapter.notifyDataSetChanged();
     }
 
     private void setEvent() {
-        productInOfStockAdapter = new ProductInOfStockAdapter(products,getContext());
+        productInOfStockAdapter = new Product_InOfStockAdapter(products,getContext());
         rcvProductisinstock_ScreenPRoductList.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvProductisinstock_ScreenPRoductList.setAdapter(productInOfStockAdapter);
+        productInOfStockAdapter.notifyDataSetChanged();
 
     }
 

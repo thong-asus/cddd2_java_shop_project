@@ -44,4 +44,5 @@ dependencies {
     implementation("com.android.volley:volley:1.2.1")
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-database")
 }
