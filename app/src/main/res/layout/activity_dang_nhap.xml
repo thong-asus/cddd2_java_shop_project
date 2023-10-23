@@ -29,6 +29,7 @@
                app:passwordToggleTint="#b0b0b0"
                android:textColorHint="#b0b0b0">
                <com.google.android.material.textfield.TextInputEditText
+                   android:id="@+id/edtMatKhau"
                    style="@style/prop_editText"
                    android:hint="Mật khẩu"
                    android:inputType="textPassword"/>
@@ -42,11 +43,12 @@
                 android:textStyle="bold|italic"
                 android:text="Lưu tài khoản"/>
             <Button
-                android:id="@+id/btn_tiepTuc"
+                android:id="@+id/btnDangNhap"
                 style="@style/prop_Button"
                 android:text="Đăng nhập"
                 android:background="@drawable/bg_btntieptuc_clicked"/>
             <TextView
+                android:id="@+id/tvQuenMatKhau"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="80dp"
@@ -56,6 +58,7 @@
                 android:textStyle="bold|italic"
                 android:textColor="#000"/>
             <TextView
+                android:id="@+id/tvDangKyTaiKhoan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"

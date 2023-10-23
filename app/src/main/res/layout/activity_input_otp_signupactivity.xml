@@ -12,21 +12,19 @@
             android:layout_height="match_parent">
             <TextView
                 style="@style/prop_tenManHinh"
-                android:text="Quên mật khẩu"
-                android:layout_marginBottom="50dp"/>
-            <EditText
-                android:id="@+id/edtSoDienThoai"
-                style="@style/prop_editText"
-                android:hint="Số điện thoại"/>
+                android:text="Nhập mã xác thực OTP"
+                android:layout_marginBottom="100dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="horizontal"
                 android:gravity="center">
                 <EditText
                     android:id="@+id/edtInputOTP"
                     style="@style/prop_editText"
-                    android:hint="Mã xác thực OTP"
-                    android:layout_width="200dp"/>
+                    android:layout_width="200dp"
+                    android:hint="Nhập tại đây"
+                    android:inputType="number" />
                 <Button
                     android:id="@+id/btnLayMaOTP"
                     style="@style/prop_Button"
@@ -40,26 +38,25 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:gravity="center">
                 <TextView
-                    android:layout_width="150dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:textSize="18dp"
-                    android:layout_marginRight="10dp"
-                    android:text="Nhận lại mã sau: "/>
+                    android:text="Nhận lại mã sau:"/>
                 <TextView
                     android:id="@+id/tvTimeResend"
-                    android:layout_width="110dp"
+                    android:layout_width="50dp"
                     android:textSize="18dp"
                     android:layout_height="wrap_content"
                     android:text="giây"/>
             </LinearLayout>
             <Button
-                android:id="@+id/btn_XacMinhOTPSignUP"
+                android:id="@+id/btnXacMinhOTP"
                 style="@style/prop_Button"
-                android:text="Tiếp tục"
+                android:text="Xác minh"
                 android:background="@drawable/bg_btntieptuc_clicked"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

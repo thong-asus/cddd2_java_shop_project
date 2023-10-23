@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                style="@style/prop_tenManHinh"
+                android:text="Nhập mật khẩu mới"
+                android:layout_marginBottom="50dp"/>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/prop_editText"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="#b0b0b0"
+                android:textColorHint="#b0b0b0">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtMatKhauMoi"
+                    style="@style/prop_editText"
+                    android:hint="Mật khẩu mới"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/prop_editText"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="#b0b0b0"
+                android:textColorHint="#b0b0b0">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edtNhapLaiMatKhauMoi"
+                    style="@style/prop_editText"
+                    android:hint="Nhập lại mật khẩu"
+                    android:inputType="textPassword"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/btnHoanThanh"
+                style="@style/prop_Button"
+                android:text="Hoàn thành"
+                android:background="@drawable/bg_btntieptuc_clicked"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
