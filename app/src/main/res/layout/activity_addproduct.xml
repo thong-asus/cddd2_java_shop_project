@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#F6F5F5"
     tools:context=".Addproduct">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -26,14 +27,14 @@
                 android:background="@drawable/bg_imageview_showimageproduct"
                 >
                 <ImageView
+                    android:id="@+id/ivProduct_addProduct"
                     android:layout_marginHorizontal="5dp"
                     android:layout_marginVertical="5dp"
-                    android:id="@+id/ivProduct_addProduct"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background"
+                    android:src="@drawable/icon_blirary"
                     />
             </androidx.cardview.widget.CardView>
 
@@ -54,10 +55,14 @@
                         />
 
                     <EditText
+                        android:id="@+id/edtNameProduct_AddProduct"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
                         android:hint="Nhập tên sản phẩm..."
+                        android:paddingVertical="5dp"
+                        android:paddingHorizontal="10dp"
+                        android:background="@drawable/event_edt"
                         />
                 </LinearLayout>
 
@@ -74,17 +79,18 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:background="#E4DDDD"
+                        android:background="@drawable/bg_container_01"
                         android:orientation="vertical"
                         android:layout_marginHorizontal="10dp"
                         >
 
                         <EditText
+                            android:id="@+id/edtDescriptionProduct_AddProduct"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Mô tả sản phẩm..."
                             android:layout_marginHorizontal="10dp"
-                            android:background="@drawable/bg_edt_clearbodernormal"
+                            android:background="@drawable/bg_noborder"
                             />
                     </LinearLayout>
                 </LinearLayout>
@@ -132,11 +138,15 @@
 
                         />
                     <EditText
+                        android:id="@+id/edtPriceProduct_AddProduct"
                         android:layout_marginHorizontal="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberDecimal"
-                        android:hint="Giá sản phẩm"
+                        android:hint="Giá sản phẩm..."
+                        android:paddingVertical="5dp"
+                        android:paddingHorizontal="10dp"
+                        android:background="@drawable/event_edt"
                         />
                 </LinearLayout>
 
@@ -150,12 +160,28 @@
 
                         />
                     <EditText
+                        android:id="@+id/edtQuanlityProduct_AddProduct"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Số lượng"
+                        android:hint="Số lượng..."
                         android:layout_marginHorizontal="10dp"
+                        android:inputType="numberDecimal"
+                        android:paddingVertical="5dp"
+                        android:paddingHorizontal="10dp"
+                        android:background="@drawable/event_edt"
                         />
                 </LinearLayout>
+                <Button
+                    android:id="@+id/btnAddProduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:text="Thêm sản phẩm"
+                    android:textStyle="bold"
+                    android:background="@drawable/event_btn_addproduct"
+                    android:textColor="#FFFFFF"
+                    />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
