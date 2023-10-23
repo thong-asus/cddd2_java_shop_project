@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ public class Productlist extends AppCompatActivity {
     ProductListViewPagerAdapter productListViewPagerAdapter;
 
     ImageView ivAddProduct_ProductList;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,12 +32,15 @@ public class Productlist extends AppCompatActivity {
         setIntiazation();
         setEvent();
         hildeKeyboard();
+        context = this;
     }
 
     private void setEvent() {
         ivAddProduct_ProductList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(context, Addproduct.class);
+                context.startActivity(intent);
                 Log.e("AddProduct", "ok");
             }
         });

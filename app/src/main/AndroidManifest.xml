@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -20,34 +19,45 @@
         android:theme="@style/Theme.Duancuahang"
         tools:targetApi="31">
         <activity
-            android:name=".MatKhauMoiKhiQuenActivity"
-            android:exported="false" />
+            android:name=".Addproduct"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name=".Productlist"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name=".HomeShop"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name=".NewPasswordForgotActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".InputOTPSignUpActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".QuenMatKhauActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".DangNhapActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
-            android:name=".DangKyActivity"
+            android:name=".ForgotPasswordActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RegistrationActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
-
 </manifest>
