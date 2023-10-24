@@ -10,7 +10,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/vRegistrationScreen">
             <TextView
                 style="@style/prop_tenManHinh"
                 android:text="Đăng ký"
@@ -77,14 +78,30 @@
                     android:onClick="chooseImage"
                     android:clickable="true"/>
             </LinearLayout>
-            <CheckBox
-                android:id="@+id/chkDongYDieuKhoan"
+            <LinearLayout
                 android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:textStyle="bold|italic"
-                android:text="Đồng ý với các điều khoản dịch vụ"/>
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+                <CheckBox
+                    android:id="@+id/chkDongYDieuKhoan"
+                    android:layout_width="127dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+
+                    android:layout_marginBottom="10dp"
+                    android:textStyle="bold|italic"
+                    android:text="Đồng ý với các "/>
+                <TextView
+                    android:id="@+id/tvDieuKhoanDichVu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="điều khoản dịch vụ"
+                    android:textStyle="bold|italic"
+                    android:textColor="#FF0000"/>
+            </LinearLayout>
             <Button
                 android:id="@+id/btnTiepTuc"
                 style="@style/prop_Button"
@@ -96,6 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="80dp"
                 android:gravity="center"
+                android:textSize="20dp"
                 android:text="Đã có tài khoản? Đăng nhập ngay"
                 android:textStyle="bold|italic"
                 android:textColor="#000"/>

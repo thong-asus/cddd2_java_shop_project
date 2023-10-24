@@ -1,22 +1,34 @@
 package com.example.duancuahang;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.duancuahang.Class.ShopData;
+import com.example.duancuahang.Class.ShowMessage;
 import com.example.duancuahang.Class.Validates;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class RegistrationActivity extends AppCompatActivity {
     EditText edtSoDienThoai, edtTenNguoiDKBanHang,edtTenCuaHang,edtDiaChiCuaHang,edtEmailCuaHang,edtMaSoThue;
@@ -24,9 +36,23 @@ public class RegistrationActivity extends AppCompatActivity {
     CheckBox chkDongYDieuKhoan;
     Button btnTiepTuc;
     TextView tvDaCoTaiKhoan;
+    View vRegistrationScreen;
     private Context context;
+    // Tạo biến chọn hình ảnh
     private static final int PICK_IMAGE_FRONT = 2;
     private static final int PICK_IMAGE_BACK = 3;
+    private static final int READ_EXTERNAL_STORAGE = 123;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+
+    // Tạo biến lưu link hình ảnh trên firebase
+    private String urlImgCCCDFront, urlImgCCCDBack;
+    // Biến kiểm tra upload hình ảnh
+    private boolean bUpload = false;
+    // Uri của mặt trước, mặt sau
+    Uri uriImageSelectionOnDeviceCCCDFront = null;
+    Uri uriImageSelectionOnDeviceCCCDBack = null;
+    int imgCCCD = 0;
+    private DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +60,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setControl();
         setEvent();
         context = this;
+        ShowMessage.context = this;
     }
 
     private void setEvent() {
@@ -41,8 +68,11 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Nếu tất cả các thông tin nhập đầy đủ và checkbox sẽ chuyển sang màn hình nhập otp xác minh tài khoản
-                Intent intent = new Intent(context, InputOTPSignUpActivity.class);
-                context.startActivity(intent);
+                if(checkInfo()){
+//                    Intent intent = new Intent(context, OtpVerificationRegistrationActivity.class);
+//                    context.startActivity(intent);
+                    uploadCCCDFront(edtSoDienThoai.getText().toString());
+                }
             }
         });
         edtSoDienThoai.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -53,7 +83,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         edtSoDienThoai.selectAll();
                         edtSoDienThoai.requestFocus();
                         edtSoDienThoai.setError("Số điện thoại phải đủ 10 ký tự số và bắt đầu bằng số 0");
-                    }
+                    } else {edtTenNguoiDKBanHang.requestFocus();}
                 }
                 return false;
             }
@@ -66,7 +96,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         edtTenNguoiDKBanHang.selectAll();
                         edtTenNguoiDKBanHang.requestFocus();
                         edtTenNguoiDKBanHang.setError("Tên thật của người đăng ký bán hàng từ 8-70 ký tự chữ");
-                    }
+                    } else {edtTenCuaHang.requestFocus();}
                 }
                 return false;
             }
@@ -79,7 +109,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         edtTenCuaHang.selectAll();
                         edtTenCuaHang.requestFocus();
                         edtTenCuaHang.setError("Tên cửa hàng từ 8-100 ký tự chữ và số");
-                    }
+                    } else {edtDiaChiCuaHang.requestFocus();}
                 }
                 return false;
             }
@@ -91,8 +121,8 @@ public class RegistrationActivity extends AppCompatActivity {
                     if(Validates.validShopAddress(edtDiaChiCuaHang.getText().toString()) == false) {
                         edtDiaChiCuaHang.selectAll();
                         edtDiaChiCuaHang.requestFocus();
-                        edtDiaChiCuaHang.setError("Địa chỉ của cửa hàng từ 8-300 ký tự chữ và số");
-                    }
+                        edtDiaChiCuaHang.setError("1. Địa chỉ của cửa hàng từ 8-300 ký tự chữ và số.\n2. Không được phép 2 dấu / hoặc . liền kề nhau.");
+                    } else {edtEmailCuaHang.requestFocus();}
                 }
                 return false;
             }
@@ -105,7 +135,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         edtEmailCuaHang.selectAll();
                         edtEmailCuaHang.requestFocus();
                         edtEmailCuaHang.setError("1. Email phải có định dạng xxxxx@gmail.com \n 2. Email không được có 2 dấu chấm liền nhau");
-                    }
+                    } else {edtMaSoThue.requestFocus();}
                 }
                 return false;
             }
@@ -118,7 +148,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         edtMaSoThue.selectAll();
                         edtMaSoThue.requestFocus();
                         edtMaSoThue.setError("Mã số thuế bao gồm 13 ký tự số");
-                    }
+                    } else {hideKeyboard();}
                 }
                 return false;
             }
@@ -130,7 +160,14 @@ public class RegistrationActivity extends AppCompatActivity {
         imgCCCDFront.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pickImageFromGallery(PICK_IMAGE_FRONT);
+                //pickImageFromGallery(PICK_IMAGE_FRONT);
+                if (ContextCompat.checkSelfPermission(RegistrationActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    // Kiểm tra xem đã cấp quyền truy cập thư viện ảnh chưa? Nếu chưa thì yêu cầu?
+                    ActivityCompat.requestPermissions(RegistrationActivity.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                } else {
+                    pickImageFromGallery(PICK_IMAGE_FRONT);
+                    // Quyền đã được cấp, thực hiện hành động cần thiết.
+                }
             }
         });
 
@@ -138,7 +175,13 @@ public class RegistrationActivity extends AppCompatActivity {
         imgCCCDBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pickImageFromGallery(PICK_IMAGE_BACK);
+                if (ContextCompat.checkSelfPermission(RegistrationActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    // Kiểm tra xem đã cấp quyền truy cập thư viện ảnh chưa? Nếu chưa thì yêu cầu?
+                    ActivityCompat.requestPermissions(RegistrationActivity.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                } else {
+                    // Nếu đã cấp quyền code tại đây
+                    pickImageFromGallery(PICK_IMAGE_BACK);
+                }
             }
         });
 
@@ -151,6 +194,90 @@ public class RegistrationActivity extends AppCompatActivity {
                 context.startActivity(intent);
             }
         });
+        vRegistrationScreen.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideKeyboard();
+                return false;
+            }
+        });
+    }
+
+    private void registration(String urlImgCCCDFront, String urlImgCCCDBack){
+        String keyShopItem = edtSoDienThoai.getText().toString();
+        ShopData shopData = new ShopData(0,keyShopItem,edtSoDienThoai.getText().toString(),"", edtTenNguoiDKBanHang.getText().toString(),
+                edtTenCuaHang.getText().toString(), edtDiaChiCuaHang.getText().toString(),edtEmailCuaHang.getText().toString(),
+                edtMaSoThue.getText().toString(), urlImgCCCDFront,urlImgCCCDBack,"");
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+        databaseReference.child("Shop").child(keyShopItem).setValue(shopData);
+        //ShowMessage.showMessage("Đăng ký thành công");
+    }
+
+    private boolean checkInfo() {
+        if (edtSoDienThoai.getText().toString().isEmpty() || edtTenNguoiDKBanHang.getText().toString().isEmpty() || edtTenCuaHang.getText().toString().isEmpty() ||
+                edtDiaChiCuaHang.getText().toString().isEmpty() || edtEmailCuaHang.getText().toString().isEmpty() || edtMaSoThue.getText().toString().isEmpty() ||
+                uriImageSelectionOnDeviceCCCDFront == null || uriImageSelectionOnDeviceCCCDBack == null) {
+                if(!isFinishing()){
+                    ShowMessage.showMessage("Không được bỏ trống bất kỳ thông tin đăng ký!");
+                }
+                return false;
+        }
+        if (!chkDongYDieuKhoan.isChecked()) {
+            if(!isFinishing()){
+                ShowMessage.showMessage("Bạn cần phải đồng ý với điều khoản dịch vụ của chúng tôi!");
+            }
+            return false;
+        }
+        return true;
+    }
+
+    //Hàm tải ảnh CCCD lên FireBase
+    private void uploadCCCDFront(String shopPhoneNumber){
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        String[] part = uriImageSelectionOnDeviceCCCDFront.getLastPathSegment().split("/");
+        StorageReference imgRef = storageRef.child("imageShop/" + shopPhoneNumber + "/" + (part[part.length-1]));
+        UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDFront);
+        uploadTask.addOnCompleteListener(taskSnapshot -> {
+            imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                urlImgCCCDFront = uri.toString();
+                bUpload = true;
+                if (bUpload){
+                    if(!isFinishing()){
+                        ShowMessage.showMessage("Tải ảnh CCCD Mặt trước lên thành công!");
+                    }
+                    uploadCCCDBack(urlImgCCCDFront,shopPhoneNumber);
+                }
+            }).addOnFailureListener(e -> {
+                if(!isFinishing()){
+                    ShowMessage.showMessage("Lỗi khi tải ảnh lên: "+ e);
+                }
+            });
+        });
+    }
+
+    private void uploadCCCDBack(String urlCCCDFrontDownloaded, String shopPhoneNumber){
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        String[] part = uriImageSelectionOnDeviceCCCDBack.getLastPathSegment().split("/");
+        StorageReference imgRef = storageRef.child("imageShop/" + shopPhoneNumber + "/" + (part[part.length-1]));
+        UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDBack);
+        uploadTask.addOnCompleteListener(taskSnapshot -> {
+            imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                urlImgCCCDBack = uri.toString();
+                bUpload = true;
+                if (bUpload){
+                    if(!isFinishing()){
+                        ShowMessage.showMessage("Tải ảnh CCCD Mặt sau lên thành công!");
+                    }
+                    registration(urlCCCDFrontDownloaded,urlImgCCCDBack);
+                }
+            }).addOnFailureListener(e -> {
+                if(!isFinishing()) {
+                    ShowMessage.showMessage("Lỗi khi tải ảnh lên: "+ e);
+                }
+
+            });
+        });
     }
 
 
@@ -162,21 +289,30 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == RESULT_OK) {
             if (requestCode == PICK_IMAGE_FRONT) {
                 // Xử lý khi chọn ảnh cho mặt trước
-                Uri imageUri = data.getData();
-                imgCCCDFront.setImageURI(imageUri);
+                uriImageSelectionOnDeviceCCCDFront = data.getData();
+                imgCCCDFront.setImageURI(uriImageSelectionOnDeviceCCCDFront);
             } else if (requestCode == PICK_IMAGE_BACK) {
                 // Xử lý khi chọn ảnh cho mặt sau
-                Uri imageUri = data.getData();
-                imgCCCDBack.setImageURI(imageUri);
+                uriImageSelectionOnDeviceCCCDBack = data.getData();
+                imgCCCDBack.setImageURI(uriImageSelectionOnDeviceCCCDBack);
             }
         }
     }
+    //Sự kiện ẩn bàn phím
 
+
+    private void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
     private void setControl() {
+        vRegistrationScreen = findViewById(R.id.vRegistrationScreen);
         edtSoDienThoai = findViewById(R.id.edtSoDienThoai);
         edtTenNguoiDKBanHang = findViewById(R.id.edtTenNguoiDKBanHang);
         edtTenCuaHang = findViewById(R.id.edtTenCuaHang);

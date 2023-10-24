@@ -18,7 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.duancuahang.Class.ShopData;
+import com.example.duancuahang.Class.Shop;
 import com.example.duancuahang.Class.ShowMessage;
 import com.example.duancuahang.Class.Validates;
 import com.example.duancuahang.FireBaseAuthenticator.FireBaseAuthenticator;
@@ -38,9 +38,6 @@ public class LoginActivity extends AppCompatActivity {
     View vLoginScreen;
     private Context context;
     SharedPreferences sharedPreferences;
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //Biến xử lý
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FireBaseAuthenticator.login(edtSoDienThoai.getText().toString(),edtMatKhau.getText().toString());
+                login(edtSoDienThoai.getText().toString(), edtMatKhau.getText().toString(), context);
             }
         });
 
@@ -78,8 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         edtSoDienThoai.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_DONE) {
-                    if(Validates.validPhone(edtSoDienThoai.getText().toString())==false){
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    if (Validates.validPhone(edtSoDienThoai.getText().toString()) == false) {
                         edtSoDienThoai.selectAll();
                         edtSoDienThoai.requestFocus();
                         edtSoDienThoai.setError("Số điện thoại phải đủ 10 ký tự số và bắt đầu bằng số 0!");
@@ -91,8 +88,8 @@ public class LoginActivity extends AppCompatActivity {
         edtMatKhau.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_DONE) {
-                    if (Validates.validPassword(edtMatKhau.getText().toString())==false){
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    if (Validates.validPassword(edtMatKhau.getText().toString()) == false) {
                         edtMatKhau.selectAll();
                         edtMatKhau.requestFocus();
                         edtMatKhau.setError("Mật khẩu không được bỏ trống!");
@@ -138,11 +135,66 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
-
     }
 
+    public static void login(final String shopPhoneNumber, final String password, final Context context) {
+        // Kiểm tra số điện thoại hoặc mật khẩu có bị bỏ trống hay không
+        if (shopPhoneNumber.isEmpty() || password.isEmpty()) {
+            ShowMessage.showMessage("Thông tin đăng nhập không được bỏ trống!!!");
+            return;
+        }
 
+        final DatabaseReference accountRef;
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        accountRef = firebaseDatabase.getReference("Shop");
+        accountRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //Biến xác định tài khoản có tồn tại hay không?
+                boolean found = false;
 
+                if (snapshot.exists()) {
+                    for (DataSnapshot accountShopSnapshot : snapshot.getChildren()) {
+                        Shop shopAccount = accountShopSnapshot.getValue(Shop.class);
+                        if (shopAccount != null && shopAccount.getShopPhoneNumber().equals(shopPhoneNumber)) {
+
+                            //Tạo biến kiểm tra
+                            int storedStatus = shopAccount.getStatus();
+                            String storedPassword = shopAccount.getPassword();
+
+                            // Kiểm tra trạng thái tài khoản
+                            if (storedStatus == 0 && storedPassword.equals(password)) {
+                                return;
+                            } else if (storedStatus == 2 && storedPassword.equals(password)) {
+                                ShowMessage.showMessage("Tài khoản đã bị khóa.\nLiên hệ ADMIN để biết thêm chi tiết!");
+                                return;
+                            } else {
+                                // Kiểm tra mật khẩu
+                                if (storedPassword.equals(password)) {
+                                    // Đăng nhập thành công, chuyển sang màn hình HomeShop
+                                    Intent intent  = new Intent(context, HomeShop.class);
+                                    context.startActivity(intent);
+                                    return;
+                                } else {
+                                    ShowMessage.showMessage("Sai mật khẩu. Vui lòng thử lại!!!");
+                                }
+                            }
+                            found = true;
+                        }
+                    }
+                    // Không tìm thấy tài khoản
+                    if(!found){
+                        ShowMessage.showMessage("Tài khoản không tồn tại!!!");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                ShowMessage.showMessage("Lỗi không truy vấn được dữ liệu");
+            }
+        });
+    }
     private void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {

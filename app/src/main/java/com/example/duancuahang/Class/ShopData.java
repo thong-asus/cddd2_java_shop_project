@@ -1,9 +1,44 @@
 package com.example.duancuahang.Class;
 
-public class ShopData {
+import java.io.Serializable;
+
+public class ShopData implements Serializable {
     private int status;
     private String idShop, shopPhoneNumber, password, shopOwner, shopName,
-            shopAddress, shopEmail, taxCode, cccdFront, cccdBack;
+            shopAddress, shopEmail, taxCode, urlImgCCCDFront, urlImgCCCDBack, urlImgShopAvatar;
+
+    public ShopData(int status, String idShop, String shopPhoneNumber, String password, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode, String urlImgCCCDFront, String urlImgCCCDBack, String urlImgShopAvatar) {
+        this.status = status;
+        this.idShop = idShop;
+        this.shopPhoneNumber = shopPhoneNumber;
+        this.password = password;
+        this.shopOwner = shopOwner;
+        this.shopName = shopName;
+        this.shopAddress = shopAddress;
+        this.shopEmail = shopEmail;
+        this.taxCode = taxCode;
+        this.urlImgCCCDFront = urlImgCCCDFront;
+        this.urlImgCCCDBack = urlImgCCCDBack;
+        this.urlImgShopAvatar = urlImgShopAvatar;
+    }
+    public ShopData(String idShop, String shopPhoneNumber, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode, String urlImgCCCDFront, String urlImgCCCDBack) {
+        this.idShop = idShop;
+        this.shopPhoneNumber = shopPhoneNumber;
+        this.shopOwner = shopOwner;
+        this.shopName = shopName;
+        this.shopAddress = shopAddress;
+        this.shopEmail = shopEmail;
+        this.taxCode = taxCode;
+        this.urlImgCCCDFront = urlImgCCCDFront;
+        this.urlImgCCCDBack = urlImgCCCDBack;
+    }
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getIdShop() {
         return idShop;
@@ -11,14 +46,6 @@ public class ShopData {
 
     public void setIdShop(String idShop) {
         this.idShop = idShop;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public String getShopPhoneNumber() {
@@ -77,34 +104,28 @@ public class ShopData {
         this.taxCode = taxCode;
     }
 
-    public String getCccdFront() {
-        return cccdFront;
+    public String getUrlImgCCCDFront() {
+        return urlImgCCCDFront;
     }
 
-    public void setCccdFront(String cccdFront) {
-        this.cccdFront = cccdFront;
+    public void setUrlImgCCCDFront(String urlImgCCCDFront) {
+        this.urlImgCCCDFront = urlImgCCCDFront;
     }
 
-    public String getCccdBack() {
-        return cccdBack;
+    public String getUrlImgCCCDBack() {
+        return urlImgCCCDBack;
     }
 
-    public void setCccdBack(String cccdBack) {
-        this.cccdBack = cccdBack;
+    public void setUrlImgCCCDBack(String urlImgCCCDBack) {
+        this.urlImgCCCDBack = urlImgCCCDBack;
     }
 
-    public ShopData(String idShop, int trangThai, String shopPhoneNumber, String password, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode, String cccdFront, String cccdBack) {
-        this.idShop = idShop;
-        this.status = trangThai;
-        this.shopPhoneNumber = shopPhoneNumber;
-        this.password = password;
-        this.shopOwner = shopOwner;
-        this.shopName = shopName;
-        this.shopAddress = shopAddress;
-        this.shopEmail = shopEmail;
-        this.taxCode = taxCode;
-        this.cccdFront = cccdFront;
-        this.cccdBack = cccdBack;
+    public String getUrlImgShopAvatar() {
+        return urlImgShopAvatar;
+    }
+
+    public void setUrlImgShopAvatar(String urlImgShopAvatar) {
+        this.urlImgShopAvatar = urlImgShopAvatar;
     }
 
     public ShopData() {
