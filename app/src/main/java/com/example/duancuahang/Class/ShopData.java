@@ -7,6 +7,7 @@ public class ShopData implements Serializable {
     private String idShop, shopPhoneNumber, password, shopOwner, shopName,
             shopAddress, shopEmail, taxCode, urlImgCCCDFront, urlImgCCCDBack, urlImgShopAvatar;
 
+
     public ShopData(int status, String idShop, String shopPhoneNumber, String password, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode, String urlImgCCCDFront, String urlImgCCCDBack, String urlImgShopAvatar) {
         this.status = status;
         this.idShop = idShop;
@@ -55,7 +56,6 @@ public class ShopData implements Serializable {
     public void setShopPhoneNumber(String shopPhoneNumber) {
         this.shopPhoneNumber = shopPhoneNumber;
     }
-
     public String getPassword() {
         return password;
     }

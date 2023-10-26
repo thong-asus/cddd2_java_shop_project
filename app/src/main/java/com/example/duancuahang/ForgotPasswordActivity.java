@@ -57,7 +57,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     if(Validates.validOTP(edtInputOTP.getText().toString()) == false){
                         edtInputOTP.selectAll();
                         edtInputOTP.requestFocus();
-                        edtInputOTP.setError("OTP là dãy ký tự 4 số");
+                        edtInputOTP.setError("OTP là dãy ký tự 6 số");
                     }
                 }
                 return false;

@@ -46,7 +46,7 @@ public class Validates {
         return matcher.find();
     }
     public static boolean validOTP(String otp) {
-        String strRegex = "^\\d{4}$";
+        String strRegex = "^\\d{6}$";
         Pattern pattern = Pattern.compile(strRegex);
         Matcher matcher = pattern.matcher(otp);
         return matcher.find();

@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.duancuahang.Class.Shop;
+import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.Class.ShowMessage;
 import com.example.duancuahang.Class.Validates;
 import com.example.duancuahang.FireBaseAuthenticator.FireBaseAuthenticator;
@@ -163,9 +164,10 @@ public class LoginActivity extends AppCompatActivity {
                             String storedPassword = shopAccount.getPassword();
 
                             // Kiểm tra trạng thái tài khoản
-                            if (storedStatus == 0 && storedPassword.equals(password)) {
+                            if (storedStatus == 0) {
+                                ShowMessage.showMessage("Tài khoản đang chờ ADMIN xem xét duyệt đăng ký. Vui lòng chờ thông báo!");
                                 return;
-                            } else if (storedStatus == 2 && storedPassword.equals(password)) {
+                            } else if (storedStatus == 2) {
                                 ShowMessage.showMessage("Tài khoản đã bị khóa.\nLiên hệ ADMIN để biết thêm chi tiết!");
                                 return;
                             } else {
