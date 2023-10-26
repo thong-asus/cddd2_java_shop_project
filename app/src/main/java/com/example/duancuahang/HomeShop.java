@@ -3,6 +3,7 @@ package com.example.duancuahang;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,10 +15,13 @@ public class HomeShop extends AppCompatActivity {
     Toolbar toolbar;
 
     LinearLayout linearLayout_SanPhamCuaToi_ScreenHome;
+
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_shop);
+        context = this;
         setControl();
         setEvent();
         setSupportActionBar(toolbar);
@@ -35,7 +39,8 @@ public class HomeShop extends AppCompatActivity {
         linearLayout_SanPhamCuaToi_ScreenHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(context,Productlist.class);
+                startActivity(intent);
             }
         });
 

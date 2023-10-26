@@ -46,4 +46,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
+    implementation("id.zelory:compressor:3.0.1")
+
 }

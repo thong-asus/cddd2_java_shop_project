@@ -1,6 +1,8 @@
 package com.example.duancuahang.Class;
 
-public class ProductData {
+import java.io.Serializable;
+
+public class ProductData implements Serializable {
     private String keyProductItem;
     private String idProduct;
     private String nameProduct;
