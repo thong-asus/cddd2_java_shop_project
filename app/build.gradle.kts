@@ -47,5 +47,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
     implementation("id.zelory:compressor:3.0.1")
+    implementation("com.google.firebase:firebase-auth")
+    implementation ("com.google.firebase:firebase-auth:22.2.0")
 
 }

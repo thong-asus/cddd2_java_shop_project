@@ -11,7 +11,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/vLoginScreen">
             <TextView
                 style="@style/prop_tenManHinh"
                 android:text="Đăng nhập"
@@ -29,36 +30,43 @@
                app:passwordToggleTint="#b0b0b0"
                android:textColorHint="#b0b0b0">
                <com.google.android.material.textfield.TextInputEditText
+                   android:id="@+id/edtMatKhau"
                    style="@style/prop_editText"
                    android:hint="Mật khẩu"
                    android:inputType="textPassword"/>
            </com.google.android.material.textfield.TextInputLayout>
+
             <CheckBox
                 android:id="@+id/chkLuuTaiKhoan"
-                android:layout_width="120dp"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
-                android:textStyle="bold|italic"
-                android:text="Lưu tài khoản"/>
+                android:layout_marginTop="10dp"
+                android:textSize="20dp"
+                android:text="Lưu tài khoản"
+                android:textStyle="bold|italic" />
             <Button
-                android:id="@+id/btn_tiepTuc"
+                android:id="@+id/btnDangNhap"
                 style="@style/prop_Button"
                 android:text="Đăng nhập"
                 android:background="@drawable/bg_btntieptuc_clicked"/>
             <TextView
+                android:id="@+id/tvQuenMatKhau"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="80dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
+                android:textSize="18dp"
                 android:text="Quên mật khẩu?"
                 android:textStyle="bold|italic"
                 android:textColor="#000"/>
             <TextView
+                android:id="@+id/tvDangKyTaiKhoan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textSize="18dp"
                 android:text="Chưa có tài khoản? Đăng ký ngay"
                 android:textStyle="bold|italic"
                 android:textColor="#000"/>
