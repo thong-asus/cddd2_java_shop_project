@@ -13,9 +13,9 @@
         android:background="#DFD8D8"
         />
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView_ScreenAddProduct"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:layout_marginHorizontal="10dp"
         >
 

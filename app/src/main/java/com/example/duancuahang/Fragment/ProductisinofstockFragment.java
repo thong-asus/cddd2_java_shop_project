@@ -1,5 +1,7 @@
 package com.example.duancuahang.Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duancuahang.Class.ProductData;
+import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.RecyclerView.Product_InOfStockAdapter;
 import com.example.duancuahang.Class.Product;
 import com.example.duancuahang.R;
@@ -22,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +35,17 @@ public class ProductisinofstockFragment extends Fragment {
     TextView tvNoProduct_InOfStock;
     Product_InOfStockAdapter productInOfStockAdapter;
     ArrayList<ProductData> arrProductData = new ArrayList<>();
-
     DatabaseReference databaseReference;
+
+    ShopData shopData = new ShopData();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_productisinofstock,container,false);
+        SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
+        String jsonShop = sharedPreferences1.getString("informationShop","");
+        Gson gson = new Gson();
+        shopData = gson.fromJson(jsonShop, ShopData.class);
         setControl(view);
         setIntiazation();
         setEvent();
@@ -54,36 +63,33 @@ public class ProductisinofstockFragment extends Fragment {
 //    hàm lấy danh sách sản phẩm còn hàng
     private void pullProduct_IsInofStock(){
 
+        System.out.println("id shop: " + shopData.getIdShop());
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Product");
-        Query query =  databaseReference.orderByChild("quanlityProduct").startAt(1);
+        Query query =  databaseReference.orderByChild("idUserProduct").equalTo(shopData.getIdShop());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                arrProductData.clear();
-                for (DataSnapshot productSnapshot : snapshot.getChildren()){
-                    String idProduct = productSnapshot.child("idProduct").getValue().toString();
-                    String nameProduct = productSnapshot.child("nameProduct").getValue().toString();
-                    String urlImageProduct = productSnapshot.child("urlImageProduct").getValue().toString();
-                    int priceProduct = Integer.parseInt(productSnapshot.child("priceProduct").getValue().toString());
-                    String keyCategoryProduct = productSnapshot.child("keyCategoryProduct").getValue().toString();
-                    String keyManufaceProduct = productSnapshot.child("keyManufaceProduct").getValue().toString();
-                    String descriptionProduct = productSnapshot.child("descriptionProduct").getValue().toString();
-                    int quanlityProduct = Integer.parseInt(productSnapshot.child("quanlityProduct").getValue().toString());
-                    int sumLike = Integer.parseInt(productSnapshot.child("sumLike").getValue().toString());
-                    double overageCmtProduct = Double.parseDouble(productSnapshot.child("overageCmtProduct").getValue().toString());
-                    ProductData productData = new ProductData(idProduct,nameProduct,urlImageProduct,priceProduct,keyCategoryProduct,keyManufaceProduct,quanlityProduct,descriptionProduct,sumLike,overageCmtProduct);
-                    arrProductData.add(productData);
-                }
-                productInOfStockAdapter.notifyDataSetChanged();
-                if (arrProductData.size() <=0){
-                    tvNoProduct_InOfStock.setVisibility(View.VISIBLE);
-                    rcvProductisinstock_ScreenPRoductList.setVisibility(View.GONE);
+                if(snapshot.exists()){
+                    arrProductData.clear();
+                    for (DataSnapshot productSnapshot : snapshot.getChildren()){
+                        ProductData productData = productSnapshot.getValue(ProductData.class);
+                       if (productData.getQuanlityProduct() > 0){
+                           arrProductData.add(productData);
+                       }
+                    }
                 }
                 else {
-                    tvNoProduct_InOfStock.setVisibility(View.GONE);
-                    rcvProductisinstock_ScreenPRoductList.setVisibility(View.VISIBLE);
+                    if (arrProductData.size() <= 0){
+                        tvNoProduct_InOfStock.setVisibility(View.VISIBLE);
+                        rcvProductisinstock_ScreenPRoductList.setVisibility(View.GONE);
+                    }
+                    else {
+                        tvNoProduct_InOfStock.setVisibility(View.GONE);
+                        rcvProductisinstock_ScreenPRoductList.setVisibility(View.VISIBLE);
+                    }
                 }
+                productInOfStockAdapter.notifyDataSetChanged();
             }
 
             @Override

@@ -10,7 +10,9 @@
        <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/rcvProductisoutstock_ScreenProductList"
            android:layout_width="match_parent"
-           android:layout_height="match_parent">
+           android:layout_height="match_parent"
+           android:paddingVertical="20dp"
+           >
 
        </androidx.recyclerview.widget.RecyclerView>
        <TextView

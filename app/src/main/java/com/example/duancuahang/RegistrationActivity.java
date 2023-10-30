@@ -68,7 +68,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Kiểm tra dữ liệu nhập vào hợp lệ
                 if(checkInfoRegistration()){
-                    Intent intent = new Intent(RegistrationActivity.this, OtpVerificationRegistrationActivity.class);
+                    Intent intent = new Intent(context, OtpVerificationRegistrationActivity.class);
                     //Khởi tạo ShopData
                     ShopData shopData = new ShopData(0,edtSoDienThoai.getText().toString(),edtSoDienThoai.getText().toString(),"",edtTenNguoiDKBanHang.getText().toString(),
                             edtTenCuaHang.getText().toString(),edtDiaChiCuaHang.getText().toString(),edtEmailCuaHang.getText().toString(),

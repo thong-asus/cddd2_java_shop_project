@@ -5,10 +5,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -34,6 +36,8 @@ import com.example.duancuahang.Adapter.ManufacSpinerAdapter;
 import com.example.duancuahang.Class.Category;
 import com.example.duancuahang.Class.Manuface;
 import com.example.duancuahang.Class.ProductData;
+import com.example.duancuahang.Class.ShopData;
+import com.example.duancuahang.Class.Validates;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +47,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,8 +56,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import id.zelory.compressor.constraint.Compression;
-
 public class Addproduct extends AppCompatActivity {
 
     //    Biến giao diện
@@ -60,11 +63,10 @@ public class Addproduct extends AppCompatActivity {
     LinearLayout vMain_AddProduct;
     ImageView ivProduct_addProduct;
     Button btnAddProduct;
-
     EditText edtNameProduct, edtDescriptionProduct, edtPriceProduct, edtQuanlityProduct;
     ProgressBar progressBar;
-
     Toolbar toolBar_AddProduct;
+    NestedScrollView nestedScrollView_ScreenAddProduct;
 
     //    Biến xử lý
     private DatabaseReference databaseReference;
@@ -74,7 +76,6 @@ public class Addproduct extends AppCompatActivity {
     private Manuface manufaceSelection = null;
     private  boolean loading = true;
     private boolean bPushImage = false;
-
     Uri uriImageSelectionOnDevice = null;
 
     //    Biến xử lý giao diện
@@ -183,6 +184,8 @@ public class Addproduct extends AppCompatActivity {
                        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialogInterface, int i) {
+                               hideKeyboard();
+                               setEnableInComponentScreen();
                                loading = true;
                                progressBar.setVisibility(View.VISIBLE);
                                vMain_AddProduct.setBackgroundColor(Color.parseColor("#80000000"));
@@ -261,11 +264,23 @@ public class Addproduct extends AppCompatActivity {
         edtQuanlityProduct = findViewById(R.id.edtQuanlityProduct_AddProduct);
         progressBar = findViewById(R.id.progessbar_AddProduct);
         toolBar_AddProduct = findViewById(R.id.toolBar_AddProduct);
+        nestedScrollView_ScreenAddProduct = findViewById(R.id.nestedScrollView_ScreenAddProduct);
+    }
+
+//    ngăn chặn thao tác người dùng
+    private void setEnableInComponentScreen(){
+        nestedScrollView_ScreenAddProduct.setEnabled(false);
+        ivProduct_addProduct.setEnabled(false);
+        edtNameProduct.setEnabled(false);
+        edtDescriptionProduct.setEnabled(false);
+        spCategory.setEnabled(false);
+        spManuface_AddProduct.setEnabled(false);
+        edtPriceProduct.setEnabled(false);
+        edtQuanlityProduct.setEnabled(false);
+        btnAddProduct.setEnabled(false);
     }
 
 //    bắt sự kiện nút back trong toolbar
-
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home){
@@ -281,18 +296,24 @@ public class Addproduct extends AppCompatActivity {
     }
 
     private void AddProduct() {
+        SharedPreferences sharedPreferences1 = getSharedPreferences("InformationShop",Context.MODE_PRIVATE);
+        String jsonShop = sharedPreferences1.getString("informationShop","");
+        Gson gson = new Gson();
+       ShopData shopData = gson.fromJson(jsonShop, ShopData.class);
         String keyProductItem = getIdProductRan();
-        pushImageProductToFirebaseStorage(uriImageSelectionOnDevice);
-        ProductData productData = new ProductData(keyProductItem,
+        ProductData productData = new ProductData(keyProductItem.concat(shopData.getIdShop()),
                 edtNameProduct.getText().toString(),urlImageSelection,
                 Integer.valueOf(edtPriceProduct.getText().toString()),
                 categorySelection.getKeyCategoryItem(), manufaceSelection.getKeyManufaceItem(),
                 Integer.valueOf(edtQuanlityProduct.getText().toString()),
-                edtDescriptionProduct.getText().toString(), 0, 0);
+                edtDescriptionProduct.getText().toString(), 0, 0,shopData.getIdShop());
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
-        databaseReference.child("Product").child(keyProductItem).setValue(productData);
+        databaseReference.child("Product").child(keyProductItem.concat(shopData.getIdShop())).setValue(productData);
         loading = false;
+        System.out.println("Id shop add: "+ shopData.getIdShop());
+        System.out.println("product add: "+ productData.toString());
+
        if (!loading){
            finish();
        }
@@ -337,7 +358,6 @@ public class Addproduct extends AppCompatActivity {
     private void pushImageProductToFirebaseStorage(Uri uriImageLocalDevice){
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference imgRef = storageReference.child("imageProduct/"+uriImageLocalDevice.getLastPathSegment());
-
         UploadTask uploadTask = imgRef.putFile(uriImageLocalDevice);
         uploadTask.addOnCompleteListener(task -> {
             if (task.isSuccessful()){

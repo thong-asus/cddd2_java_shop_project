@@ -49,5 +49,7 @@ dependencies {
     implementation("id.zelory:compressor:3.0.1")
     implementation("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-auth:22.2.0")
+    implementation ("com.google.code.gson:gson:2.8.7")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
 
 }
