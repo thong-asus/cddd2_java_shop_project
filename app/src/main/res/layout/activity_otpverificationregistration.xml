@@ -49,12 +49,13 @@
                         android:layout_height="wrap_content"
                         android:textSize="18dp"
                         android:text="Nhận lại mã sau:"/>
+
                     <TextView
                         android:id="@+id/tvTimeResend"
-                        android:layout_width="50dp"
-                        android:textSize="18dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
-                        android:text="60s"/>
+                        android:text="_______"
+                        android:textSize="18dp" />
                 </LinearLayout>
                 <Button
                     android:id="@+id/btnXacMinhOTP"

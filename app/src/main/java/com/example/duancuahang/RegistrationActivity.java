@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +25,9 @@ import android.widget.TextView;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.Class.ShowMessage;
 import com.example.duancuahang.Class.Validates;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -45,13 +49,12 @@ public class RegistrationActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
     // Tạo biến lưu link hình ảnh trên firebase
-    public static String urlImgCCCDFront, urlImgCCCDBack;
+    private static String urlImgCCCDFront, urlImgCCCDBack;
 
     // Uri của mặt trước, mặt sau
     static Uri uriImageSelectionOnDeviceCCCDFront = null;
     static Uri uriImageSelectionOnDeviceCCCDBack = null;
 
-    //private static DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,15 +71,20 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Kiểm tra dữ liệu nhập vào hợp lệ
                 if(checkInfoRegistration()){
-                    Intent intent = new Intent(RegistrationActivity.this, OtpVerificationRegistrationActivity.class);
+                    Intent intent = new Intent(context, OtpVerificationRegistrationActivity.class);
                     //Khởi tạo ShopData
                     ShopData shopData = new ShopData(0,edtSoDienThoai.getText().toString(),edtSoDienThoai.getText().toString(),"",edtTenNguoiDKBanHang.getText().toString(),
                             edtTenCuaHang.getText().toString(),edtDiaChiCuaHang.getText().toString(),edtEmailCuaHang.getText().toString(),
-                            edtMaSoThue.getText().toString(),urlImgCCCDFront,urlImgCCCDBack,"");
+                            edtMaSoThue.getText().toString());
                     // Đính kèm đối tượng ShopData vào Intent
+//
                     intent.putExtra("informationShop", shopData);
+                    intent.putExtra("urifront",uriImageSelectionOnDeviceCCCDFront);
+                    intent.putExtra("uriback",uriImageSelectionOnDeviceCCCDBack);
+
+                    //uploadCCCD(edtSoDienThoai.getText().toString());
                     startActivity(intent);
-                    finish();
+//                    finish();
                 }
             }
         });
@@ -207,18 +215,6 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private static void registration(String urlImgCCCDFront, String urlImgCCCDBack){
-//        String keyShopItem = edtSoDienThoai.getText().toString();
-//        ShopData shopData = new ShopData(0,keyShopItem,edtSoDienThoai.getText().toString(),"", edtTenNguoiDKBanHang.getText().toString(),
-//                edtTenCuaHang.getText().toString(), edtDiaChiCuaHang.getText().toString(),edtEmailCuaHang.getText().toString(),
-//                edtMaSoThue.getText().toString(), urlImgCCCDFront,urlImgCCCDBack,"");
-//        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-//        databaseReference = firebaseDatabase.getReference();
-//        databaseReference.child("Shop").child(keyShopItem).setValue(shopData);
-//        //ShowMessage.showMessage("Đăng ký thành công");
-//    }
-
     public static boolean checkInfoRegistration() {
         if (edtSoDienThoai.getText().toString().isEmpty() || edtTenNguoiDKBanHang.getText().toString().isEmpty() || edtTenCuaHang.getText().toString().isEmpty() ||
                 edtDiaChiCuaHang.getText().toString().isEmpty() || edtEmailCuaHang.getText().toString().isEmpty() || edtMaSoThue.getText().toString().isEmpty() ||
@@ -236,43 +232,6 @@ public class RegistrationActivity extends AppCompatActivity {
         return true;
     }
 
-    //Hàm tải ảnh CCCD lên FireBase
-//    public static void uploadCCCDFront(String shopPhoneNumber){
-//        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-//        String[] part = uriImageSelectionOnDeviceCCCDFront.getLastPathSegment().split("/");
-//        StorageReference imgRef = storageRef.child("imageShop/" + shopPhoneNumber + "/" + (part[part.length-1]));
-//        UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDFront);
-//        uploadTask.addOnCompleteListener(taskSnapshot -> {
-//            imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
-//                urlImgCCCDFront = uri.toString();
-//                bUpload = true;
-//                if (bUpload){
-//                    uploadCCCDBack(urlImgCCCDFront,shopPhoneNumber);
-//                }
-//            }).addOnFailureListener(e -> {
-//                ShowMessage.showMessage("Lỗi khi tải ảnh lên: "+ e);
-//            });
-//        });
-//    }
-//
-//    public static void uploadCCCDBack(String urlCCCDFrontDownloaded, String shopPhoneNumber){
-//        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-//        String[] part = uriImageSelectionOnDeviceCCCDBack.getLastPathSegment().split("/");
-//        StorageReference imgRef = storageRef.child("imageShop/" + shopPhoneNumber + "/" + (part[part.length-1]));
-//        UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDBack);
-//        uploadTask.addOnCompleteListener(taskSnapshot -> {
-//            imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
-//                urlImgCCCDBack = uri.toString();
-//                bUpload = true;
-//                if (bUpload){
-//                    registration(urlCCCDFrontDownloaded,urlImgCCCDBack);
-//                }
-//            }).addOnFailureListener(e -> {
-//                    ShowMessage.showMessage("Lỗi khi tải ảnh lên: "+ e);
-//            });
-//        });
-//    }
-
 
     //Hàm chọn ảnh từ thư viện
     private void pickImageFromGallery(int requestCode) {
@@ -286,10 +245,12 @@ public class RegistrationActivity extends AppCompatActivity {
             if (requestCode == PICK_IMAGE_FRONT) {
                 // Xử lý khi chọn ảnh cho mặt trước
                 uriImageSelectionOnDeviceCCCDFront = data.getData();
+                urlImgCCCDFront = getContentResolver().getType(uriImageSelectionOnDeviceCCCDFront);
                 imgCCCDFront.setImageURI(uriImageSelectionOnDeviceCCCDFront);
             } else if (requestCode == PICK_IMAGE_BACK) {
                 // Xử lý khi chọn ảnh cho mặt sau
                 uriImageSelectionOnDeviceCCCDBack = data.getData();
+                urlImgCCCDBack = getContentResolver().getType(uriImageSelectionOnDeviceCCCDBack);
                 imgCCCDBack.setImageURI(uriImageSelectionOnDeviceCCCDBack);
             }
         }

@@ -22,17 +22,30 @@ public class ShopData implements Serializable {
         this.urlImgCCCDBack = urlImgCCCDBack;
         this.urlImgShopAvatar = urlImgShopAvatar;
     }
-    public ShopData(String idShop, String shopPhoneNumber, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode, String urlImgCCCDFront, String urlImgCCCDBack) {
+
+    public ShopData(int status, String idShop, String shopPhoneNumber, String password, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode) {
+        this.status = status;
         this.idShop = idShop;
         this.shopPhoneNumber = shopPhoneNumber;
+        this.password = password;
         this.shopOwner = shopOwner;
         this.shopName = shopName;
         this.shopAddress = shopAddress;
         this.shopEmail = shopEmail;
         this.taxCode = taxCode;
-        this.urlImgCCCDFront = urlImgCCCDFront;
-        this.urlImgCCCDBack = urlImgCCCDBack;
     }
+
+    //    public ShopData(String idShop, String shopPhoneNumber, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode, String urlImgCCCDFront, String urlImgCCCDBack) {
+//        this.idShop = idShop;
+//        this.shopPhoneNumber = shopPhoneNumber;
+//        this.shopOwner = shopOwner;
+//        this.shopName = shopName;
+//        this.shopAddress = shopAddress;
+//        this.shopEmail = shopEmail;
+//        this.taxCode = taxCode;
+//        this.urlImgCCCDFront = urlImgCCCDFront;
+//        this.urlImgCCCDBack = urlImgCCCDBack;
+//    }
     public int getStatus() {
         return status;
     }
@@ -129,5 +142,23 @@ public class ShopData implements Serializable {
     }
 
     public ShopData() {
+    }
+
+    @Override
+    public String toString() {
+        return "ShopData{" +
+                "status=" + status +
+                ", idShop='" + idShop + '\'' +
+                ", shopPhoneNumber='" + shopPhoneNumber + '\'' +
+                ", password='" + password + '\'' +
+                ", shopOwner='" + shopOwner + '\'' +
+                ", shopName='" + shopName + '\'' +
+                ", shopAddress='" + shopAddress + '\'' +
+                ", shopEmail='" + shopEmail + '\'' +
+                ", taxCode='" + taxCode + '\'' +
+                ", urlImgCCCDFront='" + urlImgCCCDFront + '\'' +
+                ", urlImgCCCDBack='" + urlImgCCCDBack + '\'' +
+                ", urlImgShopAvatar='" + urlImgShopAvatar + '\'' +
+                '}';
     }
 }

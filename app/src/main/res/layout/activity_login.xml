@@ -28,12 +28,13 @@
                style="@style/prop_editText"
                app:passwordToggleEnabled="true"
                app:passwordToggleTint="#b0b0b0"
-               android:textColorHint="#b0b0b0">
+               android:textColorHint="#b0b0b0"
+                >
                <com.google.android.material.textfield.TextInputEditText
                    android:id="@+id/edtMatKhau"
                    style="@style/prop_editText"
                    android:hint="Mật khẩu"
-                   android:inputType="textPassword"/>
+                   android:inputType="textPassword" />
            </com.google.android.material.textfield.TextInputLayout>
 
             <CheckBox
