@@ -8,22 +8,6 @@
     tools:context=".Productlist"
     >
 
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <!--    Search-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/icon_search"
-            android:hint="Mã sản phẩm" />
-    </com.google.android.material.textfield.TextInputLayout>
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -32,11 +16,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolBar_ProductList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#0D8CA1"
+                />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout_ScreenProductList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                />
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager_ScreenProductList"

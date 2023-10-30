@@ -4,29 +4,40 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.duancuahang.Adapter.CategorySpinerAdapter;
 import com.example.duancuahang.Adapter.ManufacSpinerAdapter;
 import com.example.duancuahang.Class.Category;
 import com.example.duancuahang.Class.Manuface;
 import com.example.duancuahang.Class.ProductData;
+import com.example.duancuahang.Class.ShopData;
+import com.example.duancuahang.Class.Validates;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,8 +47,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,8 +63,10 @@ public class Addproduct extends AppCompatActivity {
     LinearLayout vMain_AddProduct;
     ImageView ivProduct_addProduct;
     Button btnAddProduct;
-
     EditText edtNameProduct, edtDescriptionProduct, edtPriceProduct, edtQuanlityProduct;
+    ProgressBar progressBar;
+    Toolbar toolBar_AddProduct;
+    NestedScrollView nestedScrollView_ScreenAddProduct;
 
     //    Biến xử lý
     private DatabaseReference databaseReference;
@@ -58,9 +74,8 @@ public class Addproduct extends AppCompatActivity {
     private String urlImageSelection;
     private Category categorySelection = null;
     private Manuface manufaceSelection = null;
-
+    private  boolean loading = true;
     private boolean bPushImage = false;
-
     Uri uriImageSelectionOnDevice = null;
 
     //    Biến xử lý giao diện
@@ -68,11 +83,14 @@ public class Addproduct extends AppCompatActivity {
     CategorySpinerAdapter categorySpinnerAdapter;
     ArrayList<Manuface> arrManuface = new ArrayList<>();
     ManufacSpinerAdapter manufaceSpinerAdapter;
+    Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addproduct);
+        context = this;
         setControl();
         setIntiazation();
         getCategory();
@@ -93,6 +111,10 @@ public class Addproduct extends AppCompatActivity {
         arrManuface.add(manuface);
         manufaceSpinerAdapter = new ManufacSpinerAdapter(arrManuface, this);
         spManuface_AddProduct.setAdapter(manufaceSpinerAdapter);
+
+//        -------------------------- kích hoạt button back
+        setSupportActionBar(toolBar_AddProduct);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     //    hàm bắt sự kiện
@@ -156,10 +178,77 @@ public class Addproduct extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                     if (checkValueProductBeforeAdd()){
-                        pushImageProductToFirebaseStorage(uriImageSelectionOnDevice);
+                       AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                       builder.setTitle("Thông báo");
+                       builder.setMessage("Bạn có muốn thêm sản phẩm này không ?");
+                       builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialogInterface, int i) {
+                               hideKeyboard();
+                               setEnableInComponentScreen();
+                               loading = true;
+                               progressBar.setVisibility(View.VISIBLE);
+                               vMain_AddProduct.setBackgroundColor(Color.parseColor("#80000000"));
+                               hideKeyboard();
+                               pushImageProductToFirebaseStorage(uriImageSelectionOnDevice);
+                           }
+                       });
+                       builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialogInterface, int i) {
+                               dialogInterface.dismiss();
+                           }
+                       });
+                       AlertDialog alertDialog = builder.create();
+                       alertDialog.show();
                     }
             }
         });
+
+//        hàm bắt sự kiện của editText name produc
+        edtNameProduct.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE){
+                    if (Validates.getCheckValueString_Normal(edtNameProduct.getText().toString())){
+                        edtDescriptionProduct.requestFocus();
+                    }
+                    else {
+                        edtNameProduct.setError("Tên sản phẩm không hợp lệ");
+                    }
+                }
+                return false;
+            }
+        });
+//      hàm bắt xự kiện edtitText giá sản phẩm =====> phím done
+        edtPriceProduct.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE){
+                    if (Validates.getCheckValueNumber(edtPriceProduct.getText().toString())){
+                        edtQuanlityProduct.requestFocus();
+                    }
+                    else {
+                        edtPriceProduct.setError("Giá không hợp lệ");
+                    }
+                }
+                return false;
+            }
+        });
+
+//        bắt sự kiện phím done số lượng
+        edtQuanlityProduct.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE){
+                    if (!Validates.getCheckValueNumber(edtQuanlityProduct.getText().toString())){
+                        edtQuanlityProduct.setError("Số lượng không hợp lệ");
+                    }
+                }
+                return false;
+            }
+        });
+
     }
 
     //hàm ánh xạ
@@ -173,6 +262,31 @@ public class Addproduct extends AppCompatActivity {
         edtDescriptionProduct = findViewById(R.id.edtDescriptionProduct_AddProduct);
         edtPriceProduct = findViewById(R.id.edtPriceProduct_AddProduct);
         edtQuanlityProduct = findViewById(R.id.edtQuanlityProduct_AddProduct);
+        progressBar = findViewById(R.id.progessbar_AddProduct);
+        toolBar_AddProduct = findViewById(R.id.toolBar_AddProduct);
+        nestedScrollView_ScreenAddProduct = findViewById(R.id.nestedScrollView_ScreenAddProduct);
+    }
+
+//    ngăn chặn thao tác người dùng
+    private void setEnableInComponentScreen(){
+        nestedScrollView_ScreenAddProduct.setEnabled(false);
+        ivProduct_addProduct.setEnabled(false);
+        edtNameProduct.setEnabled(false);
+        edtDescriptionProduct.setEnabled(false);
+        spCategory.setEnabled(false);
+        spManuface_AddProduct.setEnabled(false);
+        edtPriceProduct.setEnabled(false);
+        edtQuanlityProduct.setEnabled(false);
+        btnAddProduct.setEnabled(false);
+    }
+
+//    bắt sự kiện nút back trong toolbar
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //    hàm set id product
@@ -182,18 +296,28 @@ public class Addproduct extends AppCompatActivity {
     }
 
     private void AddProduct() {
+        SharedPreferences sharedPreferences1 = getSharedPreferences("InformationShop",Context.MODE_PRIVATE);
+        String jsonShop = sharedPreferences1.getString("informationShop","");
+        Gson gson = new Gson();
+       ShopData shopData = gson.fromJson(jsonShop, ShopData.class);
         String keyProductItem = getIdProductRan();
-        pushImageProductToFirebaseStorage(uriImageSelectionOnDevice);
-        ProductData productData = new ProductData(keyProductItem,
+        ProductData productData = new ProductData(keyProductItem.concat(shopData.getIdShop()),
                 edtNameProduct.getText().toString(),urlImageSelection,
                 Integer.valueOf(edtPriceProduct.getText().toString()),
                 categorySelection.getKeyCategoryItem(), manufaceSelection.getKeyManufaceItem(),
                 Integer.valueOf(edtQuanlityProduct.getText().toString()),
-                edtDescriptionProduct.getText().toString(), 0, 0);
+                edtDescriptionProduct.getText().toString(), 0, 0,shopData.getIdShop());
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
-        databaseReference.child("Product").child(keyProductItem).setValue(productData);
-        System.out.println("productData: "+ productData.toString());
+        databaseReference.child("Product").child(keyProductItem.concat(shopData.getIdShop())).setValue(productData);
+        loading = false;
+        System.out.println("Id shop add: "+ shopData.getIdShop());
+        System.out.println("product add: "+ productData.toString());
+
+       if (!loading){
+           finish();
+       }
+
     }
 
     private boolean checkValueProductBeforeAdd() {
@@ -235,18 +359,20 @@ public class Addproduct extends AppCompatActivity {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         StorageReference imgRef = storageReference.child("imageProduct/"+uriImageLocalDevice.getLastPathSegment());
         UploadTask uploadTask = imgRef.putFile(uriImageLocalDevice);
-        uploadTask.addOnSuccessListener(taskSnapshot -> {
-            imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
+        uploadTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
                 urlImageSelection = uri.toString();
-                bPushImage = true;
-                if (bPushImage){
+                if (!bPushImage){
                     AddProduct();
+                    bPushImage = true;
                 }
             });
-        }).addOnFailureListener(e ->{
-            System.out.println("Loi day hinh anh: "+e.getMessage());
+            }
         });
     }
+
+//    hàm nén ảnh
 
     //    hàm hiển thị kết quả ảnh vừa chọn
     @Override
@@ -255,11 +381,8 @@ public class Addproduct extends AppCompatActivity {
         if (resultCode == REQUEST_CODE_PICK_IMAGE || resultCode == RESULT_OK) {
             Uri uriImage = data.getData();
             String mediaType = getContentResolver().getType(uriImage);
-            System.out.println("3");
             if (mediaType != null) {
-                System.out.println("1");
                 if (mediaType.startsWith("image/")) {
-                    System.out.println("2");
                     try {
                         InputStream inputStream = getContentResolver().openInputStream(uriImage);
                         Bitmap selectionImg = BitmapFactory.decodeStream(inputStream);

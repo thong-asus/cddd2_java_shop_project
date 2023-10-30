@@ -51,4 +51,32 @@ public class Validates {
         Matcher matcher = pattern.matcher(otp);
         return matcher.find();
     }
+
+    public static boolean getCheckValueString_Normal(String value){
+        String regex = "^[a-zA-Z0-9\\p{L} ]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(value);
+        if (matcher.matches()){
+            return true;
+        }
+        return  false;
+    }
+
+    public static boolean getCheckValueNumber(String value){
+        String regex = "^[0-9]+$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(value);
+        if (value != null){
+            if (matcher.matches()){
+                if (Integer.parseInt(value) > 0){
+                    return true;
+                }
+                return false;
+            }
+            return  false;
+        }
+        return false;
+    }
+
+
 }

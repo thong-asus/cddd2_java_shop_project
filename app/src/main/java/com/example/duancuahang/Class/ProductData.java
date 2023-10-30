@@ -1,6 +1,8 @@
 package com.example.duancuahang.Class;
 
-public class ProductData {
+import java.io.Serializable;
+
+public class ProductData implements Serializable {
     private String keyProductItem;
     private String idProduct;
     private String nameProduct;
@@ -12,6 +14,7 @@ public class ProductData {
     private String descriptionProduct;
     private int sumLike;
     private double overageCmtProduct;
+    private String idUserProduct;
 
     public ProductData() {
     }
@@ -104,7 +107,7 @@ public class ProductData {
         this.overageCmtProduct = overageCmtProduct;
     }
 
-    public ProductData(String idProduct, String nameProduct, String urlImageProduct, int priceProduct, String keyCategoryProduct, String keyManufaceProduct, int quanlityProduct, String descriptionProduct, int sumLike, double overageCmtProduct) {
+    public ProductData(String idProduct, String nameProduct, String urlImageProduct, int priceProduct, String keyCategoryProduct, String keyManufaceProduct, int quanlityProduct, String descriptionProduct, int sumLike, double overageCmtProduct, String idUserProduct) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
         this.urlImageProduct = urlImageProduct;
@@ -115,13 +118,21 @@ public class ProductData {
         this.descriptionProduct = descriptionProduct;
         this.sumLike = sumLike;
         this.overageCmtProduct = overageCmtProduct;
+        this.idUserProduct = idUserProduct;
+    }
+
+    public String getIdUserProduct() {
+        return idUserProduct;
+    }
+
+    public void setIdUserProduct(String idUserProduct) {
+        this.idUserProduct = idUserProduct;
     }
 
     @Override
     public String toString() {
         return "ProductData{" +
-                "keyProductItem='" + keyProductItem + '\'' +
-                ", idProduct='" + idProduct + '\'' +
+                "idProduct='" + idProduct + '\'' +
                 ", nameProduct='" + nameProduct + '\'' +
                 ", urlImageProduct='" + urlImageProduct + '\'' +
                 ", priceProduct=" + priceProduct +
@@ -131,6 +142,7 @@ public class ProductData {
                 ", descriptionProduct='" + descriptionProduct + '\'' +
                 ", sumLike=" + sumLike +
                 ", overageCmtProduct=" + overageCmtProduct +
+                ", idUser_Product='" + idUserProduct + '\'' +
                 '}';
     }
 }

@@ -2,6 +2,7 @@ package com.example.duancuahang;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.duancuahang.Class.Shop;
@@ -27,7 +31,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -38,7 +44,14 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvQuenMatKhau, tvDangKyTaiKhoan;
     View vLoginScreen;
     private Context context;
-    SharedPreferences sharedPreferences;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference;
+    NestedScrollView nestedScrollView_ScreenLogin;
+
+    ProgressBar progressbar_Loading_ScreenLogin;
+
+    private boolean isLoading = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +67,53 @@ public class LoginActivity extends AppCompatActivity {
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login(edtSoDienThoai.getText().toString(), edtMatKhau.getText().toString(), context);
+               if (Validates.validPhone(edtSoDienThoai.getText().toString()) && Validates.validPassword(edtMatKhau.getText().toString())){
+                   isLoading = true;
+                   if (isLoading){
+                       hideKeyboard();
+                       progressbar_Loading_ScreenLogin.setVisibility(View.VISIBLE);
+                   }
+//                kiểm tra xem user có tồn tại không
+                   databaseReference = firebaseDatabase.getReference("Shop");
+                   Query query = databaseReference.child(edtSoDienThoai.getText().toString()).getParent();
+                   query.addListenerForSingleValueEvent(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(@NonNull DataSnapshot snapshot) {
+                           if (snapshot.exists()){
+                               for (DataSnapshot shopItem : snapshot.getChildren()){
+                                   if (shopItem.child("password").getValue().toString().equals(edtMatKhau.getText().toString())){
+                                       ShopData shopData = shopItem.getValue(ShopData.class);
+                                       SharedPreferences sharedPreferences1 = getSharedPreferences("InformationShop",Context.MODE_PRIVATE);
+                                       Gson gson  = new Gson();
+                                       String json = gson.toJson(shopData);
+                                       SharedPreferences.Editor editor = sharedPreferences1.edit();
+                                       editor.putString("informationShop",json);
+                                       editor.apply();
+                                       Intent intent =  new Intent(context, HomeShop.class);
+                                       startActivity(intent);
+                                       finish();
+                                   }
+                                   else {
+                                       ShowMessage.showMessage("Đăng nhập không thành công. Vui lòng kiểm tra lại số điện thoại và mật khẩu");
+                                       edtSoDienThoai.setText("");
+                                       edtMatKhau.setText("");
+                                   }
+                               }
+                           }
+                           else {
+                               ShowMessage.showMessage("Tài khoản không tồn tại");
+                           }
+                       }
+
+                       @Override
+                       public void onCancelled(@NonNull DatabaseError error) {
+
+                       }
+                   });
+               }
+               else {
+                   ShowMessage.showMessage("Vui lòng kiểm tra lại thông tin đăng nhập");
+               }
             }
         });
 
@@ -100,34 +159,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
-        //Lưu số điện thoại//////////////////////////////////////////////////////////////////////////////////////
-        sharedPreferences = getSharedPreferences("MyPhoneNumber", Context.MODE_PRIVATE);
-
-        boolean isChecked = sharedPreferences.getBoolean("isChecked", false);
-        chkLuuTaiKhoan.setChecked(isChecked);
-        if (isChecked) {
-            String phoneNumber = sharedPreferences.getString("phoneNumber", "");
-        }
-        chkLuuTaiKhoan.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                //Nếu đã Check
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putBoolean("isChecked", isChecked);
-
-                if (isChecked) {
-                    // Lưu số điện thoại nếu đã được đăng nhập
-                    String phoneNumber = edtSoDienThoai.getText().toString(); // Thay bằng số điện thoại thực tế
-                    editor.putString("phoneNumber", phoneNumber);
-                } else {
-                    // Xoá số điện thoại nếu checkbox được bỏ chọn
-                    editor.remove("phoneNumber");
-                }
-                editor.apply();
-            }
-        });
-
         //Sự kiện ẩn bàn phím
         vLoginScreen.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -136,6 +167,14 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+//    câm không cho người dùng thao tác
+    private void setEnbaleComponentScreen(){
+        edtMatKhau.setEnabled(false);
+        edtSoDienThoai.setEnabled(false);
+        btnDangNhap.setEnabled(false);
+        nestedScrollView_ScreenLogin.setEnabled(false);
     }
 
     public static void login(final String shopPhoneNumber, final String password, final Context context) {
@@ -212,5 +251,7 @@ public class LoginActivity extends AppCompatActivity {
         btnDangNhap = findViewById(R.id.btnDangNhap);
         tvQuenMatKhau = findViewById(R.id.tvQuenMatKhau);
         tvDangKyTaiKhoan = findViewById(R.id.tvDangKyTaiKhoan);
+        nestedScrollView_ScreenLogin = findViewById(R.id.nestedScrollView_ScreenLogin);
+        progressbar_Loading_ScreenLogin = findViewById(R.id.progressbar_Loading_ScreenLogin);
     }
 }

@@ -45,14 +45,6 @@ public class CategorySpinerAdapter extends BaseAdapter {
         if (i == 0){
             vMainItemCategory.setBackgroundResource(R.drawable.bg_item_spinner_item_introduce);
         }
-//        else {
-//           if (i % 2 == 0 && i != 0){
-//               vMainItemCategory.setBackgroundResource(R.drawable.bg_item_spiner_custom_ietmselection01);
-//           }
-//           else {
-//               vMainItemCategory.setBackgroundResource(R.drawable.bg_item_spinner_custom_itemselection_02);
-//           }
-//        }
         TextView tvNameCategoryItem = view.findViewById(R.id.tvNameCategory_SpinerCategory_Addproduct);
         tvNameCategoryItem.setText(categories.get(i).getNameCategory());
         return view;

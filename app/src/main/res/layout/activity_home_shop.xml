@@ -7,7 +7,9 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar_ScreenHome"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="#DFD8D8"
+        />
 
     <!--    Content screen home-->
     <LinearLayout
@@ -38,7 +40,7 @@
                 android:src="@drawable/imgdemo" />
 
             <TextView
-                android:id="@+id/txNameShop_ScreenHome"
+                android:id="@+id/tvNameShop_ScreenHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Thong's Shop"

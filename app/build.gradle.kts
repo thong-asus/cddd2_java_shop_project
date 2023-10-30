@@ -47,12 +47,11 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
-
-
-    //import firebase authen
-    implementation(platform("com.google.firebase:firebase-bom:32.4.0"))
+    implementation("id.zelory:compressor:3.0.1")
     implementation("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-auth:22.2.0")
+    implementation ("com.google.code.gson:gson:2.8.7")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
 
 //    implementation ("com.google.firebase:firebase-bom:29.0.0")
 //    implementation (platform("com.google.firebase:firebase-bom:29.0.0"))

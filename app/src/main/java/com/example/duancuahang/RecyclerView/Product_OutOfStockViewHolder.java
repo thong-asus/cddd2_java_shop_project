@@ -3,7 +3,6 @@ package com.example.duancuahang.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -12,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duancuahang.R;
 
-public class Product_InOfStockViewHolder extends RecyclerView.ViewHolder {
+public class Product_OutOfStockViewHolder extends RecyclerView.ViewHolder {
     ImageView imgProductItem;
     TextView tvIdProductItem,tvNameProductItem, tvCategory, tvManufaceProduct, tvPriceProduct, tvQuanlityProduct;
     Button btnUpdateProductItem, btnDeleteProductItem, btnDetailProductItem;
-    public Product_InOfStockViewHolder(@NonNull View itemView) {
+    public Product_OutOfStockViewHolder(@NonNull View itemView) {
         super(itemView);
         tvIdProductItem = itemView.findViewById(R.id.tvIdProductItem);
         tvNameProductItem = itemView.findViewById(R.id.tvNameProductItem);

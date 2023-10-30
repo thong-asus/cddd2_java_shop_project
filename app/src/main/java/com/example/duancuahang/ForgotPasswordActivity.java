@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.duancuahang.Class.Validates;
 
+
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     EditText edtSoDienThoai, edtInputOTP;
