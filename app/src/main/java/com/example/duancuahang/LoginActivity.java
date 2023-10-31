@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               if (Validates.validPhone(edtSoDienThoai.getText().toString()) && Validates.validPassword(edtMatKhau.getText().toString())){
+               if (Validates.validPhone(edtSoDienThoai.getText().toString()) || Validates.validPassword(edtMatKhau.getText().toString())){
                    isLoading = true;
                    if (isLoading){
                        hideKeyboard();
@@ -140,6 +140,8 @@ public class LoginActivity extends AppCompatActivity {
                         edtSoDienThoai.selectAll();
                         edtSoDienThoai.requestFocus();
                         edtSoDienThoai.setError("Số điện thoại phải đủ 10 ký tự số và bắt đầu bằng số 0!");
+                    } else {
+                        edtMatKhau.requestFocus();
                     }
                 }
                 return false;
@@ -153,6 +155,8 @@ public class LoginActivity extends AppCompatActivity {
                         edtMatKhau.selectAll();
                         edtMatKhau.requestFocus();
                         edtMatKhau.setError("Mật khẩu không được bỏ trống!");
+                    } else {
+                        hideKeyboard();
                     }
                 }
                 return false;

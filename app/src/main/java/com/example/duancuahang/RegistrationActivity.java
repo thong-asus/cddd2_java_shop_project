@@ -84,7 +84,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     //uploadCCCD(edtSoDienThoai.getText().toString());
                     startActivity(intent);
-//                    finish();
+                    finish();
                 }
             }
         });

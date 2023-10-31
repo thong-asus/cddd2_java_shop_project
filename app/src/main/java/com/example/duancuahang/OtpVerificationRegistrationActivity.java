@@ -14,8 +14,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -57,6 +59,7 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
     ProgressBar progressInputOtp;
     Uri uriImageSelectionOnDeviceCCCDFront = null;
     Uri uriImageSelectionOnDeviceCCCDBack = null;
+    View vOtpVerificationRegistration;
 
     //////////////////////////////////BIẾN XỬ LÝ
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -90,28 +93,25 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
 
         btnXacMinhOTP.setOnClickListener(v -> {
             if(edtInputOTP.getText().toString().isEmpty() || !Validates.validOTP(edtInputOTP.getText().toString())){
-                ShowMessage.showMessage("OTP không được bỏ trống HOẶC OTP sai định dạng");
+                Toast.makeText(OtpVerificationRegistrationActivity.this, "OTP không được bỏ trống HOẶC OTP sai định dạng. Vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
             } else {
                 String enteredOTP = edtInputOTP.getText().toString();
-                System.out.println("Nhap otp: " + enteredOTP);
-                System.out.println("send otp: " + verificationCode);
                 PhoneAuthCredential phoneAuthCredential = null;
                 try {
                     phoneAuthCredential = PhoneAuthProvider.getCredential(codesms, enteredOTP);
                 }
                 catch (Exception e){
-                    System.out.println("Loi xác minh otp: " + e.getMessage());
+                    Toast.makeText(context, "Lỗi xác minh OTP" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 if(phoneAuthCredential != null){
                     registrationSuccessful(phoneAuthCredential);
                 }
-
             }
         });
         btnLayMaOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sentOTP(shopPhoneNumber,false);
+                sentOTP();
                 resendOTP();
             }
         });
@@ -128,6 +128,13 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
                 return false;
             }
         });
+        vOtpVerificationRegistration.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                hideKeyboard();
+                return false;
+            }
+        });
     }
 
 
@@ -140,7 +147,6 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
     }
 
     void uploadCCCDFront() {
-
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         String[] part = uriImageSelectionOnDeviceCCCDFront.getLastPathSegment().split("/");
         StorageReference imgRef = storageRef.child("imageShop/" + shopData.getShopPhoneNumber() + "/" + (part[part.length - 1]));
@@ -179,19 +185,22 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            System.out.println("Xác minh tài khoản thành công!");
+                            Toast.makeText(context, "Xác minh tài khoản thành công!", Toast.LENGTH_SHORT).show();
                             uploadCCCDFront();
+                            //////////////////////// CHUYỂN SANG MÀN HÌNH LOGIN ////////////////////////
+                            Intent intent = new Intent(context, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
                         } else {
-                            System.out.println("Xác minh tài khoản thất bại!!!");
+                            Toast.makeText(OtpVerificationRegistrationActivity.this, "Sai mã OTP. Vui lòng thử lại!!!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
 
-    void sentOTP(String shopPhoneNumber, boolean isResend){
-        System.out.println("lay ma otp");
-        setInProgress(true);
+    void sentOTP(){
+        //setInProgress(true);
 //        PhoneAuthOptions.Builder builder =
 //                PhoneAuthOptions.newBuilder(mAuth)
 //                        .setPhoneNumber("+84"+shopData.getShopPhoneNumber().substring(1))
@@ -238,14 +247,13 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
                     @Override
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                         verificationCode = phoneAuthCredential.getSmsCode();
-                        System.out.println("otp: " + phoneAuthCredential.getSmsCode());
                     }
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
                         System.out.println("loi: " + e.getMessage());
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle("Thông báo");
-                        builder.setMessage("Xảy ra lỗi trong quá trình gửi mã otp");
+                        builder.setMessage("Xảy ra lỗi trong quá trình gửi OTP!");
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -258,10 +266,8 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
                     @Override
                     public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                         super.onCodeSent(s, forceResendingToken);
-                        System.out.println("s: "+ s);
                         codesms = s;
                     }
-
                 })
                 .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
@@ -286,16 +292,25 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
             }
         },0,1000);
     }
-    void setInProgress(boolean inProgress){
-        if(inProgress){
-            progressInputOtp.setVisibility(View.VISIBLE);
-            btnXacMinhOTP.setVisibility(View.GONE);
-        } else {
-            progressInputOtp.setVisibility(View.GONE);
-            btnXacMinhOTP.setVisibility(View.VISIBLE);
+//    void setInProgress(boolean inProgress){
+//        if(inProgress){
+//            progressInputOtp.setVisibility(View.VISIBLE);
+//            btnXacMinhOTP.setVisibility(View.GONE);
+//        } else {
+//            progressInputOtp.setVisibility(View.GONE);
+//            btnXacMinhOTP.setVisibility(View.VISIBLE);
+//        }
+//    }
+
+    private void hideKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
     private void setControl() {
+        vOtpVerificationRegistration = findViewById(R.id.vOtpVerificationRegistration);
         edtInputOTP = findViewById(R.id.edtInputOTP);
         btnLayMaOTP = findViewById(R.id.btnLayMaOTP);
         btnXacMinhOTP = findViewById(R.id.btnXacMinhOTP);
