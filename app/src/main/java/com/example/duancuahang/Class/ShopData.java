@@ -226,6 +226,15 @@ public class ShopData implements Serializable {
                 '}';
     }
 
+    public ShopData(String shopPhoneNumber, String password) {
+        this.shopPhoneNumber = shopPhoneNumber;
+        this.password = password;
+    }
+
+    public ShopData(String shopPhoneNumber) {
+        this.shopPhoneNumber = shopPhoneNumber;
+    }
+
     @Override
     public String toString() {
         return "ShopData{" +
