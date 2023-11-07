@@ -8,10 +8,13 @@ public class OrderData implements Serializable {
     private String idProduct_Order;
     private String  idShop_Order;
     private String idShiper_Order;
-    private String statusOrder;
+    private int quanlity_Order;
+    private int statusOrder;
     private String dateOrder;
     private String deliveryAddress;
     private String numberPhone_Customer;
+    private int price_Order;
+    private String note_Order;
 
     public OrderData() {
         this.idOrder = null;
@@ -19,13 +22,16 @@ public class OrderData implements Serializable {
         this.idProduct_Order = null;
         this.idShop_Order = null;
         this.idShiper_Order = null;
-        this.statusOrder = null;
+        this.statusOrder = 0;
         this.dateOrder = null;
         this.deliveryAddress = null;
         this.numberPhone_Customer = null;
+        this.quanlity_Order = 0;
+        this.price_Order = 0;
+        this.note_Order = null;
     }
 
-    public OrderData(String idOrder, String idCustomer_Order, String idProduct_Order, String idShop_Order, String idShiper_Order, String statusOrder, String dateOrder, String deliveryAddress, String numberPhone_Customer) {
+    public OrderData(String idOrder, String idCustomer_Order, String idProduct_Order, String idShop_Order, String idShiper_Order, int statusOrder, String dateOrder, String deliveryAddress, String numberPhone_Customer, String note_Order, int quanlity, int price_order) {
         this.idOrder = idOrder;
         this.idCustomer_Order = idCustomer_Order;
         this.idProduct_Order = idProduct_Order;
@@ -35,21 +41,50 @@ public class OrderData implements Serializable {
         this.dateOrder = dateOrder;
         this.deliveryAddress = deliveryAddress;
         this.numberPhone_Customer = numberPhone_Customer;
+        this.quanlity_Order = quanlity;
+        this.price_Order = price_order;
+        this.note_Order =note_Order;
     }
 
     @Override
     public String toString() {
-        return "OrderData{" +
+        return "ItemOrder{" +
                 "idOrder='" + idOrder + '\'' +
                 ", idCustomer_Order='" + idCustomer_Order + '\'' +
                 ", idProduct_Order='" + idProduct_Order + '\'' +
                 ", idShop_Order='" + idShop_Order + '\'' +
                 ", idShiper_Order='" + idShiper_Order + '\'' +
+                ", quanlity_Order=" + quanlity_Order +
                 ", statusOrder='" + statusOrder + '\'' +
                 ", dateOrder='" + dateOrder + '\'' +
                 ", deliveryAddress='" + deliveryAddress + '\'' +
                 ", numberPhone_Customer='" + numberPhone_Customer + '\'' +
+                ", price_Order=" + price_Order +
+                ", note_Order='" + note_Order + '\'' +
                 '}';
+    }
+
+    public String getNote_Order() {
+        return note_Order;
+    }
+
+    public void setNote_Order(String note_Order) {
+        this.note_Order = note_Order;
+    }
+
+    public int getPrice_Order() {
+        return price_Order;
+    }
+
+    public void setPrice_Order(int price_Order) {
+        this.price_Order = price_Order;
+    }
+
+    public int getQuanlity_Order() {
+        return quanlity_Order;
+    }
+    public void setQuanlity_Order(int quanlity_Order) {
+        this.quanlity_Order = quanlity_Order;
     }
 
     public String getIdOrder() {
@@ -92,11 +127,11 @@ public class OrderData implements Serializable {
         this.idShiper_Order = idShiper_Order;
     }
 
-    public String getStatusOrder() {
+    public int getStatusOrder() {
         return statusOrder;
     }
 
-    public void setStatusOrder(String statusOrder) {
+    public void setStatusOrder(int  statusOrder) {
         this.statusOrder = statusOrder;
     }
 

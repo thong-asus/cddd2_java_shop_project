@@ -133,7 +133,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         return  true;
     }
     private void setIntiazation() {
-
         //Kích hoạt back button on toolbar
         setSupportActionBar(toolbar_ChangePassword);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

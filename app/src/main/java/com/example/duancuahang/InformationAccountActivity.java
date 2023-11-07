@@ -2,13 +2,16 @@ package com.example.duancuahang;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +31,7 @@ public class InformationAccountActivity extends AppCompatActivity {
     TextView tvChangePassword, tvShopOwner, tvShopPhoneNumber, tvShopName, tvShopEmail, tvShopAddress, tvTaxCode, tvLogOut;
     ImageView imgAvartar;
     private ShopData shopData = new ShopData();
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,7 @@ public class InformationAccountActivity extends AppCompatActivity {
         String jsonShop = sharedPreferences1.getString("informationShop","");
         Gson gson = new Gson();
         shopData = gson.fromJson(jsonShop, ShopData.class);
+        context = this;
         setControl();
         setIntiazation();
         setEvent();
@@ -43,8 +48,34 @@ public class InformationAccountActivity extends AppCompatActivity {
 
     private void setEvent() {
         //Sự kiện đăng xuất tài khoản
-        tvLogOut.setOnClickListener(v -> {
-
+        tvLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Thông báo");
+                builder.setMessage("Bạn có muốn đăng xuất tài khoản?");
+                builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove("informationShop");
+                        editor.apply();
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+                builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
         });
         tvChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override

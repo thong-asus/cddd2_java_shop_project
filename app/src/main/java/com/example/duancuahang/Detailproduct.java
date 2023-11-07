@@ -67,7 +67,7 @@ public class Detailproduct extends AppCompatActivity {
     private void setIniazation() {
         Intent intent = getIntent();
         productData = (ProductData) intent.getSerializableExtra("informationProduct_Detail");
-        System.out.println("Detaikl product: " + productData.toString());
+        System.out.println("Detail product: " + productData.toString());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

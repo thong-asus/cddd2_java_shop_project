@@ -1,5 +1,7 @@
 package com.example.duancuahang;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
@@ -26,6 +28,11 @@ import com.example.duancuahang.Class.Shop;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.Class.ShowMessage;
 import com.example.duancuahang.Class.Validates;
+import com.example.duancuahang.Fragment.OrderCancelledFragment;
+import com.example.duancuahang.Fragment.OrderDeliveredFragment;
+import com.example.duancuahang.Fragment.OrderDeliveringFragment;
+import com.example.duancuahang.Fragment.OrderWaitForConfirmFragment;
+import com.example.duancuahang.Fragment.OrderWaitForTakeGoodsFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,7 +58,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isLoading = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +66,18 @@ public class LoginActivity extends AppCompatActivity {
         setEvent();
         context = this;
         ShowMessage.context = this;
+
+        //Kiểm tra người dùng đã đăng nhập chưa
+        SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
+        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+
+//        if (isLoggedIn) {
+//            Intent intent = new Intent(LoginActivity.this, HomeShop.class);
+//            startActivity(intent);
+//            finish();
+//        } else {
+//            setContentView(R.layout.activity_login);
+//        }
     }
 
     private void setEvent() {
@@ -68,12 +86,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Kiểm tra thông tin đăng nhập có bị bỏ trống không
                 if (edtSoDienThoai.getText().toString().isEmpty() || edtMatKhau.getText().toString().isEmpty()) {
-                    ShowMessage.showMessage(LoginActivity.this,"Thông tin đăng nhập không được bỏ trống. Vui lòng kiểm tra lại!!!");
+                    ShowMessage.showMessage(context,"Thông tin đăng nhập không được bỏ trống. Vui lòng kiểm tra lại!!!");
                     return;
                 }
 
                 if (Validates.validPhone(edtSoDienThoai.getText().toString()) || Validates.validPassword(edtMatKhau.getText().toString())) {
-                    // isLoading = true;
+                    isLoading = true;
                     if (isLoading) {
                         hideKeyboard();
                         progressbar_Loading_ScreenLogin.setVisibility(View.VISIBLE);
@@ -88,9 +106,9 @@ public class LoginActivity extends AppCompatActivity {
                                 ShopData shopData = snapshot.getValue(ShopData.class);
                                 if(shopData.getPassword().equals(edtMatKhau.getText().toString())){
                                     if (shopData.getStatus() == 0) {
-                                        ShowMessage.showMessage(LoginActivity.this,"Tài khoản đang chờ ADMIN duyệt đăng ký. Vui lòng chờ thông báo!");
+                                        ShowMessage.showMessage(context,"Tài khoản đang chờ ADMIN duyệt đăng ký. Vui lòng chờ thông báo!");
                                     } else if (shopData.getStatus() == 2) {
-                                        ShowMessage.showMessage(LoginActivity.this,"Tài khoản đã bị khóa.\nLiên hệ ADMIN để biết thêm chi tiết!!!\nCall ADMIN: 0867861024");
+                                        ShowMessage.showMessage(context,"Tài khoản đã bị khóa.\nLiên hệ ADMIN để biết thêm chi tiết!!!\nCall ADMIN: 0867861024");
                                     } else if (shopData.getStatus() == 1) {
                                         // Đăng nhập thành công
                                         // Lưu thông tin của người dùng vào SharedPreferences
@@ -99,56 +117,30 @@ public class LoginActivity extends AppCompatActivity {
                                         String json = gson.toJson(shopData);
                                         SharedPreferences.Editor editor = sharedPreferences1.edit();
                                         editor.putString("informationShop", json);
+                                        editor.putBoolean("isLoggedIn", true);
+
+                                        ///////////////////////LƯU THÔNG TIN ĐĂNG NHẬP///////////////////////
+                                        editor.putString("shopPhoneNumber",edtSoDienThoai.getText().toString());
+                                        editor.putString("password",edtMatKhau.getText().toString());
+                                        editor.putBoolean("saveInfo",chkLuuTaiKhoan.isChecked());
+                                        editor.commit();
+
+
                                         editor.apply();
                                         Intent intent = new Intent(context, HomeShop.class);
                                         startActivity(intent);
                                         finish();
                                     }
                                 } else {
-                                    ShowMessage.showMessage(LoginActivity.this,"Sai mật khẩu. Vui lòng thử lại!!!");
+                                    ShowMessage.showMessage(context,"Sai mật khẩu. Vui lòng thử lại!!!");
                                 }
                             } else {
-                                ShowMessage.showMessage(LoginActivity.this,"Tài khoản không tồn tại!!!");
+                                ShowMessage.showMessage(context,"Tài khoản không tồn tại!!!");
                             }
-//                            //boolean found = false;
-//                            for (DataSnapshot shopItem : snapshot.getChildren()) {
-//                                String shopPhoneNumber = shopItem.child("shopPhoneNumber").getValue(String.class);
-//                                if (shopPhoneNumber.equals(edtSoDienThoai.getText().toString())) {
-//                                    found = true;
-//                                    if (shopItem.child("password").getValue(String.class).equals(edtMatKhau.getText().toString())) {
-//                                        if (Integer.parseInt(shopItem.child("status").getValue().toString()) == 0) {
-//                                            ShowMessage.showMessage("Tài khoản đang chờ ADMIN duyệt đăng ký. Vui lòng chờ thông báo!");
-//                                            return;
-//                                        } else if (Integer.parseInt(shopItem.child("status").getValue().toString()) == 2) {
-//                                            ShowMessage.showMessage("Tài khoản đã bị khóa.\nLiên hệ ADMIN để biết thêm chi tiết!!!\nCall ADMIN: 0867861024");
-//                                            return;
-//                                        } else if (Integer.parseInt(shopItem.child("status").getValue().toString()) == 1) {
-//                                            // Đăng nhập thành công
-//                                            ShopData shopData = shopItem.getValue(ShopData.class);
-//                                            // Lưu thông tin của người dùng vào SharedPreferences
-//                                            SharedPreferences sharedPreferences1 = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
-//                                            Gson gson = new Gson();
-//                                            String json = gson.toJson(shopData);
-//                                            SharedPreferences.Editor editor = sharedPreferences1.edit();
-//                                            editor.putString("informationShop", json);
-//                                            editor.apply();
-//                                            Intent intent = new Intent(context, HomeShop.class);
-//                                            startActivity(intent);
-//                                            finish();
-//                                            return;
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                            if (!found) {
-//                                ShowMessage.showMessage("Tài khoản không tồn tại!!!");
-//                            } else {
-//                                ShowMessage.showMessage("Sai mật khẩu. Vui lòng thử lại!!!");
-//                            }
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            ShowMessage.showMessage(LoginActivity.this,"Lỗi không truy vấn được dữ liệu: " + error);
+                            ShowMessage.showMessage(context,"Lỗi không truy vấn được dữ liệu: " + error);
                         }
                     });
                 }
@@ -211,7 +203,21 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-//    câm không cho người dùng thao tác
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", MODE_PRIVATE);
+        String shopPhoneNumber = sharedPreferences.getString("shopPhoneNumber","");
+        String password = sharedPreferences.getString("password","");
+        boolean save = sharedPreferences.getBoolean("saveInfo",false);
+        if(save == true){
+            edtSoDienThoai.setText(shopPhoneNumber);
+            edtMatKhau.setText(password);
+            chkLuuTaiKhoan.setChecked(save);
+        }
+    }
+
+    //    câm không cho người dùng thao tác
     private void setEnbaleComponentScreen(){
         edtMatKhau.setEnabled(false);
         edtSoDienThoai.setEnabled(false);
@@ -236,5 +242,6 @@ public class LoginActivity extends AppCompatActivity {
         tvDangKyTaiKhoan = findViewById(R.id.tvDangKyTaiKhoan);
         nestedScrollView_ScreenLogin = findViewById(R.id.nestedScrollView_ScreenLogin);
         progressbar_Loading_ScreenLogin = findViewById(R.id.progressbar_Loading_ScreenLogin);
+
     }
 }

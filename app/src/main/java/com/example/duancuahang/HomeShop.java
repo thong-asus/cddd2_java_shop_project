@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,12 +14,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duancuahang.Class.ShopData;
+import com.example.duancuahang.Fragment.OrderWaitForTakeGoodsFragment;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -26,6 +29,7 @@ public class HomeShop extends AppCompatActivity {
 
     Toolbar toolbar;
     LinearLayout linearLayout_SanPhamCuaToi_ScreenHome;
+    View frChoLayHang, frHuyDonHang, frDanhGia;
     TextView tvNameShop_ScreenHome, tvBillHistory;
     ImageView ivAvataShop_ScreenHome;
     Context context;
@@ -34,28 +38,47 @@ public class HomeShop extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_shop);
-        SharedPreferences sharedPreferences1 = getSharedPreferences("InformationShop",Context.MODE_PRIVATE);
-        String jsonShop = sharedPreferences1.getString("informationShop","");
-        Gson gson = new Gson();
-        shopData = gson.fromJson(jsonShop, ShopData.class);
-        System.out.println("Shopdata Share: " + shopData.toString());
+
+
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
+        boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
+        if (sharedPreferences.contains("informationShop")) {
+            String jsonShop = sharedPreferences.getString("informationShop", "");
+            Gson gson = new Gson();
+            shopData = gson.fromJson(jsonShop, ShopData.class);
+        } else {
+            // Dữ liệu không tồn tại, có thể là người dùng đã đăng xuất hoặc lần đầu sử dụng ứng dụng
+        }
+
+
+//        if (isLoggedIn) {
+//            setContentView(R.layout.activity_home_shop);
+//        } else {
+//            Intent intent = new Intent(HomeShop.this, LoginActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//        System.out.println("Shopdata Share: " + shopData.toString());
+
+
         context = this;
         setControl();
-        setIntiazation();
+        setInitialization();
         setEvent();
         setSupportActionBar(toolbar);
 
     }
 
-    private void setIntiazation() {
-        tvNameShop_ScreenHome.setText(shopData.getShopName());
+    private void setInitialization() {
+            tvNameShop_ScreenHome.setText(shopData.getShopName());
         if (shopData.getUrlImgShopAvatar().isEmpty()){
             ivAvataShop_ScreenHome.setImageResource(R.drawable.iconshop);
         }
         else {
             Picasso.get().load(shopData.getUrlImgShopAvatar()).into(ivAvataShop_ScreenHome);
         }
-
     }
 
     //set menu
@@ -66,8 +89,6 @@ public class HomeShop extends AppCompatActivity {
     }
 
     //xử lý sự kiện khi chọn menu
-
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home){
@@ -109,6 +130,7 @@ public class HomeShop extends AppCompatActivity {
         tvNameShop_ScreenHome = findViewById(R.id.tvNameShop_ScreenHome);
         tvBillHistory = findViewById(R.id.tvBillHistory);
         ivAvataShop_ScreenHome = findViewById(R.id.ivAvataShop_ScreenHome);
+
     }
 
 //    Thêm item và ActionBar

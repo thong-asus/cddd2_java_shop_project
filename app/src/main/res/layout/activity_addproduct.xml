@@ -82,7 +82,8 @@
                            android:background="@drawable/bg_btntieptuc_clicked"
                            android:layout_width="wrap_content"
                            android:layout_height="35dp"
-                           android:text="Thêm"/>
+                           android:text="Thêm"
+                           android:textAllCaps="false"/>
 
                    </LinearLayout>
                    <androidx.recyclerview.widget.RecyclerView
@@ -246,6 +247,7 @@
                        android:textStyle="bold"
                        android:background="@drawable/bg_btntieptuc_clicked"
                        android:textColor="#000"
+                       android:textAllCaps="false"
                        />
                </LinearLayout>
            </LinearLayout>

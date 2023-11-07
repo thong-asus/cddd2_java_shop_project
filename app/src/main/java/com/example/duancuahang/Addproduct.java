@@ -1,5 +1,7 @@
 package com.example.duancuahang;
 
+import static android.app.PendingIntent.getActivity;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -113,6 +115,9 @@ public class Addproduct extends AppCompatActivity {
 
     //    hàm khởi tạo
     private void setIntiazation() {
+        //Kích hoạt back button on toolbar
+        setSupportActionBar(toolBar_AddProduct);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        ---------------- khai báo Adapter cho spinner danh mục sản phẩm
 //        Category thoong báo yêu cầu người dùng chọn
         Category category = new Category("null", "null", "Vui lòng chọn danh mục");
@@ -126,9 +131,7 @@ public class Addproduct extends AppCompatActivity {
         manufaceSpinerAdapter = new ManufacSpinerAdapter(arrManuface, this);
         spManuface_AddProduct.setAdapter(manufaceSpinerAdapter);
 
-//        -------------------------- kích hoạt button back
-        setSupportActionBar(toolBar_AddProduct);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         ImageProduct imageProduct = new ImageProduct();
         imgaProductArrayList.add(imageProduct);
@@ -396,7 +399,7 @@ public class Addproduct extends AppCompatActivity {
         btnAddProduct.setEnabled(false);
     }
 
-//    bắt sự kiện nút back trong toolbar
+    //    bắt sự kiện nút back trong toolbar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home){
