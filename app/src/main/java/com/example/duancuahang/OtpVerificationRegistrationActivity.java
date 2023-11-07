@@ -300,7 +300,7 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
                 shopData.setUrlImgCCCDBack(uri.toString());
                 registration();
             }).addOnFailureListener(e -> {
-                ShowMessage.showMessage("Lỗi khi tải ảnh lên: "+ e);
+                ShowMessage.showMessage(OtpVerificationRegistrationActivity.this,"Lỗi khi tải ảnh lên: "+ e);
             });
         });
     }

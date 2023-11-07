@@ -164,10 +164,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                     }
                                 });
                             } else {
-                                Toast.makeText(context, "Sai mã OTP. Vui lòng thử lại!!!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ForgotPasswordActivity.this, "Sai mã OTP. Vui lòng thử lại!!!", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e){
-                            ShowMessage.showMessage("Lỗi: " +e);
+                            ShowMessage.showMessage(ForgotPasswordActivity.this,"Lỗi: " +e);
                         }
                     }
                 });

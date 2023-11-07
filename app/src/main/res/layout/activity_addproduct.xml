@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#F6F5F5"
     tools:context=".Addproduct">
@@ -10,7 +11,8 @@
         android:id="@+id/toolBar_AddProduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#DFD8D8"
+        android:background="#fff"
+        app:title="Thêm sản phẩm"
         />
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView_ScreenAddProduct"
@@ -77,8 +79,9 @@
                            />
                        <Button
                            android:id="@+id/btnAddImageProduct_Addproduct"
+                           android:background="@drawable/bg_btntieptuc_clicked"
                            android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
+                           android:layout_height="35dp"
                            android:text="Thêm"/>
 
                    </LinearLayout>
@@ -235,14 +238,14 @@
                    </LinearLayout>
                    <Button
                        android:id="@+id/btnAddProduct"
-                       android:layout_width="wrap_content"
+                       android:layout_width="150dp"
                        android:layout_height="wrap_content"
                        android:layout_gravity="center"
                        android:layout_marginBottom="20dp"
                        android:text="Thêm sản phẩm"
                        android:textStyle="bold"
-                       android:background="@drawable/event_btn_addproduct"
-                       android:textColor="#FFFFFF"
+                       android:background="@drawable/bg_btntieptuc_clicked"
+                       android:textColor="#000"
                        />
                </LinearLayout>
            </LinearLayout>

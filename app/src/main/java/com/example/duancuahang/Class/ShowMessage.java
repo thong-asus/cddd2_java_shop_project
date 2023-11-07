@@ -8,7 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 public class ShowMessage {
     public static Context context;
     //Hàm hiển thị thông báo
-    public static void showMessage(String message){
+    public static void showMessage(Context context, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Thông báo");
         builder.setMessage(message);

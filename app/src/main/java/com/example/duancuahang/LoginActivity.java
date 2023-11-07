@@ -26,7 +26,6 @@ import com.example.duancuahang.Class.Shop;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.Class.ShowMessage;
 import com.example.duancuahang.Class.Validates;
-import com.example.duancuahang.FireBaseAuthenticator.FireBaseAuthenticator;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -69,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Kiểm tra thông tin đăng nhập có bị bỏ trống không
                 if (edtSoDienThoai.getText().toString().isEmpty() || edtMatKhau.getText().toString().isEmpty()) {
-                    ShowMessage.showMessage("Thông tin đăng nhập không được bỏ trống. Vui lòng kiểm tra lại!!!");
+                    ShowMessage.showMessage(LoginActivity.this,"Thông tin đăng nhập không được bỏ trống. Vui lòng kiểm tra lại!!!");
                     return;
                 }
 
@@ -89,9 +88,9 @@ public class LoginActivity extends AppCompatActivity {
                                 ShopData shopData = snapshot.getValue(ShopData.class);
                                 if(shopData.getPassword().equals(edtMatKhau.getText().toString())){
                                     if (shopData.getStatus() == 0) {
-                                        ShowMessage.showMessage("Tài khoản đang chờ ADMIN duyệt đăng ký. Vui lòng chờ thông báo!");
+                                        ShowMessage.showMessage(LoginActivity.this,"Tài khoản đang chờ ADMIN duyệt đăng ký. Vui lòng chờ thông báo!");
                                     } else if (shopData.getStatus() == 2) {
-                                        ShowMessage.showMessage("Tài khoản đã bị khóa.\nLiên hệ ADMIN để biết thêm chi tiết!!!\nCall ADMIN: 0867861024");
+                                        ShowMessage.showMessage(LoginActivity.this,"Tài khoản đã bị khóa.\nLiên hệ ADMIN để biết thêm chi tiết!!!\nCall ADMIN: 0867861024");
                                     } else if (shopData.getStatus() == 1) {
                                         // Đăng nhập thành công
                                         // Lưu thông tin của người dùng vào SharedPreferences
@@ -106,10 +105,10 @@ public class LoginActivity extends AppCompatActivity {
                                         finish();
                                     }
                                 } else {
-                                    ShowMessage.showMessage("Sai mật khẩu. Vui lòng thử lại!!!");
+                                    ShowMessage.showMessage(LoginActivity.this,"Sai mật khẩu. Vui lòng thử lại!!!");
                                 }
                             } else {
-                                ShowMessage.showMessage("Tài khoản không tồn tại!!!");
+                                ShowMessage.showMessage(LoginActivity.this,"Tài khoản không tồn tại!!!");
                             }
 //                            //boolean found = false;
 //                            for (DataSnapshot shopItem : snapshot.getChildren()) {
@@ -149,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            ShowMessage.showMessage("Lỗi không truy vấn được dữ liệu: " + error);
+                            ShowMessage.showMessage(LoginActivity.this,"Lỗi không truy vấn được dữ liệu: " + error);
                         }
                     });
                 }

@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.duancuahang.Class.Category;
 import com.example.duancuahang.Class.Image;
@@ -181,8 +183,15 @@ public class Detailproduct extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
+        } else if (item.getItemId() == R.id.action_editinfor){
+            Toast.makeText(this, "Chuyển sang màn hình Edit Product", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_editinfor,menu);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     //    hàm bắt sự kiện

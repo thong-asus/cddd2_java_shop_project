@@ -25,7 +25,7 @@ import com.squareup.picasso.Picasso;
 public class InformationAccountActivity extends AppCompatActivity {
 
     Toolbar toolBar_Information;
-    TextView tvChangePassword, tvShopOwner, tvShopPhoneNumber, tvShopName, tvShopEmail, tvShopAddress, tvLogOut;
+    TextView tvChangePassword, tvShopOwner, tvShopPhoneNumber, tvShopName, tvShopEmail, tvShopAddress, tvTaxCode, tvLogOut;
     ImageView imgAvartar;
     private ShopData shopData = new ShopData();
     @Override
@@ -63,6 +63,7 @@ public class InformationAccountActivity extends AppCompatActivity {
         tvShopName = findViewById(R.id.tvShopName);
         tvShopEmail = findViewById(R.id.tvShopEmail);
         tvShopAddress = findViewById(R.id.tvShopAddress);
+        tvTaxCode = findViewById(R.id.tvTaxCode);
         imgAvartar = findViewById(R.id.imgAvartar);
         tvLogOut = findViewById(R.id.tvLogOut);
     }
@@ -73,6 +74,7 @@ public class InformationAccountActivity extends AppCompatActivity {
         tvShopName.setText(shopData.getShopName());
         tvShopEmail.setText(shopData.getShopEmail());
         tvShopAddress.setText(shopData.getShopAddress());
+        tvTaxCode.setText(shopData.getTaxCode());
 
         if (shopData.getUrlImgShopAvatar().isEmpty()){
             imgAvartar.setImageResource(R.drawable.iconshop);

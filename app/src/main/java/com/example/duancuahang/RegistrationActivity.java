@@ -272,18 +272,18 @@ public class RegistrationActivity extends AppCompatActivity {
 
     }
 
-    public static boolean checkInfoRegistration() {
+    public boolean checkInfoRegistration() {
         if (edtSoDienThoai.getText().toString().isEmpty() || edtTenNguoiDKBanHang.getText().toString().isEmpty() || edtTenCuaHang.getText().toString().isEmpty() ||
                 edtDiaChiCuaHang.getText().toString().isEmpty() || edtEmailCuaHang.getText().toString().isEmpty() || edtMaSoThue.getText().toString().isEmpty() ||
                 uriImageSelectionOnDeviceCCCDFront == null || uriImageSelectionOnDeviceCCCDBack == null || !Validates.validPhone(edtSoDienThoai.getText().toString()) ||
                 !Validates.validFullname(edtTenNguoiDKBanHang.getText().toString()) || !Validates.validShopName(edtTenCuaHang.getText().toString()) ||
                 !Validates.validShopAddress(edtDiaChiCuaHang.getText().toString()) || !Validates.validEmail(edtEmailCuaHang.getText().toString()) ||
                 !Validates.validMaSoThue(edtMaSoThue.getText().toString())) {
-            ShowMessage.showMessage("Không được bỏ trống bất kỳ thông tin đăng ký HOẶC Thông tin bạn nhập không đúng định dạng. Vui lòng thử lại!!!");
+            ShowMessage.showMessage(RegistrationActivity.this,"Không được bỏ trống bất kỳ thông tin đăng ký HOẶC Thông tin bạn nhập không đúng định dạng. Vui lòng thử lại!!!");
             return false;
         }
         if (!chkDongYDieuKhoan.isChecked()) {
-            ShowMessage.showMessage("Bạn cần phải đồng ý với điều khoản dịch vụ của chúng tôi!");
+            ShowMessage.showMessage(RegistrationActivity.this,"Bạn cần phải đồng ý với điều khoản dịch vụ của chúng tôi!");
             return false;
         }
         return true;
