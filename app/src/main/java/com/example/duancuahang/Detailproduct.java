@@ -3,7 +3,10 @@ package com.example.duancuahang;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -11,8 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.duancuahang.Class.Category;
+import com.example.duancuahang.Class.Image;
+import com.example.duancuahang.Class.ImageProduct;
 import com.example.duancuahang.Class.Manuface;
 import com.example.duancuahang.Class.ProductData;
+import com.example.duancuahang.RecyclerView.ListImageProduct_Adapter;
+import com.example.duancuahang.RecyclerView.UriImageFirebase_ViewHolder;
+import com.example.duancuahang.RecyclerView.UrlImageFirebase_Adapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 public class Detailproduct extends AppCompatActivity {
     Toolbar toolbar;
@@ -35,10 +45,16 @@ public class Detailproduct extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
 
+    RecyclerView rcvImageProduct_DetailProduct;
+    ArrayList<Image> arrImage = new ArrayList<>();
+    UrlImageFirebase_Adapter urlImageFirebaseAdapter;
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailproduct);
+        context = this;
         setControl();
         setIniazation();
         pushInformationProductToBackground();
@@ -52,6 +68,10 @@ public class Detailproduct extends AppCompatActivity {
         System.out.println("Detaikl product: " + productData.toString());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        urlImageFirebaseAdapter = new UrlImageFirebase_Adapter(arrImage,context);
+        rcvImageProduct_DetailProduct.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        rcvImageProduct_DetailProduct.setAdapter(urlImageFirebaseAdapter);
     }
 
     //    hàm ánh xạ
@@ -64,14 +84,39 @@ public class Detailproduct extends AppCompatActivity {
         tvDescription_DetailProduct = findViewById(R.id.tvDescription_DetailProduct);
         tvPriveProduct_DetailProdcut = findViewById(R.id.tvPriveProduct_DetailProdcut);
         tvQuanlityProduct_DetailProduct = findViewById(R.id.tvQuanlityProduct_DetailProduct);
+        rcvImageProduct_DetailProduct = findViewById(R.id.rcvImageProduct_DetailProduct);
     }
 
 //ham đưa giá trị lên giao diện
     private void pushInformationProductToBackground(){
         setInformationProduct();
         setCategory(productData.getKeyCategoryProduct());
-        setImageProduct(productData.getUrlImageProduct());
+//        setImageProduct(productData.getUrlImageProduct());
         setManuface(productData.getKeyManufaceProduct());
+        setImageProduct();
+    }
+
+    private void setImageProduct(){
+        databaseReference = firebaseDatabase.getReference("ImageProducts");
+        Query query = databaseReference.orderByChild("idProduct").equalTo(productData.getIdProduct());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for (DataSnapshot imageItem : snapshot.getChildren()){
+                        Image image = imageItem.getValue(Image.class);
+                        arrImage.add(image);
+                    }
+                    urlImageFirebaseAdapter.notifyDataSetChanged();
+                    Picasso.get().load(arrImage.get(0).getUrlImage()).into(ivImageProduct_DetailProduct);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     //    hàm đưa thông tin sản phẩm lên textView
@@ -142,6 +187,12 @@ public class Detailproduct extends AppCompatActivity {
 
     //    hàm bắt sự kiện
     private void setEvent() {
-
+        urlImageFirebaseAdapter.setOnclickListener(new UrlImageFirebase_Adapter.OnclickListener() {
+            @Override
+            public void onItemClick(UriImageFirebase_ViewHolder listImageProductViewHolder, int position) {
+                Image image = arrImage.get(position);
+                Picasso.get().load(image.getUrlImage()).into(ivImageProduct_DetailProduct);
+            }
+        });
     }
 }

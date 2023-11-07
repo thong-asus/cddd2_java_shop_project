@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginTop="5dp"
+    android:gravity="center"
+    >
+    <ImageView
+        android:id="@+id/img_item_order"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/product"
+        android:layout_marginHorizontal="5dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/idOrderItem_CustomerOrderlisi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mã đơn hàng"
+            android:textStyle="bold"
+            android:textSize="19dp"
+            android:textColor="#000"
+            android:maxLines="1"
+            android:ellipsize="end"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="6dp"
+            >
+            <TextView
+                android:id="@+id/productNameItem_CustomerOrderList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tên đơn hàng"
+                />
+            <TextView
+                android:id="@+id/userNameItem_CustomerOrderList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tên người đặt hàng"
+                />
+            <TextView
+                android:id="@+id/numberphoneUserItem_CustomerOrderList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Số điện thoại"
+                />
+            <TextView
+                android:id="@+id/AddressItem_CustomerOrderList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Địa chỉ"
+                />
+            <TextView
+                android:id="@+id/dateItem_CustomerOrderList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="12/12/2021"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

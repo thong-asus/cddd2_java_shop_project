@@ -37,6 +37,7 @@
             >
             <!--            Image product-->
             <androidx.cardview.widget.CardView
+                android:layout_marginBottom="10dp"
                 android:layout_width="240dp"
                 android:layout_height="310dp"
                 android:layout_gravity="center"
@@ -51,6 +52,16 @@
                     android:scaleType="centerInside"
                     android:src="@drawable/icondowload" />
             </androidx.cardview.widget.CardView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvImageProduct_DetailProduct"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/bg_container_imageproduct"
+                android:paddingVertical="5dp"
+                android:paddingHorizontal="10dp"
+                />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

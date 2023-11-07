@@ -38,7 +38,7 @@ import com.google.gson.Gson;
 public class LoginActivity extends AppCompatActivity {
 
     //Biến giao diện
-    EditText edtSoDienThoai,edtMatKhau;
+    EditText edtSoDienThoai, edtMatKhau;
     CheckBox chkLuuTaiKhoan;
     Button btnDangNhap;
     TextView tvQuenMatKhau, tvDangKyTaiKhoan;
@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar progressbar_Loading_ScreenLogin;
 
     private boolean isLoading = false;
+    ShopData shopData = new ShopData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,53 +68,54 @@ public class LoginActivity extends AppCompatActivity {
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               if (Validates.validPhone(edtSoDienThoai.getText().toString()) && Validates.validPassword(edtMatKhau.getText().toString())){
-                   isLoading = true;
-                   if (isLoading){
-                       hideKeyboard();
-                       progressbar_Loading_ScreenLogin.setVisibility(View.VISIBLE);
-                   }
+                if (Validates.validPhone(edtSoDienThoai.getText().toString()) && Validates.validPassword(edtMatKhau.getText().toString())) {
+                    isLoading = true;
+                    if (isLoading) {
+                        hideKeyboard();
+                        progressbar_Loading_ScreenLogin.setVisibility(View.VISIBLE);
+                    }
 //                kiểm tra xem user có tồn tại không
-                   databaseReference = firebaseDatabase.getReference("Shop");
-                   Query query = databaseReference.child(edtSoDienThoai.getText().toString()).getParent();
-                   query.addListenerForSingleValueEvent(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                           if (snapshot.exists()){
-                               for (DataSnapshot shopItem : snapshot.getChildren()){
-                                   if (shopItem.child("password").getValue().toString().equals(edtMatKhau.getText().toString())){
-                                       ShopData shopData = shopItem.getValue(ShopData.class);
-                                       SharedPreferences sharedPreferences1 = getSharedPreferences("InformationShop",Context.MODE_PRIVATE);
-                                       Gson gson  = new Gson();
-                                       String json = gson.toJson(shopData);
-                                       SharedPreferences.Editor editor = sharedPreferences1.edit();
-                                       editor.putString("informationShop",json);
-                                       editor.apply();
-                                       Intent intent =  new Intent(context, HomeShop.class);
-                                       startActivity(intent);
-                                       finish();
-                                   }
-                                   else {
-                                       ShowMessage.showMessage("Đăng nhập không thành công. Vui lòng kiểm tra lại số điện thoại và mật khẩu");
-                                       edtSoDienThoai.setText("");
-                                       edtMatKhau.setText("");
-                                   }
+                    databaseReference = firebaseDatabase.getReference("Shop");
+                    Query query = databaseReference.child(edtSoDienThoai.getText().toString()).getParent();
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                for (DataSnapshot shopItem : snapshot.getChildren()) {
+                                    if (shopItem.child("password").getValue().toString().equals(edtMatKhau.getText().toString())) {
+                                         shopData = shopItem.getValue(ShopData.class);
+                                        SharedPreferences sharedPreferences1 = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
+                                        Gson gson = new Gson();
+                                        String json = gson.toJson(shopData);
+                                        SharedPreferences.Editor editor = sharedPreferences1.edit();
+                                        editor.putString("informationShop", json);
+                                        editor.apply();
+                                        Intent intent = new Intent(context, HomeShop.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+
+                                }
+                               if (shopData.getIdShop() == null){
+                                   progressbar_Loading_ScreenLogin.setVisibility(View.GONE);
+                                   ShowMessage.showMessage("Đăng nhập không thành công. Vui lòng kiểm tra lại số điện thoại và mật khẩu");
+                                   edtSoDienThoai.setText("");
+                                   edtMatKhau.setText("");
                                }
-                           }
-                           else {
-                               ShowMessage.showMessage("Tài khoản không tồn tại");
-                           }
-                       }
 
-                       @Override
-                       public void onCancelled(@NonNull DatabaseError error) {
+                            } else {
+                                ShowMessage.showMessage("Tài khoản không tồn tại");
+                            }
+                        }
 
-                       }
-                   });
-               }
-               else {
-                   ShowMessage.showMessage("Vui lòng kiểm tra lại thông tin đăng nhập");
-               }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                } else {
+                    ShowMessage.showMessage("Vui lòng kiểm tra lại thông tin đăng nhập");
+                }
             }
         });
 
@@ -169,8 +171,8 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-//    câm không cho người dùng thao tác
-    private void setEnbaleComponentScreen(){
+    //    câm không cho người dùng thao tác
+    private void setEnbaleComponentScreen() {
         edtMatKhau.setEnabled(false);
         edtSoDienThoai.setEnabled(false);
         btnDangNhap.setEnabled(false);
@@ -213,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
                                 // Kiểm tra mật khẩu
                                 if (storedPassword.equals(password)) {
                                     // Đăng nhập thành công, chuyển sang màn hình HomeShop
-                                    Intent intent  = new Intent(context, HomeShop.class);
+                                    Intent intent = new Intent(context, HomeShop.class);
                                     context.startActivity(intent);
                                     return;
                                 } else {
@@ -224,7 +226,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                     // Không tìm thấy tài khoản
-                    if(!found){
+                    if (!found) {
                         ShowMessage.showMessage("Tài khoản không tồn tại!!!");
                     }
                 }
@@ -236,6 +238,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     private void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -243,6 +246,7 @@ public class LoginActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
     private void setControl() {
         vLoginScreen = findViewById(R.id.vLoginScreen);
         edtSoDienThoai = findViewById(R.id.edtSoDienThoai);

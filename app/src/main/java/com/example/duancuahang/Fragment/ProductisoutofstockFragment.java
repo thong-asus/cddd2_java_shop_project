@@ -69,23 +69,25 @@ public class ProductisoutofstockFragment extends Fragment {
     }
 
     private void pullProductQuanlityIs_0(){
+        System.out.println("id shop: " + shopData.getIdShop());
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Product");
-        Query query = databaseReference.orderByChild("idUser_Product").equalTo(shopData.getIdShop());
+        Query query =  databaseReference.orderByChild("idUserProduct").equalTo(shopData.getIdShop());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrProducts.clear();
-                if (snapshot.exists()){
+                if(snapshot.exists()){
                     for (DataSnapshot productSnapshot : snapshot.getChildren()){
                         ProductData productData = productSnapshot.getValue(ProductData.class);
-                       if(productData.getQuanlityProduct() < 1){
-                           arrProducts.add(productData);
-                       }
+                        if (productData.getQuanlityProduct() <= 0){
+                            arrProducts.add(productData);
+                        }
                     }
                 }
                 else {
-                    if (arrProducts.size() <=0){
+
+                    if (arrProducts.size() <= 0){
                         tvNoProduct_OutOfStock.setVisibility(View.VISIBLE);
                         rcvProductisoutstock_ScreenProductList.setVisibility(View.GONE);
                     }
@@ -95,10 +97,12 @@ public class ProductisoutofstockFragment extends Fragment {
                     }
                 }
                 productOutOfStockAdater.notifyDataSetChanged();
+
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                System.out.println("loi lay san pham");
             }
         });
     }

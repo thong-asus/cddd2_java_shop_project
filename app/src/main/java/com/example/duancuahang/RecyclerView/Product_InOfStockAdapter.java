@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duancuahang.Class.Category;
+import com.example.duancuahang.Class.Image;
 import com.example.duancuahang.Class.Manuface;
 import com.example.duancuahang.Class.ProductData;
 import com.example.duancuahang.Detailproduct;
@@ -143,12 +144,30 @@ public class Product_InOfStockAdapter extends RecyclerView.Adapter<Product_InOfS
 
 //    hàm tải lại giao diện product
     private void setInformationProduct_Item(Product_InOfStockViewHolder holder, ProductData productData){
+        ArrayList<Image> arrImage = new ArrayList<>();
         holder.tvIdProductItem.setText(productData.getIdProduct());
         holder.tvNameProductItem.setText(productData.getNameProduct());
         holder.tvPriceProduct.setText("Giá: "+productData.getPriceProduct() + "VND");
         holder.tvQuanlityProduct.setText("Số lượng: "+productData.getQuanlityProduct());
-        Picasso.get().load(productData.getUrlImageProduct()).placeholder(R.drawable.icondowload).into(holder.imgProductItem);
+        databaseReference = firebaseDatabase.getReference("ImageProducts");
+        Query query = databaseReference.orderByChild("idProduct").equalTo(productData.getIdProduct());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for (DataSnapshot imageItem : snapshot.getChildren()){
+                       Image image = imageItem.getValue(Image.class);
+                        Picasso.get().load(image.getUrlImage()).placeholder(R.drawable.icondowload).into(holder.imgProductItem);
+                        return;
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
 //    hàm xóa sản phẩm dựa vào id product

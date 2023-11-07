@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duancuahang.Class.Category;
+import com.example.duancuahang.Class.Image;
 import com.example.duancuahang.Class.Manuface;
 import com.example.duancuahang.Class.ProductData;
 import com.example.duancuahang.Detailproduct;
@@ -109,6 +110,7 @@ public class Product_OutOfStockAdater extends RecyclerView.Adapter<Product_OutOf
     private void deleteProduct(String idProduct,Product_OutOfStockViewHolder holder){
         databaseReference = firebaseDatabase.getReference("Product");
         databaseReference.child(idProduct).removeValue();
+        this.notifyDataSetChanged();
     }
 
     //    hàm lấy manuface theo key manuface của product
@@ -142,7 +144,25 @@ public class Product_OutOfStockAdater extends RecyclerView.Adapter<Product_OutOf
         holder.tvManufaceProduct.setText("Hảng: " + manuface.getNameManuface());
         holder.tvPriceProduct.setText("Giá: " + productData.getPriceProduct() + "VND");
         holder.tvQuanlityProduct.setText("Số lượng: " + productData.getQuanlityProduct());
-        Picasso.get().load(productData.getUrlImageProduct()).into(holder.imgProductItem);
+        databaseReference = firebaseDatabase.getReference("ImageProducts");
+        Query query = databaseReference.orderByChild("idProduct").equalTo(productData.getIdProduct());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for (DataSnapshot imageItem : snapshot.getChildren()){
+                        Image image = imageItem.getValue(Image.class);
+                        Picasso.get().load(image.getUrlImage()).placeholder(R.drawable.icondowload).into(holder.imgProductItem);
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         if (position % 2 == 0) {
             holder.itemView.setBackgroundResource(R.drawable.bg_item01);
         } else {

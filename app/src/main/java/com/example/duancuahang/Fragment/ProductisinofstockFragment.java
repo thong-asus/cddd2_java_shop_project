@@ -70,8 +70,8 @@ public class ProductisinofstockFragment extends Fragment {
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                arrProductData.clear();
                 if(snapshot.exists()){
-                    arrProductData.clear();
                     for (DataSnapshot productSnapshot : snapshot.getChildren()){
                         ProductData productData = productSnapshot.getValue(ProductData.class);
                        if (productData.getQuanlityProduct() > 0){
@@ -80,6 +80,7 @@ public class ProductisinofstockFragment extends Fragment {
                     }
                 }
                 else {
+
                     if (arrProductData.size() <= 0){
                         tvNoProduct_InOfStock.setVisibility(View.VISIBLE);
                         rcvProductisinstock_ScreenPRoductList.setVisibility(View.GONE);
@@ -90,6 +91,7 @@ public class ProductisinofstockFragment extends Fragment {
                     }
                 }
                 productInOfStockAdapter.notifyDataSetChanged();
+
             }
 
             @Override

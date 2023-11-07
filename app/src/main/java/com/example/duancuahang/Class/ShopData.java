@@ -129,6 +129,18 @@ public class ShopData implements Serializable {
     }
 
     public ShopData() {
+        this.status = 0;
+        this.idShop = null;
+        this.shopPhoneNumber = null;
+        this.password = null;
+        this.shopOwner = null;
+        this.shopName = null;
+        this.shopAddress = null;
+        this.shopEmail = null;
+        this.taxCode = null;
+        this.urlImgCCCDFront = null;
+        this.urlImgCCCDBack = null;
+        this.urlImgShopAvatar = null;
     }
 
     @Override
