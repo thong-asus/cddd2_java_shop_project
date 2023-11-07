@@ -2,13 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#fff">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar_ScreenHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#DFD8D8"
+        android:background="#FFFFFF"
+        app:title="Trang chủ"
         />
 
     <!--    Content screen home-->
@@ -35,7 +38,7 @@
                 android:id="@+id/ivAvataShop_ScreenHome"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/bg_avatashop"
+                android:background="@drawable/bg_avatar"
                 android:scaleType="centerCrop"
                 android:src="@drawable/imgdemo" />
 
@@ -140,6 +143,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:id="@+id/btnDanhGia"
                     >
                     <ImageView
                         android:layout_width="match_parent"
@@ -147,7 +151,6 @@
                         android:src="@drawable/danhgia"
                         />
                     <Button
-                        android:id="@+id/btnDanhGia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Đánh giá"

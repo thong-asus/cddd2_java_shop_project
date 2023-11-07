@@ -100,6 +100,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         edtSoDienThoai.selectAll();
                         edtSoDienThoai.requestFocus();
                         edtSoDienThoai.setError("Số điện thoại phải đủ 10 ký tự số và bắt đầu bằng số 0");
+                    } else {
+                        edtInputOTP.requestFocus();
                     }
                 }
                 return false;
@@ -113,6 +115,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         edtInputOTP.selectAll();
                         edtInputOTP.requestFocus();
                         edtInputOTP.setError("OTP là dãy ký tự 6 số");
+                    } else {
+                        hideKeyboard();
                     }
                 }
                 return false;
@@ -135,7 +139,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         try {
                             if (task.isSuccessful()) {
                                 Toast.makeText(context, "Xác minh OTP thành công!", Toast.LENGTH_SHORT).show();
-//                                Intent intent = new Intent(context, NewPasswordForgotActivity.class);
                                 databaseReference = firebaseDatabase.getReference("Shop");
                                 Query query = databaseReference.child(edtSoDienThoai.getText().toString()).getParent();
                                 query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -160,13 +163,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
                                     }
                                 });
-
-//
-//                                ShopData shopData = new ShopData(edtSoDienThoai.getText().toString());
-//                                intent.putExtra("idShop",shopData);
-
-//                                startActivity(intent);
-//                                finish();
                             } else {
                                 Toast.makeText(context, "Sai mã OTP. Vui lòng thử lại!!!", Toast.LENGTH_SHORT).show();
                             }

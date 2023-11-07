@@ -1,5 +1,6 @@
 package com.example.duancuahang;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -8,10 +9,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.duancuahang.Class.ShopData;
 import com.google.gson.Gson;
@@ -21,7 +24,7 @@ public class HomeShop extends AppCompatActivity {
 
     Toolbar toolbar;
     LinearLayout linearLayout_SanPhamCuaToi_ScreenHome;
-    TextView tvNameShop_ScreenHome;
+    TextView tvNameShop_ScreenHome, tvBillHistory;
     ImageView ivAvataShop_ScreenHome;
     Context context;
     private ShopData shopData = new ShopData();
@@ -34,6 +37,7 @@ public class HomeShop extends AppCompatActivity {
         Gson gson = new Gson();
         shopData = gson.fromJson(jsonShop, ShopData.class);
         System.out.println("Shopdata Share: " + shopData.toString());
+
         context = this;
         setControl();
         setIntiazation();
@@ -53,18 +57,44 @@ public class HomeShop extends AppCompatActivity {
 
     }
 
+    //set menu
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu,menu);
         return super.onPrepareOptionsMenu(menu);
     }
 
+    //xử lý sự kiện khi chọn menu
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+        } else if(item.getItemId() == R.id.itSetting_Actionbar){
+                Intent intent = new Intent(HomeShop.this, InformationAccountActivity.class);
+                startActivity(intent);
+                Toast.makeText(context, "Chuyển sang màn hình Cài đặt", Toast.LENGTH_SHORT).show();
+        } else if(item.getItemId() == R.id.itNotification_Actionbar){
+            Toast.makeText(context, "Chuyển sang màn hình Thông báo", Toast.LENGTH_SHORT).show();
+        } else if(item.getItemId() == R.id.itMessage_Actionbar){
+            Toast.makeText(context, "Chuyển sang màn hình Tin nhắn", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 //    Xu ly su kien
     private void setEvent() {
         linearLayout_SanPhamCuaToi_ScreenHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context,Productlist.class);
+                startActivity(intent);
+            }
+        });
+        tvBillHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeShop.this,OrderListActivity.class);
                 startActivity(intent);
             }
         });
@@ -76,6 +106,7 @@ public class HomeShop extends AppCompatActivity {
         toolbar = findViewById(R.id.toolBar_ScreenHome);
         linearLayout_SanPhamCuaToi_ScreenHome = findViewById(R.id.linearLayout_SanPhamCuaToi_ScreenHome);
         tvNameShop_ScreenHome = findViewById(R.id.tvNameShop_ScreenHome);
+        tvBillHistory = findViewById(R.id.tvBillHistory);
         ivAvataShop_ScreenHome = findViewById(R.id.ivAvataShop_ScreenHome);
     }
 

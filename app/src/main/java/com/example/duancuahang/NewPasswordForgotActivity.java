@@ -60,6 +60,8 @@ public class NewPasswordForgotActivity extends AppCompatActivity {
                         edtMatKhauMoi.selectAll();
                         edtMatKhauMoi.requestFocus();
                         edtMatKhauMoi.setError("Mật khẩu tối thiểu 8 ký tự, tối đa 40 ký tự. Bao gồm tối thiểu 1 chữ HOA, 1 chữ thường, 1 chữ số và 1 ký tự đặc biệt");
+                    }  else {
+                        edtNhapLaiMatKhauMoi.requestFocus();
                     }
                 }
                 return false;
@@ -74,6 +76,8 @@ public class NewPasswordForgotActivity extends AppCompatActivity {
                         edtNhapLaiMatKhauMoi.selectAll();
                         edtNhapLaiMatKhauMoi.requestFocus();
                         edtNhapLaiMatKhauMoi.setError("Mật khẩu và xác nhận mật khẩu không khớp!");
+                    }else {
+                        hideKeyboard();
                     }
                 }
                 return false;

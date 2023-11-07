@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isLoading = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,57 +64,95 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-        //Xử lý sự kiện click nút Đăng nhập
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               if (Validates.validPhone(edtSoDienThoai.getText().toString()) || Validates.validPassword(edtMatKhau.getText().toString())){
-                   isLoading = true;
-                   if (isLoading){
-                       hideKeyboard();
-                       progressbar_Loading_ScreenLogin.setVisibility(View.VISIBLE);
-                   }
-//                kiểm tra xem user có tồn tại không
-                   databaseReference = firebaseDatabase.getReference("Shop");
-                   Query query = databaseReference.child(edtSoDienThoai.getText().toString()).getParent();
-                   query.addListenerForSingleValueEvent(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                           if (snapshot.exists()){
-                               for (DataSnapshot shopItem : snapshot.getChildren()){
-                                   if (shopItem.child("password").getValue().toString().equals(edtMatKhau.getText().toString())){
-                                       ShopData shopData = shopItem.getValue(ShopData.class);
-                                       SharedPreferences sharedPreferences1 = getSharedPreferences("InformationShop",Context.MODE_PRIVATE);
-                                       Gson gson  = new Gson();
-                                       String json = gson.toJson(shopData);
-                                       SharedPreferences.Editor editor = sharedPreferences1.edit();
-                                       editor.putString("informationShop",json);
-                                       editor.apply();
-                                       Intent intent =  new Intent(context, HomeShop.class);
-                                       startActivity(intent);
-                                       finish();
-                                   }
-                                   else {
-                                       ShowMessage.showMessage("Đăng nhập không thành công. Vui lòng kiểm tra lại số điện thoại và mật khẩu");
-                                       edtSoDienThoai.setText("");
-                                       edtMatKhau.setText("");
-                                   }
-                               }
-                           }
-                           else {
-                               ShowMessage.showMessage("Tài khoản không tồn tại");
-                           }
-                       }
+                // Kiểm tra thông tin đăng nhập có bị bỏ trống không
+                if (edtSoDienThoai.getText().toString().isEmpty() || edtMatKhau.getText().toString().isEmpty()) {
+                    ShowMessage.showMessage("Thông tin đăng nhập không được bỏ trống. Vui lòng kiểm tra lại!!!");
+                    return;
+                }
 
-                       @Override
-                       public void onCancelled(@NonNull DatabaseError error) {
-
-                       }
-                   });
-               }
-               else {
-                   ShowMessage.showMessage("Vui lòng kiểm tra lại thông tin đăng nhập");
-               }
+                if (Validates.validPhone(edtSoDienThoai.getText().toString()) || Validates.validPassword(edtMatKhau.getText().toString())) {
+                    // isLoading = true;
+                    if (isLoading) {
+                        hideKeyboard();
+                        progressbar_Loading_ScreenLogin.setVisibility(View.VISIBLE);
+                    }
+                    // Kiểm tra xem user có tồn tại không
+                    databaseReference = firebaseDatabase.getReference("Shop/"+edtSoDienThoai.getText().toString());
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            boolean found = false;
+                            if(snapshot.exists()){
+                                ShopData shopData = snapshot.getValue(ShopData.class);
+                                if(shopData.getPassword().equals(edtMatKhau.getText().toString())){
+                                    if (shopData.getStatus() == 0) {
+                                        ShowMessage.showMessage("Tài khoản đang chờ ADMIN duyệt đăng ký. Vui lòng chờ thông báo!");
+                                    } else if (shopData.getStatus() == 2) {
+                                        ShowMessage.showMessage("Tài khoản đã bị khóa.\nLiên hệ ADMIN để biết thêm chi tiết!!!\nCall ADMIN: 0867861024");
+                                    } else if (shopData.getStatus() == 1) {
+                                        // Đăng nhập thành công
+                                        // Lưu thông tin của người dùng vào SharedPreferences
+                                        SharedPreferences sharedPreferences1 = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
+                                        Gson gson = new Gson();
+                                        String json = gson.toJson(shopData);
+                                        SharedPreferences.Editor editor = sharedPreferences1.edit();
+                                        editor.putString("informationShop", json);
+                                        editor.apply();
+                                        Intent intent = new Intent(context, HomeShop.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                } else {
+                                    ShowMessage.showMessage("Sai mật khẩu. Vui lòng thử lại!!!");
+                                }
+                            } else {
+                                ShowMessage.showMessage("Tài khoản không tồn tại!!!");
+                            }
+//                            //boolean found = false;
+//                            for (DataSnapshot shopItem : snapshot.getChildren()) {
+//                                String shopPhoneNumber = shopItem.child("shopPhoneNumber").getValue(String.class);
+//                                if (shopPhoneNumber.equals(edtSoDienThoai.getText().toString())) {
+//                                    found = true;
+//                                    if (shopItem.child("password").getValue(String.class).equals(edtMatKhau.getText().toString())) {
+//                                        if (Integer.parseInt(shopItem.child("status").getValue().toString()) == 0) {
+//                                            ShowMessage.showMessage("Tài khoản đang chờ ADMIN duyệt đăng ký. Vui lòng chờ thông báo!");
+//                                            return;
+//                                        } else if (Integer.parseInt(shopItem.child("status").getValue().toString()) == 2) {
+//                                            ShowMessage.showMessage("Tài khoản đã bị khóa.\nLiên hệ ADMIN để biết thêm chi tiết!!!\nCall ADMIN: 0867861024");
+//                                            return;
+//                                        } else if (Integer.parseInt(shopItem.child("status").getValue().toString()) == 1) {
+//                                            // Đăng nhập thành công
+//                                            ShopData shopData = shopItem.getValue(ShopData.class);
+//                                            // Lưu thông tin của người dùng vào SharedPreferences
+//                                            SharedPreferences sharedPreferences1 = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
+//                                            Gson gson = new Gson();
+//                                            String json = gson.toJson(shopData);
+//                                            SharedPreferences.Editor editor = sharedPreferences1.edit();
+//                                            editor.putString("informationShop", json);
+//                                            editor.apply();
+//                                            Intent intent = new Intent(context, HomeShop.class);
+//                                            startActivity(intent);
+//                                            finish();
+//                                            return;
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                            if (!found) {
+//                                ShowMessage.showMessage("Tài khoản không tồn tại!!!");
+//                            } else {
+//                                ShowMessage.showMessage("Sai mật khẩu. Vui lòng thử lại!!!");
+//                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            ShowMessage.showMessage("Lỗi không truy vấn được dữ liệu: " + error);
+                        }
+                    });
+                }
             }
         });
 
@@ -181,65 +220,6 @@ public class LoginActivity extends AppCompatActivity {
         nestedScrollView_ScreenLogin.setEnabled(false);
     }
 
-    public static void login(final String shopPhoneNumber, final String password, final Context context) {
-        // Kiểm tra số điện thoại hoặc mật khẩu có bị bỏ trống hay không
-        if (shopPhoneNumber.isEmpty() || password.isEmpty()) {
-            ShowMessage.showMessage("Thông tin đăng nhập không được bỏ trống!!!");
-            return;
-        }
-
-        final DatabaseReference accountRef;
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        accountRef = firebaseDatabase.getReference("Shop");
-        accountRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //Biến xác định tài khoản có tồn tại hay không?
-                boolean found = false;
-
-                if (snapshot.exists()) {
-                    for (DataSnapshot accountShopSnapshot : snapshot.getChildren()) {
-                        Shop shopAccount = accountShopSnapshot.getValue(Shop.class);
-                        if (shopAccount != null && shopAccount.getShopPhoneNumber().equals(shopPhoneNumber)) {
-
-                            //Tạo biến kiểm tra
-                            int storedStatus = shopAccount.getStatus();
-                            String storedPassword = shopAccount.getPassword();
-
-                            // Kiểm tra trạng thái tài khoản
-                            if (storedStatus == 0) {
-                                ShowMessage.showMessage("Tài khoản đang chờ ADMIN xem xét duyệt đăng ký. Vui lòng chờ thông báo!");
-                                return;
-                            } else if (storedStatus == 2) {
-                                ShowMessage.showMessage("Tài khoản đã bị khóa.\nLiên hệ ADMIN để biết thêm chi tiết!");
-                                return;
-                            } else {
-                                // Kiểm tra mật khẩu
-                                if (storedPassword.equals(password)) {
-                                    // Đăng nhập thành công, chuyển sang màn hình HomeShop
-                                    Intent intent  = new Intent(context, HomeShop.class);
-                                    context.startActivity(intent);
-                                    return;
-                                } else {
-                                    ShowMessage.showMessage("Sai mật khẩu. Vui lòng thử lại!!!");
-                                }
-                            }
-                            found = true;
-                        }
-                    }
-                    // Không tìm thấy tài khoản
-                    if(!found){
-                        ShowMessage.showMessage("Tài khoản không tồn tại!!!");
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                ShowMessage.showMessage("Lỗi không truy vấn được dữ liệu");
-            }
-        });
-    }
     private void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {

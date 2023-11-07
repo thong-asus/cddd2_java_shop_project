@@ -4,6 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        style="@style/prop_tenManHinh"
+        android:text="Đăng ký"
+        android:layout_marginBottom="2dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#B0B0B0"/>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -12,10 +20,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/vRegistrationScreen">
-            <TextView
-                style="@style/prop_tenManHinh"
-                android:text="Đăng ký"
-                android:layout_marginBottom="30dp"/>
+
             <EditText
                 android:id="@+id/edtSoDienThoai"
                 style="@style/prop_editText"
