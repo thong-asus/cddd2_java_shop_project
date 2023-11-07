@@ -6,6 +6,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,10 +36,14 @@ import android.widget.TextView;
 import com.example.duancuahang.Adapter.CategorySpinerAdapter;
 import com.example.duancuahang.Adapter.ManufacSpinerAdapter;
 import com.example.duancuahang.Class.Category;
+import com.example.duancuahang.Class.Image;
+import com.example.duancuahang.Class.ImageProduct;
 import com.example.duancuahang.Class.Manuface;
 import com.example.duancuahang.Class.ProductData;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.Class.Validates;
+import com.example.duancuahang.RecyclerView.ListImageProductViewHolder;
+import com.example.duancuahang.RecyclerView.ListImageProduct_Adapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,9 +55,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,14 +72,24 @@ public class Addproduct extends AppCompatActivity {
     Toolbar toolBar_AddProduct;
     NestedScrollView nestedScrollView_ScreenAddProduct;
 
+
+    RecyclerView rcvImageProduct_addProduct;
+    EditText edtQuanlityImageProduct;
+    Button btnAddImageProduct;
+    ArrayList<ImageProduct> imgaProductArrayList = new ArrayList<>();
+    ListImageProduct_Adapter listImageProductAdapter;
+
+    private int vitriImageSelection = -1;
+
     //    Biến xử lý
     private DatabaseReference databaseReference;
-    private static final int REQUEST_CODE_PICK_IMAGE = 1;
+    private static final int    REQUEST_CODE_PICK_IMAGE = 1;
     private String urlImageSelection;
     private Category categorySelection = null;
     private Manuface manufaceSelection = null;
     private  boolean loading = true;
-    private boolean bPushImage = false;
+    private int countPushImg = 0;
+    private  ArrayList<String> urlImgServe = new ArrayList<>();
     Uri uriImageSelectionOnDevice = null;
 
     //    Biến xử lý giao diện
@@ -115,6 +129,13 @@ public class Addproduct extends AppCompatActivity {
 //        -------------------------- kích hoạt button back
         setSupportActionBar(toolBar_AddProduct);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        ImageProduct imageProduct = new ImageProduct();
+        imgaProductArrayList.add(imageProduct);
+        listImageProductAdapter = new ListImageProduct_Adapter(imgaProductArrayList, context);
+        rcvImageProduct_addProduct.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        rcvImageProduct_addProduct.setAdapter(listImageProductAdapter);
+        listImageProductAdapter.notifyDataSetChanged();
     }
 
     //    hàm bắt sự kiện
@@ -165,13 +186,13 @@ public class Addproduct extends AppCompatActivity {
             }
         });
 
-//        bắt sự kiện người dùng nhấn vào hình ảnh sản phẩm
-        ivProduct_addProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                moveLibraryImage();
-            }
-        });
+////        bắt sự kiện người dùng nhấn vào hình ảnh sản phẩm
+//        ivProduct_addProduct.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                moveLibraryImage();
+//            }
+//        });
 
 //        bắt sự kiện nhấn vào button thêm sản phẩm
         btnAddProduct.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +211,7 @@ public class Addproduct extends AppCompatActivity {
                                progressBar.setVisibility(View.VISIBLE);
                                vMain_AddProduct.setBackgroundColor(Color.parseColor("#80000000"));
                                hideKeyboard();
-                               pushImageProductToFirebaseStorage(uriImageSelectionOnDevice);
+                               pushImageProductToFirebaseStorage();
                            }
                        });
                        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -202,6 +223,7 @@ public class Addproduct extends AppCompatActivity {
                        AlertDialog alertDialog = builder.create();
                        alertDialog.show();
                     }
+               // pushImageProductToFirebaseStorage();
             }
         });
 
@@ -248,6 +270,97 @@ public class Addproduct extends AppCompatActivity {
                 return false;
             }
         });
+//        sự kiện nhấn vào button thêm số lượng hình ảnh dựa vào số lượng vừa nhập vào
+        btnAddImageProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (edtQuanlityImageProduct.getText().toString().length() < 1 || Integer.parseInt(edtQuanlityImageProduct.getText().toString()) < 1) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Thông báo");
+                    builder.setMessage("Số lượng hình ảnh muốn thêm vào không hợp lệ");
+                    builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                } else {
+                    if (imgaProductArrayList.size() + Integer.parseInt(edtQuanlityImageProduct.getText().toString()) <= 5) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle("Thông báo");
+                        builder.setMessage("Bạn chắc chắn muốn thêm " + edtQuanlityImageProduct.getText().toString() + " hình ảnh sản phẩm ?");
+                        builder.setNegativeButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                int quanlityImageProduct = Integer.parseInt(edtQuanlityImageProduct.getText().toString());
+                                for (int j = 0; j < Integer.parseInt(edtQuanlityImageProduct.getText().toString()); j++) {
+                                    ImageProduct imageProduct = new ImageProduct();
+                                    imgaProductArrayList.add(imageProduct);
+                                }
+                                listImageProductAdapter.notifyDataSetChanged();
+                                edtQuanlityImageProduct.setText("");
+                                hideKeyboard();
+                            }
+                        });
+                        builder.setPositiveButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle("Thông báo");
+                        builder.setMessage("Tổng số lượng hình ảnh đã vướt quá 5 hình. Thêm hình ảnh thất bại");
+                        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+                }
+            }
+        });
+
+//        sự kiện nhấn vào item hình ảnh của sản phẩm
+        listImageProductAdapter.setOnclickListener(new ListImageProduct_Adapter.OnclickListener() {
+            @Override
+            public void onItemClick(ListImageProductViewHolder listImageProductViewHolder, int position) {
+                vitriImageSelection = position;
+                ImageProduct imageProduct = imgaProductArrayList.get(position);
+                if (imageProduct.getUrlImage() == null) {
+                    ivProduct_addProduct.setImageResource(R.drawable.icondowload);
+                } else {
+                    InputStream inputStream = null;
+                    try {
+                        inputStream = context.getContentResolver().openInputStream(imageProduct.getUrlImage());
+                        Bitmap selectionImg = BitmapFactory.decodeStream(inputStream);
+                        ivProduct_addProduct.setImageBitmap(selectionImg);
+                    } catch (FileNotFoundException e) {
+                        System.out.println("Loi lay hinh anh trong OpenInputStream: " + e.getMessage());
+                    }
+
+                }
+            }
+        });
+
+//        hàm bắt sự kiện nhấn vào ảnh lớn
+        ivProduct_addProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(vitriImageSelection < 0){
+                    vitriImageSelection = 0;
+                }
+                moveLibraryImage();
+            }
+        });
 
     }
 
@@ -265,6 +378,9 @@ public class Addproduct extends AppCompatActivity {
         progressBar = findViewById(R.id.progessbar_AddProduct);
         toolBar_AddProduct = findViewById(R.id.toolBar_AddProduct);
         nestedScrollView_ScreenAddProduct = findViewById(R.id.nestedScrollView_ScreenAddProduct);
+        rcvImageProduct_addProduct = findViewById(R.id.rcvImageProduct_addProduct);
+        edtQuanlityImageProduct = findViewById(R.id.edtQuanlityImageProduct_AddProduct);
+        btnAddImageProduct = findViewById(R.id.btnAddImageProduct_Addproduct);
     }
 
 //    ngăn chặn thao tác người dùng
@@ -302,7 +418,7 @@ public class Addproduct extends AppCompatActivity {
        ShopData shopData = gson.fromJson(jsonShop, ShopData.class);
         String keyProductItem = getIdProductRan();
         ProductData productData = new ProductData(keyProductItem.concat(shopData.getIdShop()),
-                edtNameProduct.getText().toString(),urlImageSelection,
+                edtNameProduct.getText().toString(),
                 Integer.valueOf(edtPriceProduct.getText().toString()),
                 categorySelection.getKeyCategoryItem(), manufaceSelection.getKeyManufaceItem(),
                 Integer.valueOf(edtQuanlityProduct.getText().toString()),
@@ -310,11 +426,14 @@ public class Addproduct extends AppCompatActivity {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
         databaseReference.child("Product").child(keyProductItem.concat(shopData.getIdShop())).setValue(productData);
+        addImageProduct(keyProductItem.concat(shopData.getIdShop()));
         loading = false;
         System.out.println("Id shop add: "+ shopData.getIdShop());
         System.out.println("product add: "+ productData.toString());
 
        if (!loading){
+           Intent intent = new Intent(context, Productlist.class);
+           startActivity(intent);
            finish();
        }
 
@@ -326,7 +445,7 @@ public class Addproduct extends AppCompatActivity {
                 edtPriceProduct.getText().toString() == null ||
                 edtQuanlityProduct.getText().toString() == null ||
                 categorySelection == null ||
-                manufaceSelection == null|| uriImageSelectionOnDevice == null
+                manufaceSelection == null|| imgaProductArrayList.get(0).getUrlImage() == null
                ) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Thông báo");
@@ -351,34 +470,54 @@ public class Addproduct extends AppCompatActivity {
     private void moveLibraryImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
-        System.out.println("4");
     }
 
 //    hàm tải hình ảnh lên firebase
-    private void pushImageProductToFirebaseStorage(Uri uriImageLocalDevice){
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference imgRef = storageReference.child("imageProduct/"+uriImageLocalDevice.getLastPathSegment());
-        UploadTask uploadTask = imgRef.putFile(uriImageLocalDevice);
-        uploadTask.addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                urlImageSelection = uri.toString();
-                if (!bPushImage){
-                    AddProduct();
-                    bPushImage = true;
-                }
-            });
+    private void pushImageProductToFirebaseStorage(){
+        for (int i = 0; i < imgaProductArrayList.size(); i++) {
+            ImageProduct item = imgaProductArrayList.get(i);
+            if (item.getUrlImage() != null){
+                System.out.println("uri item: " + item.getUrlImage());
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                StorageReference imgRef = storageReference.child("imageProduct/"+item.getUrlImage().getLastPathSegment());
+                UploadTask uploadTask = imgRef.putFile(item.getUrlImage());
+                uploadTask.addOnCompleteListener(task -> {
+                    if (task.isSuccessful()){
+                        imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            countPushImg++;
+                            System.out.println(countPushImg + "");
+                            urlImageSelection = uri.toString();
+                            urlImgServe.add(urlImageSelection);
+                            if (countPushImg == imgaProductArrayList.size()){
+                                System.out.println("xong");
+                                AddProduct();
+                            }
+                        });
+                    }
+                });
+
             }
-        });
+            else {
+                imgaProductArrayList.remove(i);
+            }
+        }
     }
 
-//    hàm nén ảnh
+    private void addImageProduct(String idProduct){
+        for (int i = 0; i < urlImgServe.size(); i++) {
+            Image image = new Image(idProduct,urlImgServe.get(i));
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference("ImageProducts");
+            databaseReference.push().setValue(image);
+
+        }
+    }
 
     //    hàm hiển thị kết quả ảnh vừa chọn
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == REQUEST_CODE_PICK_IMAGE || resultCode == RESULT_OK) {
+        if (resultCode == 1 || resultCode == RESULT_OK) {
             Uri uriImage = data.getData();
             String mediaType = getContentResolver().getType(uriImage);
             if (mediaType != null) {
@@ -387,7 +526,10 @@ public class Addproduct extends AppCompatActivity {
                         InputStream inputStream = getContentResolver().openInputStream(uriImage);
                         Bitmap selectionImg = BitmapFactory.decodeStream(inputStream);
                         ivProduct_addProduct.setImageBitmap(selectionImg);
-                        uriImageSelectionOnDevice = uriImage;
+                        ImageProduct imageProduct = imgaProductArrayList.get(vitriImageSelection);
+                        imageProduct.setUrlImage(uriImage);
+                        listImageProductAdapter.notifyDataSetChanged();
+                        vitriImageSelection = -1;
                     } catch (FileNotFoundException e) {
                         System.out.println("Lỗi đọc đường dẫn đến hình ảnh: " + e.getMessage());
                     }

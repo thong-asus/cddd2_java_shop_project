@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F6F5F5"
+    tools:context=".Addproduct">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar_AddProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#DFD8D8"
+        />
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView_ScreenAddProduct"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/vMain_AddProduct"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <androidx.cardview.widget.CardView
+                    android:layout_width="230dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/bg_imageview_showimageproduct"
+                    >
+                    <ImageView
+                        android:id="@+id/ivProductLage_AddProductMulp"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginVertical="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/icon_blirary"
+                        />
+                </androidx.cardview.widget.CardView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Số lượng hình ảnh thêm"
+                            />
+                        <EditText
+                            android:id="@+id/edtQuanlityImageProduct"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:maxLength="1"
+                            android:layout_marginHorizontal="10dp"
+                            android:hint="0"
+                            android:gravity="right"
+                            android:inputType="number"
+                            />
+                        <Button
+                            android:id="@+id/btnAddImageProduct"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thêm"/>
+
+                    </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvImageProduct_addProductMulp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:background="@drawable/bg_container_imageproduct"
+                        android:paddingVertical="5dp"
+                        android:paddingHorizontal="10dp"
+                        />
+
+                </LinearLayout>
+
+                <!--            Linearlayout content-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+                    <!--             LinearLayout quản lý tên sản phẩm-->
+                    <LinearLayout
+                        style="@style/style_linearLayoutManagerInput"
+                        >
+
+                        <TextView
+                            style="@style/style_titleAddProduct"
+                            android:text="Tên sản phẩm"
+                            />
+
+                        <EditText
+                            android:id="@+id/edtNameProduct_ScreenAddProductMulp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:paddingHorizontal="10dp"
+                            android:background="@drawable/event_edt"
+                            android:inputType="text"
+                            android:imeOptions="actionDone"
+                            android:hint="Nhập tên sản phẩm..."
+                            />
+                    </LinearLayout>
+
+                    <!--       LinearLayout quản lý Mô tả sản phẩm-->
+                    <LinearLayout
+                        style="@style/style_linearLayoutManagerInput"
+                        >
+
+                        <TextView
+                            style="@style/style_titleAddProduct"
+                            android:text="Mô tả sản phẩm"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:background="@drawable/bg_container_01"
+                            android:orientation="vertical"
+                            android:layout_marginHorizontal="10dp"
+                            >
+
+                            <EditText
+                                android:id="@+id/edtDescriptionProduct_AddProductMulp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:background="@drawable/bg_noborder"
+                                android:hint="Mô tả sản phẩm..."
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!--             LinearLayout quan ly Loai san pham-->
+                    <LinearLayout
+                        style="@style/style_linearLayoutManagerInput"
+                        >
+                        <TextView
+                            style="@style/style_titleAddProduct"
+                            android:text="Danh mục"
+
+                            />
+                        <Spinner
+                            android:id="@+id/spCategory_AddProductMulp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dropdown"
+                            android:layout_marginHorizontal="10dp"
+                            />
+                    </LinearLayout>
+
+                    <!--                Hang san xuat-->
+                    <LinearLayout
+                        style="@style/style_linearLayoutManagerInput"
+                        >
+                        <TextView
+                            style="@style/style_titleAddProduct"
+                            android:text="Hãng sản xuất"
+                            />
+                        <Spinner
+                            android:id="@+id/spManuface_AddProductMulp"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+                    <!--                Gía sản phẩm-->
+                    <LinearLayout
+                        style="@style/style_linearLayoutManagerInput"
+                        >
+                        <TextView
+                            style="@style/style_titleAddProduct"
+                            android:text="Giá sản phẩm"
+
+                            />
+                        <EditText
+                            android:id="@+id/edtPriceProduct_AddProductMulp"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:paddingVertical="5dp"
+                            android:paddingHorizontal="10dp"
+                            android:background="@drawable/event_edt"
+                            android:imeOptions="actionDone"
+                            android:hint="Giá sản phẩm..."
+                            />
+                    </LinearLayout>
+
+                    <!--                LinearLayout quan lys so luong san pham-->
+                    <LinearLayout
+                        style="@style/style_linearLayoutManagerInput"
+                        >
+                        <TextView
+                            style="@style/style_titleAddProduct"
+                            android:text="Số lượng"
+
+                            />
+                        <EditText
+                            android:id="@+id/edtQuanlityProduct_AddProductMulp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
+                            android:inputType="numberDecimal"
+                            android:paddingVertical="5dp"
+                            android:paddingHorizontal="10dp"
+                            android:background="@drawable/event_edt"
+                            android:imeOptions="actionDone"
+                            android:hint="Số lượng..."
+                            />
+                    </LinearLayout>
+                    <Button
+                        android:id="@+id/btnAddProductMulp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:text="Thêm sản phẩm"
+                        android:textStyle="bold"
+                        android:background="@drawable/event_btn_addproduct"
+                        android:textColor="#FFFFFF"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+            <ProgressBar
+                android:id="@+id/progessbar_AddProduct"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                />
+        </FrameLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -6,7 +6,6 @@ public class ProductData implements Serializable {
     private String keyProductItem;
     private String idProduct;
     private String nameProduct;
-    private String urlImageProduct;
     private int priceProduct;
     private String keyCategoryProduct;
     private String keyManufaceProduct;
@@ -43,13 +42,13 @@ public class ProductData implements Serializable {
         this.nameProduct = nameProduct;
     }
 
-    public String getUrlImageProduct() {
-        return urlImageProduct;
-    }
-
-    public void setUrlImageProduct(String urlImageProduct) {
-        this.urlImageProduct = urlImageProduct;
-    }
+//    public String getUrlImageProduct() {
+//        return urlImageProduct;
+//    }
+//
+//    public void setUrlImageProduct(String urlImageProduct) {
+//        this.urlImageProduct = urlImageProduct;
+//    }
 
     public int getPriceProduct() {
         return priceProduct;
@@ -107,10 +106,10 @@ public class ProductData implements Serializable {
         this.overageCmtProduct = overageCmtProduct;
     }
 
-    public ProductData(String idProduct, String nameProduct, String urlImageProduct, int priceProduct, String keyCategoryProduct, String keyManufaceProduct, int quanlityProduct, String descriptionProduct, int sumLike, double overageCmtProduct, String idUserProduct) {
+    public ProductData(String idProduct, String nameProduct,  int priceProduct, String keyCategoryProduct, String keyManufaceProduct, int quanlityProduct, String descriptionProduct, int sumLike, double overageCmtProduct, String idUserProduct) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
-        this.urlImageProduct = urlImageProduct;
+//        this.urlImageProduct = urlImageProduct;
         this.priceProduct = priceProduct;
         this.keyCategoryProduct = keyCategoryProduct;
         this.keyManufaceProduct = keyManufaceProduct;
@@ -134,7 +133,6 @@ public class ProductData implements Serializable {
         return "ProductData{" +
                 "idProduct='" + idProduct + '\'' +
                 ", nameProduct='" + nameProduct + '\'' +
-                ", urlImageProduct='" + urlImageProduct + '\'' +
                 ", priceProduct=" + priceProduct +
                 ", keyCategoryProduct='" + keyCategoryProduct + '\'' +
                 ", keyManufaceProduct='" + keyManufaceProduct + '\'' +
@@ -142,7 +140,7 @@ public class ProductData implements Serializable {
                 ", descriptionProduct='" + descriptionProduct + '\'' +
                 ", sumLike=" + sumLike +
                 ", overageCmtProduct=" + overageCmtProduct +
-                ", idUser_Product='" + idUserProduct + '\'' +
+                ", idUser_Product='" + idUserProduct.toString() + '\'' +
                 '}';
     }
 }

@@ -44,6 +44,7 @@ public class Productlist extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(context, Addproduct.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

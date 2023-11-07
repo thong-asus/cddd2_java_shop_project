@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,7 +39,6 @@ public class HomeShop extends AppCompatActivity {
         Gson gson = new Gson();
         shopData = gson.fromJson(jsonShop, ShopData.class);
         System.out.println("Shopdata Share: " + shopData.toString());
-
         context = this;
         setControl();
         setIntiazation();
