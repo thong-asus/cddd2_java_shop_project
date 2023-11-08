@@ -32,9 +32,14 @@
         android:theme="@style/Theme.Duancuahang"
         tools:targetApi="31">
         <activity
-            android:name=".SplashActivity"
+            android:name=".SearchOrderActivity"
             android:exported="false" />
-        <!-- <activity -->
+        <activity
+            android:name=".OrderDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="false" /> <!-- <activity -->
         <!-- android:name=".Orderlist" -->
         <!-- android:exported="true"> -->
         <!-- <intent-filter> -->

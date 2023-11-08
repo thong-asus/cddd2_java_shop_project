@@ -6,7 +6,8 @@
     android:gravity="center"
     android:layout_marginTop="5dp"
     android:layout_marginHorizontal="5dp"
-    android:padding="10dp">
+    android:padding="5dp"
+    android:id="@+id/linearLayout_ItemOrderList">
 
     <FrameLayout
         android:layout_width="100dp"
@@ -20,7 +21,7 @@
             android:layout_marginLeft="5dp"
             android:src="@drawable/icondowload"/>
         <ProgressBar
-            android:id="@+id/progessBar_loadingImageItem"
+            android:id="@+id/progessBar_loadingImageItem_OrderDetail"
             android:visibility="gone"
             android:indeterminate="true"
             style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small"
@@ -41,7 +42,7 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/tvNameProduct"
+            android:id="@+id/tvNameProduct_OrderDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tên sản phẩm"
@@ -69,7 +70,7 @@
             <TextView
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvAmountProduct"
+                android:id="@+id/tvAmountProduct_OrderDetail"
                 android:textColor="#000"/>
         </LinearLayout>
         <LinearLayout
@@ -79,21 +80,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tổng: "
+                android:text="Thành tiền: "
                 android:textColor="#000"/>
             <TextView
-                android:id="@+id/tvTotal"
+                android:id="@+id/tvTotal_OrderDetail"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:textColor="#000" />
-
-            <Button
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:id="@+id/btnDetailOrder"
-                android:text="Chi tiết"
-                android:textAllCaps="false"
-                android:background="@drawable/bg_btntieptuc_clicked"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

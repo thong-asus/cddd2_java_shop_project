@@ -7,9 +7,11 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.duancuahang.RecyclerView.Order_ListViewPagerAdapter;
@@ -68,6 +70,8 @@ public class OrderListActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home){
             finish();
         } else if (item.getItemId() == R.id.action_search){
+            Intent intent = new Intent(OrderListActivity.this, SearchOrderActivity.class);
+            startActivity(intent);
             Toast.makeText(context, "Chuyển sang màn hình tìm kiếm", Toast.LENGTH_SHORT).show();
         } else if (item.getItemId() == R.id.action_message){
             Toast.makeText(context, "Chuyển sang màn hình tin nhắn", Toast.LENGTH_SHORT).show();

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.duancuahang.Class.OrderData;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.R;
-import com.example.duancuahang.RecyclerView.Order_Adaper;
+import com.example.duancuahang.RecyclerView.OrderItem_Adaper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +34,7 @@ public class OrderWaitForTakeGoodsFragment extends Fragment {
     TextView tvNoOrderWaitTakeGoods;
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    Order_Adaper orderAdaper;
+    OrderItem_Adaper orderAdaper;
     RecyclerView rcvOrderWaitTakeGoods;
     private ShopData shopData = new ShopData();
     private String shopPhoneNumber;
@@ -62,7 +62,7 @@ public class OrderWaitForTakeGoodsFragment extends Fragment {
 //        orderWaitForTakeGoodsAdapter = new Order_WaitForTakeGoodsAdapter(arrayOrderData, getContext());
 //        rcvOrderWaitTakeGoods.setLayoutManager(new LinearLayoutManager(getContext()));
 //        rcvOrderWaitTakeGoods.setAdapter(orderWaitForTakeGoodsAdapter);
-        orderAdaper = new Order_Adaper(arrayOrderData, getContext());
+        orderAdaper = new OrderItem_Adaper(arrayOrderData, getContext());
         rcvOrderWaitTakeGoods.setLayoutManager(new LinearLayoutManager(getContext())); // Sử dụng tên biến đúng
         rcvOrderWaitTakeGoods.setAdapter(orderAdaper);
         orderAdaper.notifyDataSetChanged();
@@ -89,7 +89,7 @@ public class OrderWaitForTakeGoodsFragment extends Fragment {
                         OrderData orderData1 = orderItem.getValue(OrderData.class);
                         if (orderData1.getStatusOrder() == 1) {
                             arrayOrderData.add(orderData1);
-                            System.out.println("order item: " + orderData1.toString());
+                            //System.out.println("order item: " + orderData1.toString());
                         }
                     }
                 }

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.duancuahang.Class.OrderData;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.R;
-import com.example.duancuahang.RecyclerView.Order_Adaper;
+import com.example.duancuahang.RecyclerView.OrderItem_Adaper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,10 +34,9 @@ public class OrderCancelledFragment extends Fragment {
     TextView tvNoOrderCancelled;
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    Order_Adaper orderAdaper;
+    OrderItem_Adaper orderAdaper;
     RecyclerView rcvOrderCancelled;
     private ShopData shopData = new ShopData();
-    private String shopPhoneNumber;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +58,7 @@ public class OrderCancelledFragment extends Fragment {
     }
 
     private void setInitiazation() {
-        orderAdaper = new Order_Adaper(arrayOrderData, getContext());
+        orderAdaper = new OrderItem_Adaper(arrayOrderData, getContext());
         rcvOrderCancelled.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvOrderCancelled.setAdapter(orderAdaper);
         orderAdaper.notifyDataSetChanged();
@@ -86,7 +85,7 @@ public class OrderCancelledFragment extends Fragment {
                         OrderData orderData1 = orderItem.getValue(OrderData.class);
                         if (orderData1.getStatusOrder() == 4) {
                             arrayOrderData.add(orderData1);
-                            System.out.println("order item: " + orderData1.toString());
+                            //System.out.println("order item: " + orderData1.toString());
                         }
                     }
                 }

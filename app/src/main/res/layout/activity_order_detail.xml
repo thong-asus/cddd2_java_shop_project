@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OrderDetailActivity"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar_OrderDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Chi tiết đơn hàng"
+        android:background="#FFFFFF"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#B0B0B0"/>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:text="Trạng thái đơn hàng: "
+                            android:textColor="#000"
+                            android:textSize="17dp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/tvOrderDetailStatus"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="____________________"
+                            android:textColor="#FF0000"
+                            android:textSize="17dp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Mã đơn hàng: "
+                            android:textColor="#000"
+                            android:textSize="17dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/tvOrderDetailID"
+                            android:layout_marginLeft="56dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="____________________"
+                            android:textColor="#FF0000"
+                            android:textSize="17dp"/>
+
+                    </LinearLayout>
+                    <TextView
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvCopyOrderID"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:text="SAO CHÉP MÃ ĐƠN HÀNG"
+                        android:textStyle="bold|italic"
+                        android:textColor="#00FF19"
+                        android:textSize="17dp"/>
+                    <View
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#B0B0B0"/>
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Thông tin khách hàng: "
+                        android:textColor="#000"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/tvCustomerName_OrderDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="___________NAME__________"
+                        android:textColor="#000"
+                        android:textSize="17dp"/>
+                   <LinearLayout
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:orientation="horizontal">
+                       <TextView
+                           android:layout_marginLeft="5dp"
+                           android:id="@+id/tvCustomerPhoneNumber_OrderDetail"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:text="___________PHONE__________"
+                           android:textColor="#000"
+                           android:textSize="17dp"/>
+
+                       <TextView
+                           android:id="@+id/tvCopyCustomerPhoneNumber"
+                           android:layout_width="wrap_content"
+                           android:layout_height="match_parent"
+                           android:layout_marginLeft="5dp"
+                           android:text="SAO CHÉP"
+                           android:textColor="#00FF19"
+                           android:textSize="17dp"
+                           android:textStyle="bold|italic" />
+                   </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvCustomerAddress_OrderDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="___________ADDRESS__________"
+                        android:textColor="#000"
+                        android:textSize="17dp" />
+
+                    <View
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#B0B0B0"/>
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Sản phẩm:"
+                        android:textColor="#000"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:padding="10dp">
+
+                        <FrameLayout
+                            android:layout_width="100dp"
+                            android:layout_height="100dp">
+                            <ImageView
+                                android:layout_marginRight="10dp"
+                                android:id="@+id/imgProduct_OrderDetail"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:layout_marginLeft="5dp"
+                                android:src="@drawable/icondowload"/>
+                            <ProgressBar
+                                android:id="@+id/progessBar_loadingImageItem_OrderDetail"
+                                android:visibility="gone"
+                                android:indeterminate="true"
+                                style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tvNameProduct_OrderDetail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Tên sản phẩm"
+                                android:textColor="#000"
+                                android:textStyle="bold"
+                                android:textSize="17dp"/>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="x"
+                                    android:textColor="#000"/>
+                                <TextView
+                                    android:text="Qty"
+                                    android:layout_width="50dp"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/tvAmountProduct_OrderDetail"
+                                    android:textColor="#000"/>
+
+                            </LinearLayout>
+                            <TextView
+                                android:text="Giá hiển thị ở đây"
+                                android:id="@+id/tvPriceProduct_OrderDetail"
+                                android:layout_width="140dp"
+                                android:layout_height="wrap_content"
+                                android:textColor="#000" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <View
+                        android:layout_marginTop="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#B0B0B0"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp">
+                        <TextView
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thành tiền: "
+                            android:textSize="17dp"
+                            android:textColor="#000"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:textSize="17dp"
+                            android:text="_____________________"
+                            android:id="@+id/tvTotal_OrderDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="120dp"
+                            android:textColor="#000" />
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#B0B0B0"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
+                        <TextView
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thời gian đặt hàng: "
+                            android:textSize="17dp"
+                            android:textColor="#000"/>
+
+                        <TextView
+                            android:id="@+id/tvOrderTime_OrderDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:text="_____________________"
+                            android:textColor="#000"
+                            android:textSize="17dp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/tvTitleOrderComplete_OrderDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Thời gian hoàn thành: "
+                            android:textColor="#000"
+                            android:textSize="17dp"/>
+                        <TextView
+                            android:visibility="gone"
+                            android:textSize="17dp"
+                            android:layout_marginLeft="30dp"
+                            android:id="@+id/tvOrderTimeComplete_OrderDetail"
+                            android:text="_____________________"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FF0000"
+/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/tvTitleOrderCancalled_OrderDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Thời gian hủy: "
+                            android:textColor="#000"
+                            android:textSize="17dp"
+                            />
+                        <TextView
+                            android:visibility="gone"
+                            android:textSize="17dp"
+                            android:layout_marginLeft="90dp"
+                            android:id="@+id/tvTimeOrderCancelled_OrderDetail"
+                            android:text="_____________________"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FF0000"
+                            android:layout_marginBottom="5dp"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#B0B0B0"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Ghi chú đơn hàng: "
+                            android:textColor="#000"
+                            android:textSize="17dp"
+                            android:textStyle="bold|italic" />
+                        <TextView
+                            android:id="@+id/tvNoteContent_OrderDetail"
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000"
+                            android:text="Nội dung ghi chú"
+                            android:textSize="17dp"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_marginTop="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#B0B0B0"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:layout_marginBottom="20dp">
+                        <Button
+                            android:background="@drawable/bg_btn_xacnhandonhang_clicked"
+                            android:textSize="17dp"
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:text="Xác nhận"
+                            android:textStyle="bold"
+                            android:id="@+id/btnOrderConfirm_OrderDetail"
+                            android:textAllCaps="false"/>
+                        <Button
+                            android:layout_marginLeft="30dp"
+                            android:background="@drawable/bg_btn_huydonhang_clicked"
+                            android:textSize="17dp"
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:text="Hủy đơn hàng"
+                            android:textStyle="bold"
+                            android:id="@+id/btnOrderCancel_OrderDetail"
+                            android:textAllCaps="false"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

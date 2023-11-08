@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".OrderListActivity"
+    android:id="@+id/linearLayout_OrderList"
     >
 
     <FrameLayout

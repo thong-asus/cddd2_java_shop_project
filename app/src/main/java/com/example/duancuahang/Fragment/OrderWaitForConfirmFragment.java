@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.example.duancuahang.Class.OrderData;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.R;
-import com.example.duancuahang.RecyclerView.Order_Adaper;
+import com.example.duancuahang.RecyclerView.OrderItem_Adaper;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +35,7 @@ public class OrderWaitForConfirmFragment extends Fragment {
     DatabaseReference databaseReference;
     //FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     FirebaseDatabase firebaseDatabase;
-   Order_Adaper orderAdaper;
+   OrderItem_Adaper orderAdaper;
    RecyclerView rcvOrderWaitConfirm;
     private ShopData shopData = new ShopData();
     private String shopPhoneNumber;
@@ -60,7 +60,7 @@ public class OrderWaitForConfirmFragment extends Fragment {
     }
 
     private void setInitiazation() {
-        orderAdaper = new Order_Adaper(arrayOrderData, getContext());
+        orderAdaper = new OrderItem_Adaper(arrayOrderData, getContext());
         rcvOrderWaitConfirm.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvOrderWaitConfirm.setAdapter(orderAdaper);
         orderAdaper.notifyDataSetChanged();
@@ -87,7 +87,7 @@ public class OrderWaitForConfirmFragment extends Fragment {
                         OrderData orderData1 = orderItem.getValue(OrderData.class);
                         if (orderData1.getStatusOrder() == 0) {
                             arrayOrderData.add(orderData1);
-                            System.out.println("order item: " + orderData1.toString());
+                            //System.out.println("order item: " + orderData1.toString());
                         }
                     }
                 }
