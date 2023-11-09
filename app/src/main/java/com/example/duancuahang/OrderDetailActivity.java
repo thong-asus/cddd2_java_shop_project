@@ -6,22 +6,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,7 +27,6 @@ import com.example.duancuahang.Class.Image;
 import com.example.duancuahang.Class.OrderData;
 import com.example.duancuahang.Class.ProductData;
 import com.example.duancuahang.Class.ShowMessage;
-import com.example.duancuahang.Fragment.OrderCancelledFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,7 +35,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 
@@ -75,7 +71,8 @@ public class OrderDetailActivity extends AppCompatActivity {
         }
         setControl();
 
-        getInformationOrder(orderData.getIdShop_Order(), orderData.getIdCustomer_Order());
+
+        getInformationOrder();
         getOrderStatus(orderData.getStatusOrder() + "");
         getInformationCustomer(orderData.getIdCustomer_Order());
         getInformationProduct(orderData.getIdProduct_Order());
@@ -83,18 +80,11 @@ public class OrderDetailActivity extends AppCompatActivity {
         setInitialization();
         setEvent();
         context = this;
-
-
-
     }
 
 
 
-    private void updateOrderStatus(int newStatus) {
-        databaseReference = FirebaseDatabase.getInstance().getReference("OrderPrduct/"+orderData.getIdShop_Order()+"/"+orderData.getIdOrder());
-        //Cập nhật trạng thái đơn hàng
-        databaseReference.child("statusOrder").setValue(newStatus);
-    }
+
     private void setEvent() {
         /////////////////////////////////////////////COPY TO CLIPBOARD/////////////////////////////////////////////
         tvCopyOrderID.setOnClickListener(new View.OnClickListener() {
@@ -120,26 +110,6 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
         /////////////////////////////////////////////END COPY TO CLIPBOARD/////////////////////////////////////////////
-
-        //Kiểm tra trạng thái đơn hàng để ẩn hiện nút Xác nhận và Hủy đơn
-        if(orderData.getStatusOrder()==1 || orderData.getStatusOrder()==2 || orderData.getStatusOrder()==3 || orderData.getStatusOrder()==4){
-            btnOrderConfirm.setVisibility(GONE);
-            btnOrderCancel.setVisibility(GONE);
-        }
-
-        //Kiểm tra nếu đơn hàng giao thành công thì hiển thị thời gian giao thành công
-        if(orderData.getStatusOrder()==3){
-            tvTitleOrderComplete_OrderDetail.setVisibility(View.VISIBLE);
-            tvOrderTimeComplete_OrderDetail.setVisibility(View.VISIBLE);
-            tvOrderTimeComplete_OrderDetail.setText("Đã giao thành công");
-        }
-
-        //Kiểm tra nếu đơn đã hủy thì hiển thị thời gian hủy đơn
-        if(orderData.getStatusOrder()==4){
-            tvTitleOrderCancalled_OrderDetail.setVisibility(View.VISIBLE);
-            tvTimeOrderCancelled_OrderDetail.setVisibility(View.VISIBLE);
-            tvTimeOrderCancelled_OrderDetail.setText("Đã hủy");
-        }
         //Sự kiện nút Xác nhận
         btnOrderConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,8 +155,16 @@ public class OrderDetailActivity extends AppCompatActivity {
                 builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
+                        //Lấy thời gian hiện tại hủy đơn bởi shop
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                        Date currentDate = new Date();
+                        String currentTime = dateFormat.format(currentDate);
+                        ///////////////////////////////////////////////////////////////
+                        updateOrderTimeCancelled(currentTime);
                         //cập nhật trạng thái đơn hàng thành HỦY
                         updateOrderStatus(4);
+                        tvTimeOrderCancelled_OrderDetail.setText(orderData.getOrderTimeCancelled());
                         //chuyển về màn hình OrderList
                         Intent intent = new Intent(OrderDetailActivity.this, OrderListActivity.class);
                         startActivity(intent);
@@ -205,6 +183,16 @@ public class OrderDetailActivity extends AppCompatActivity {
         });
     }
 
+    private void updateOrderStatus(int newStatus) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("OrderProduct/"+orderData.getIdShop_Order()+"/"+orderData.getIdOrder());
+        //Cập nhật trạng thái đơn hàng
+        databaseReference.child("statusOrder").setValue(newStatus);
+    }
+    private void updateOrderTimeCancelled(String timeCancelled) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("OrderProduct/"+orderData.getIdShop_Order()+"/"+orderData.getIdOrder());
+        //Cập nhật thời gian hủy đơn hàng
+        databaseReference.child("orderTimeCancelled").setValue(timeCancelled);
+    }
     private void getOrderStatus(String statusOrder) {
         databaseReference = firebaseDatabase.getReference("StatusOrder");
         Query query = databaseReference.orderByKey().equalTo(statusOrder);
@@ -226,45 +214,45 @@ public class OrderDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void getInformationOrder(String idShop_Order, String idCustomer_Order) {
-        databaseReference = firebaseDatabase.getReference("OrderPrduct/" + idShop_Order);
-        Query query = databaseReference.orderByChild("idCustomer_Order").equalTo(idCustomer_Order);
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    tvOrderDetailID.setText(orderData.getIdOrder());
-                    tvOrderTime.setText(orderData.getDateOrder());
-                    tvAmountProduct_OrderDetail.setText(orderData.getQuanlity_Order() + "");
-                    tvTotal.setText(FormatMoneyVietNam.formatMoneyVietNam(orderData.getPrice_Order()) + "đ");
+    private void getInformationOrder() {
+        tvOrderDetailID.setText(orderData.getIdOrder());
+        tvOrderTime.setText(orderData.getDateOrder());
+        tvAmountProduct_OrderDetail.setText(orderData.getQuanlity_Order() + "");
+        tvTotal.setText(FormatMoneyVietNam.formatMoneyVietNam(orderData.getPrice_Order()) + "đ");
 
-                    //Kiểm tra ghi chú đơn hàng
-                    if (orderData.getNote_Order() == "") {
-                        tvNoteContent.setVisibility(GONE);
-                    } else {
-                        tvNoteContent.setText(orderData.getNote_Order());
-                        tvNoteContent.setVisibility(View.VISIBLE);
-                    }
-//                    //Kiểm tra thời gian hoàn thành đơn hàng
-//                    if(orderData.getNote_Order()==""){
-//                        tvNoteContent.setVisibility(GONE);
-//                    } else {
-//                        tvNoteContent.setText(orderData.getNote_Order());
-//                        tvNoteContent.setVisibility(View.VISIBLE);
-//                    }
-                }
-            }
+        //Kiểm tra ghi chú đơn hàng
+        if (orderData.getNote_Order() == "") {
+            tvNoteContent.setVisibility(GONE);
+        } else {
+            tvNoteContent.setText(orderData.getNote_Order());
+            tvNoteContent.setVisibility(View.VISIBLE);
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        //Kiểm tra trạng thái đơn hàng để ẩn hiện nút Xác nhận và Hủy đơn
+        if(orderData.getStatusOrder()==1 || orderData.getStatusOrder()==2 || orderData.getStatusOrder()==3 || orderData.getStatusOrder()==4){
+            btnOrderConfirm.setVisibility(GONE);
+            btnOrderCancel.setVisibility(GONE);
+        }
 
-            }
-        });
+        //Kiểm tra nếu đơn hàng giao thành công thì hiển thị thời gian giao thành công
+        if(orderData.getStatusOrder()==3){
+            tvOrderTimeComplete_OrderDetail.setText(orderData.getOrderTimeComplete());
+            tvTitleOrderComplete_OrderDetail.setVisibility(View.VISIBLE);
+            tvOrderTimeComplete_OrderDetail.setVisibility(View.VISIBLE);
+        }
+
+        //Kiểm tra nếu đơn đã hủy thì hiển thị thời gian hủy đơn
+        if(orderData.getStatusOrder()==4){
+            tvTimeOrderCancelled_OrderDetail.setText(orderData.getOrderTimeCancelled());
+            tvTitleOrderCancalled_OrderDetail.setVisibility(View.VISIBLE);
+            tvTimeOrderCancelled_OrderDetail.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getInformationCustomer(String idCustomer) {
         databaseReference = firebaseDatabase.getReference("Customer/" + idCustomer);
         //Query query = databaseReference.orderByChild("idCustomer").equalTo(idCustomer);
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

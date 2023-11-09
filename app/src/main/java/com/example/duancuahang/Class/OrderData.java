@@ -15,6 +15,9 @@ public class OrderData implements Serializable {
     private String numberPhone_Customer;
     private int price_Order;
     private String note_Order;
+    private String orderTimeCancelled;
+    private String orderTimeComplete;
+
 
     public OrderData() {
         this.idOrder = null;
@@ -29,9 +32,11 @@ public class OrderData implements Serializable {
         this.quanlity_Order = 0;
         this.price_Order = 0;
         this.note_Order = null;
+        this.orderTimeCancelled = null;
+        this.orderTimeComplete = null;
     }
 
-    public OrderData(String idOrder, String idCustomer_Order, String idProduct_Order, String idShop_Order, String idShiper_Order, int statusOrder, String dateOrder, String deliveryAddress, String numberPhone_Customer, String note_Order, int quanlity, int price_order) {
+    public OrderData(String idOrder, String idCustomer_Order, String idProduct_Order, String idShop_Order, String idShiper_Order, int statusOrder, String dateOrder, String deliveryAddress, String numberPhone_Customer, String note_Order, int quanlity, int price_order,String orderTimeCancelled, String orderTimeComplete) {
         this.idOrder = idOrder;
         this.idCustomer_Order = idCustomer_Order;
         this.idProduct_Order = idProduct_Order;
@@ -44,24 +49,44 @@ public class OrderData implements Serializable {
         this.quanlity_Order = quanlity;
         this.price_Order = price_order;
         this.note_Order =note_Order;
+        this.orderTimeCancelled = orderTimeCancelled;
+        this.orderTimeComplete = orderTimeComplete;
     }
 
     @Override
     public String toString() {
-        return "ItemOrder{" +
+        return "OrderData{" +
                 "idOrder='" + idOrder + '\'' +
                 ", idCustomer_Order='" + idCustomer_Order + '\'' +
                 ", idProduct_Order='" + idProduct_Order + '\'' +
                 ", idShop_Order='" + idShop_Order + '\'' +
                 ", idShiper_Order='" + idShiper_Order + '\'' +
                 ", quanlity_Order=" + quanlity_Order +
-                ", statusOrder='" + statusOrder + '\'' +
+                ", statusOrder=" + statusOrder +
                 ", dateOrder='" + dateOrder + '\'' +
                 ", deliveryAddress='" + deliveryAddress + '\'' +
                 ", numberPhone_Customer='" + numberPhone_Customer + '\'' +
                 ", price_Order=" + price_Order +
                 ", note_Order='" + note_Order + '\'' +
+                ", orderTimeCancelled='" + orderTimeCancelled + '\'' +
+                ", orderTimeComplete='" + orderTimeComplete + '\'' +
                 '}';
+    }
+
+    public String getOrderTimeCancelled() {
+        return orderTimeCancelled;
+    }
+
+    public void setOrderTimeCancelled(String orderTimeCancelled) {
+        this.orderTimeCancelled = orderTimeCancelled;
+    }
+
+    public String getOrderTimeComplete() {
+        return orderTimeComplete;
+    }
+
+    public void setOrderTimeComplete(String orderTimeComplete) {
+        this.orderTimeComplete = orderTimeComplete;
     }
 
     public String getNote_Order() {
@@ -83,6 +108,7 @@ public class OrderData implements Serializable {
     public int getQuanlity_Order() {
         return quanlity_Order;
     }
+
     public void setQuanlity_Order(int quanlity_Order) {
         this.quanlity_Order = quanlity_Order;
     }

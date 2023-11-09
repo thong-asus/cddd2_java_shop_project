@@ -74,6 +74,8 @@ public class OrderItem_Adaper extends RecyclerView.Adapter<OrderItem_ViewHolder>
                     /////////Truyền dữ liệu qua màn hình order detail///////////
                     OrderData orderData1 = arrayOrderData.get(finalPosition);
                     intent.putExtra("orderData1", orderData1);
+
+                    System.out.println("Dữ liệu truyền đi tại OrderItem: "+orderData1);
                     ////////////////////////////////////////////////////////////
                     context.startActivity(intent);
                 }

@@ -76,7 +76,7 @@ public class OrderWaitForConfirmFragment extends Fragment {
     }
 
     private void loadOrderItem(){
-        String fullPath = "OrderPrduct/" + shopData.getIdShop();
+        String fullPath = "OrderProduct/" + shopData.getIdShop();
         databaseReference = firebaseDatabase.getInstance().getReference(fullPath);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

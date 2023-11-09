@@ -253,7 +253,7 @@
                             android:id="@+id/tvTotal_OrderDetail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="120dp"
+                            android:layout_marginLeft="110dp"
                             android:textColor="#000" />
                     </LinearLayout>
                     <View
