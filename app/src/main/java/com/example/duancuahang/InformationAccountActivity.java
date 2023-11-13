@@ -22,6 +22,9 @@ import android.widget.Toast;
 
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.RecyclerView.ProductListViewPagerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -46,6 +49,12 @@ public class InformationAccountActivity extends AppCompatActivity {
         setEvent();
     }
 
+    private void logoutSuccess() {
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
     private void setEvent() {
         //Sự kiện đăng xuất tài khoản
         tvLogOut.setOnClickListener(new View.OnClickListener() {
@@ -60,17 +69,25 @@ public class InformationAccountActivity extends AppCompatActivity {
                         SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.remove("informationShop");
+
                         //////////////////////////XÓA TOKEN/////////////////////////////
-                        SharedPreferences preferences = getSharedPreferences("myFCMToken", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor1 = preferences.edit();
-                        editor1.remove("fcmToken");
+                        SharedPreferences sharedPreferences1 = getSharedPreferences("myFCMToken", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor1 = sharedPreferences1.edit();
                         editor1.apply();
+                        editor.remove("informationShop");
+
+                        FirebaseMessaging.getInstance().deleteToken()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            logoutSuccess();
+                                        } else {
+                                            // Xử lý khi không xóa được FCM Token
+                                        }
+                                    }
+                                });
                         ////////////////////////////////////////////////////////////////
-                        editor.apply();
-                        Intent intent = new Intent(context, LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
                     }
                 });
                 builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {

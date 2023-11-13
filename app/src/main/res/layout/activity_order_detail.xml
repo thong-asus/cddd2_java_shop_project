@@ -111,7 +111,7 @@
                         android:id="@+id/tvCustomerName_OrderDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="___________NAME__________"
+                        android:text="unknown_customer_name"
                         android:textColor="#000"
                         android:textSize="17dp"/>
                    <LinearLayout
@@ -123,7 +123,7 @@
                            android:id="@+id/tvCustomerPhoneNumber_OrderDetail"
                            android:layout_width="wrap_content"
                            android:layout_height="wrap_content"
-                           android:text="___________PHONE__________"
+                           android:text="unknown_customer_phone"
                            android:textColor="#000"
                            android:textSize="17dp"/>
 
@@ -143,7 +143,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
-                        android:text="___________ADDRESS__________"
+                        android:text="unknown_customer_address"
                         android:textColor="#000"
                         android:textSize="17dp" />
 
