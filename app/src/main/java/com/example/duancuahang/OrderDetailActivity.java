@@ -26,6 +26,7 @@ import com.example.duancuahang.Class.FormatMoneyVietNam;
 import com.example.duancuahang.Class.Image;
 import com.example.duancuahang.Class.OrderData;
 import com.example.duancuahang.Class.ProductData;
+import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.Class.ShowMessage;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,7 +52,6 @@ public class OrderDetailActivity extends AppCompatActivity {
     ProgressBar progessBar_loadingImageItem;
     ImageView imgProduct;
     Button btnOrderConfirm, btnOrderCancel;
-
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     OrderData orderData = new OrderData();

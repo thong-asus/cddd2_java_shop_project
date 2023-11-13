@@ -13,6 +13,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -29,7 +30,7 @@ public class HomeShop extends AppCompatActivity {
 
     Toolbar toolbar;
     LinearLayout linearLayout_SanPhamCuaToi_ScreenHome;
-    View frChoLayHang, frHuyDonHang, frDanhGia;
+    View linearLayout_ViewRating,linearLayout_OrderCancelled,linearLayout_WaitTakeGoods;
     TextView tvNameShop_ScreenHome, tvBillHistory;
     ImageView ivAvataShop_ScreenHome;
     Context context;
@@ -106,6 +107,13 @@ public class HomeShop extends AppCompatActivity {
     }
 //    Xu ly su kien
     private void setEvent() {
+        linearLayout_ViewRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeShop.this, ViewRatingActivity.class);
+                startActivity(intent);
+            }
+        });
         linearLayout_SanPhamCuaToi_ScreenHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,7 +138,9 @@ public class HomeShop extends AppCompatActivity {
         tvNameShop_ScreenHome = findViewById(R.id.tvNameShop_ScreenHome);
         tvBillHistory = findViewById(R.id.tvBillHistory);
         ivAvataShop_ScreenHome = findViewById(R.id.ivAvataShop_ScreenHome);
-
+        linearLayout_WaitTakeGoods = findViewById(R.id.linearLayout_WaitTakeGoods);
+        linearLayout_OrderCancelled = findViewById(R.id.linearLayout_OrderCancelled);
+        linearLayout_ViewRating = findViewById(R.id.linearLayout_ViewRating);
     }
 
 //    Thêm item và ActionBar

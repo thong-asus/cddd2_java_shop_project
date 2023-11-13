@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.example.duancuahang.Class.OrderData;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.R;
-import com.example.duancuahang.RecyclerView.OrderItem_Adaper;
+import com.example.duancuahang.RecyclerView.OrderItem_Adapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +35,7 @@ public class OrderWaitForConfirmFragment extends Fragment {
     DatabaseReference databaseReference;
     //FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     FirebaseDatabase firebaseDatabase;
-   OrderItem_Adaper orderAdaper;
+   OrderItem_Adapter orderAdaper;
    RecyclerView rcvOrderWaitConfirm;
     private ShopData shopData = new ShopData();
     private String shopPhoneNumber;
@@ -60,7 +60,7 @@ public class OrderWaitForConfirmFragment extends Fragment {
     }
 
     private void setInitiazation() {
-        orderAdaper = new OrderItem_Adaper(arrayOrderData, getContext());
+        orderAdaper = new OrderItem_Adapter(arrayOrderData, getContext());
         rcvOrderWaitConfirm.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvOrderWaitConfirm.setAdapter(orderAdaper);
         orderAdaper.notifyDataSetChanged();

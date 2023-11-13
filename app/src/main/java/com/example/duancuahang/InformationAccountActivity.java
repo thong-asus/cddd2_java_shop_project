@@ -60,6 +60,12 @@ public class InformationAccountActivity extends AppCompatActivity {
                         SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.remove("informationShop");
+                        //////////////////////////XÓA TOKEN/////////////////////////////
+                        SharedPreferences preferences = getSharedPreferences("myFCMToken", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor1 = preferences.edit();
+                        editor1.remove("fcmToken");
+                        editor1.apply();
+                        ////////////////////////////////////////////////////////////////
                         editor.apply();
                         Intent intent = new Intent(context, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

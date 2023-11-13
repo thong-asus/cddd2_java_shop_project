@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_marginTop="5dp"
+    android:layout_marginHorizontal="5dp"
+    android:padding="5dp">
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp">
+        <ImageView
+            android:layout_marginRight="10dp"
+            android:id="@+id/imgCustomerCommented"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/icondowload"/>
+        <ProgressBar
+            android:id="@+id/progessBar_loadingCustomerCommented"
+            android:visibility="gone"
+            android:indeterminate="true"
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvCustomerNameCommented"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Tên người Comment"
+            android:textColor="#000"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvDateCommented"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Ngày comment"
+            android:textColor="#000" />
+        <TextView
+            android:id="@+id/tvContentCommented"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Nội dung comment"
+            android:textColor="#000" />
+    </LinearLayout>
+</LinearLayout>

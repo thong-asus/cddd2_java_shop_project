@@ -95,72 +95,66 @@
                 android:layout_marginHorizontal="5dp"
                 android:layout_marginTop="10dp"
                 >
-               <FrameLayout
+               <LinearLayout
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
+                   android:orientation="vertical"
                    android:layout_weight="1"
                    android:layout_marginRight="5dp"
-                   android:id="@+id/frChoLayHang"
-                   >
+                   android:id="@+id/linearLayout_WaitTakeGoods">
                    <ImageView
                        android:layout_width="match_parent"
                        android:layout_height="100dp"
-                       android:src="@drawable/cholayhang"
-                       />
-                   <Button
-                       android:layout_width="match_parent"
+                       android:src="@drawable/cholayhang"/>
+                   <TextView
+                       android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:text="Chờ lấy hàng"
-                       android:background="@drawable/bg_button_normal"
                        android:textStyle="bold"
-                       android:textColor="@color/white"
-                      android:layout_gravity="bottom"
-                       />
-               </FrameLayout>
-                <FrameLayout
+                       android:textColor="#000"
+                       android:layout_gravity="center"/>
+               </LinearLayout>
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:orientation="vertical"
                     android:layout_marginRight="5dp"
-                    android:id="@+id/frHuyDonHang"
-                    >
+                    android:id="@+id/linearLayout_OrderCancelled">
                     <ImageView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="100dp"
                         android:src="@drawable/huydonhang"
-                        />
-                    <Button
-                        android:layout_width="match_parent"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:layout_gravity="center" />
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Đơn bị hủy"
-                        android:background="@drawable/bg_button_normal"
                         android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:layout_gravity="bottom"
-                        />
-
-                </FrameLayout>
-                <FrameLayout
+                        android:textColor="#000"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/frDanhGia"
+                    android:orientation="vertical"
+                    android:id="@+id/linearLayout_ViewRating"
                     >
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:src="@drawable/danhgia"
-                        />
-                    <Button
-                        android:layout_width="match_parent"
+                        android:src="@drawable/danhgia" />
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Đánh giá"
-                        android:background="@drawable/bg_button_normal"
                         android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:layout_gravity="bottom"
-                        />
-                </FrameLayout>
+                        android:textColor="#000"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
         <View

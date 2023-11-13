@@ -6,9 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -33,12 +36,15 @@ import com.example.duancuahang.Fragment.OrderDeliveredFragment;
 import com.example.duancuahang.Fragment.OrderDeliveringFragment;
 import com.example.duancuahang.Fragment.OrderWaitForConfirmFragment;
 import com.example.duancuahang.Fragment.OrderWaitForTakeGoodsFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity {
@@ -70,7 +76,8 @@ public class LoginActivity extends AppCompatActivity {
         //Kiểm tra người dùng đã đăng nhập chưa
         SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
-
+    createChanelNotification();
+//        getFCMToken();
 //        if (isLoggedIn) {
 //            Intent intent = new Intent(LoginActivity.this, HomeShop.class);
 //            startActivity(intent);
@@ -79,8 +86,51 @@ public class LoginActivity extends AppCompatActivity {
 //            setContentView(R.layout.activity_login);
 //        }
     }
+    private void createChanelNotification(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel = new NotificationChannel("push_notification","PushNotification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+    }
+
+//    private void getFCMToken(){
+//        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+//            if (task.isSuccessful()){
+//                System.out.println("FCM token: " + task.getResult());
+//            }
+//        });
+//    }
+    // Hàm lấy và lưu FCM Token
+    private void getAndSaveFCMToken(String idShop) {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            String fcmToken = task.getResult();
+                            // Lưu FCM Token vào SharedPreferences hoặc gửi lên máy chủ
+                            saveFCMTokenToSharedPreferences(fcmToken);
+                            //Update fcmToken vào tài khoản đã đăng nhập thành công
+                            firebaseDatabase.getReference("Shop/"+idShop);
+                            databaseReference.child("fcmToken").setValue(fcmToken);
+                        } else {
+                            System.out.println("Không lấy và lưu được fcm token");
+                        }
+                    }
+                });
+    }
+    private void saveFCMTokenToSharedPreferences(String fcmToken) {
+        //Lưu FCM Token vào SharedPreferences
+        SharedPreferences preferences = getSharedPreferences("myFCMToken", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("fcmToken", fcmToken);
+        editor.apply();
+    }
+
 
     private void setEvent() {
+
         btnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +175,9 @@ public class LoginActivity extends AppCompatActivity {
                                         editor.putBoolean("saveInfo",chkLuuTaiKhoan.isChecked());
                                         editor.commit();
 
-
+                                        /////////////////////// Gọi hàm cập nhật FCM TOKEN ///////////////////////
+                                        getAndSaveFCMToken(edtSoDienThoai.getText().toString());
+                                        ////////////////////////////////////////////////////////////////////////
                                         editor.apply();
                                         Intent intent = new Intent(context, HomeShop.class);
                                         startActivity(intent);

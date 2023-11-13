@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.ViewLikeProductFragment"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/vFragmentViewLike"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvLiked"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="20dp"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/tvNoLiked"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chưa có lượt thích"
+            android:textAlignment="center"
+            android:textSize="18dp"
+            android:textStyle="bold|italic"
+            android:textColor="#000"
+            android:layout_marginTop="20dp"
+            />
+    </FrameLayout>
+
+</LinearLayout>

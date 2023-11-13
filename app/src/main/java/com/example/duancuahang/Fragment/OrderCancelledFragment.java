@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.duancuahang.Class.OrderData;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.R;
-import com.example.duancuahang.RecyclerView.OrderItem_Adaper;
+import com.example.duancuahang.RecyclerView.OrderItem_Adapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +34,7 @@ public class OrderCancelledFragment extends Fragment {
     TextView tvNoOrderCancelled;
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    OrderItem_Adaper orderAdaper;
+    OrderItem_Adapter orderAdaper;
     RecyclerView rcvOrderCancelled;
     private ShopData shopData = new ShopData();
 
@@ -58,7 +58,7 @@ public class OrderCancelledFragment extends Fragment {
     }
 
     private void setInitiazation() {
-        orderAdaper = new OrderItem_Adaper(arrayOrderData, getContext());
+        orderAdaper = new OrderItem_Adapter(arrayOrderData, getContext());
         rcvOrderCancelled.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvOrderCancelled.setAdapter(orderAdaper);
         orderAdaper.notifyDataSetChanged();
