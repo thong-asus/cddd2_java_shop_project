@@ -50,6 +50,7 @@ import java.util.Arrays;
 
 public class HomeShop extends AppCompatActivity {
 
+//    khai báo biến giao diện
     Toolbar toolbar;
     LinearLayout linearLayout_SanPhamCuaToi_ScreenHome;
     View linearLayout_ViewRating, linearLayout_OrderCancelled, linearLayout_WaitTakeGoods;
