@@ -2,13 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#fff">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar_ScreenHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#DFD8D8"
+        android:background="#FFFFFF"
+        app:title="Trang chủ"
         />
 
     <!--    Content screen home-->
@@ -35,7 +38,7 @@
                 android:id="@+id/ivAvataShop_ScreenHome"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/bg_avatashop"
+                android:background="@drawable/bg_avatar"
                 android:scaleType="centerCrop"
                 android:src="@drawable/imgdemo" />
 
@@ -46,7 +49,8 @@
                 android:text="Thong's Shop"
                 android:textAlignment="center"
                 android:textSize="30dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="#000"/>
         </LinearLayout>
 
         <View
@@ -65,7 +69,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Đơn hàng (Trạng thái)"
+                android:text="Đơn hàng"
                 android:textSize="30dp"
                 android:textStyle="bold"
                 android:paddingHorizontal="20dp"
@@ -77,6 +81,7 @@
                 android:layout_height="wrap_content"
                 android:text="Xem danh sách đơn đặt hàng"
                 android:layout_gravity="end"
+                android:textColor="#000"
                 android:paddingRight="20dp"
                 android:drawableRight="@drawable/icon_chevron_right"
                 android:textStyle="italic"
@@ -90,73 +95,66 @@
                 android:layout_marginHorizontal="5dp"
                 android:layout_marginTop="10dp"
                 >
-               <FrameLayout
+               <LinearLayout
                    android:layout_width="0dp"
                    android:layout_height="wrap_content"
+                   android:orientation="vertical"
                    android:layout_weight="1"
                    android:layout_marginRight="5dp"
-
-                   >
+                   android:id="@+id/linearLayout_WaitTakeGoods">
                    <ImageView
                        android:layout_width="match_parent"
                        android:layout_height="100dp"
-                       android:src="@drawable/cholayhang"
-                       />
-                   <Button
-                       android:id="@+id/btnChoLayHang"
-                       android:layout_width="match_parent"
+                       android:src="@drawable/cholayhang"/>
+                   <TextView
+                       android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:text="Chờ lấy hàng"
-                       android:background="@drawable/bg_button_normal"
                        android:textStyle="bold"
-                       android:textColor="@color/white"
-                      android:layout_gravity="bottom"
-                       />
-               </FrameLayout>
-                <FrameLayout
+                       android:textColor="#000"
+                       android:layout_gravity="center"/>
+               </LinearLayout>
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:orientation="vertical"
                     android:layout_marginRight="5dp"
-                    >
+                    android:id="@+id/linearLayout_OrderCancelled">
                     <ImageView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="100dp"
                         android:src="@drawable/huydonhang"
-                        />
-                    <Button
-                        android:id="@+id/btnHuyDonHang"
-                        android:layout_width="match_parent"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:layout_gravity="center" />
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Đơn bị hủy"
-                        android:background="@drawable/bg_button_normal"
                         android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:layout_gravity="bottom"
-                        />
-
-                </FrameLayout>
-                <FrameLayout
+                        android:textColor="#000"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:id="@+id/linearLayout_ViewRating"
                     >
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:src="@drawable/danhgia"
-                        />
-                    <Button
-                        android:id="@+id/btnDanhGia"
-                        android:layout_width="match_parent"
+                        android:src="@drawable/danhgia" />
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Đánh giá"
-                        android:background="@drawable/bg_button_normal"
                         android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:layout_gravity="bottom"
-                        />
-                </FrameLayout>
+                        android:textColor="#000"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
         <View

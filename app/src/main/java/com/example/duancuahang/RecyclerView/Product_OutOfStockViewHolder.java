@@ -3,7 +3,6 @@ package com.example.duancuahang.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +20,7 @@ public class Product_OutOfStockViewHolder extends RecyclerView.ViewHolder {
         tvNameProductItem = itemView.findViewById(R.id.tvNameProductItem);
         tvCategory = itemView.findViewById(R.id.tvCategoryProductItem);
         tvManufaceProduct = itemView.findViewById(R.id.tvManufaceProductItem);
-        tvPriceProduct = itemView.findViewById(R.id.tvPriceProduct);
+        tvPriceProduct = itemView.findViewById(R.id.tvPriceProduct_OrderDetail);
         tvQuanlityProduct = itemView.findViewById(R.id.tvQuanlityProduct);
         btnUpdateProductItem = itemView.findViewById(R.id.btnUpdateProductItem);
         btnDeleteProductItem = itemView.findViewById(R.id.btnDeleteProductItem);

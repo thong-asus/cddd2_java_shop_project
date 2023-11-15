@@ -19,7 +19,7 @@
             android:layout_marginLeft="5dp"
             android:src="@drawable/icondowload"/>
         <ProgressBar
-            android:id="@+id/progessBar_loadingImageItem"
+            android:id="@+id/progessBar_loadingImageItem_OrderDetail"
             android:visibility="gone"
             android:indeterminate="true"
             style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small"
@@ -77,7 +77,7 @@
                 android:weightSum="2">
 
                 <TextView
-                    android:id="@+id/tvPriceProduct"
+                    android:id="@+id/tvPriceProduct_OrderDetail"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

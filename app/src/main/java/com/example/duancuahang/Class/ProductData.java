@@ -12,7 +12,7 @@ public class ProductData implements Serializable {
     private int quanlityProduct;
     private String descriptionProduct;
     private int sumLike;
-    private double overageCmtProduct;
+    private int overageCmtProduct;
     private String idUserProduct;
 
     public ProductData() {
@@ -98,15 +98,15 @@ public class ProductData implements Serializable {
         this.sumLike = sumLike;
     }
 
-    public double getOverageCmtProduct() {
+    public int getOverageCmtProduct() {
         return overageCmtProduct;
     }
 
-    public void setOverageCmtProduct(double overageCmtProduct) {
+    public void setOverageCmtProduct(int overageCmtProduct) {
         this.overageCmtProduct = overageCmtProduct;
     }
 
-    public ProductData(String idProduct, String nameProduct,  int priceProduct, String keyCategoryProduct, String keyManufaceProduct, int quanlityProduct, String descriptionProduct, int sumLike, double overageCmtProduct, String idUserProduct) {
+    public ProductData(String idProduct, String nameProduct,  int priceProduct, String keyCategoryProduct, String keyManufaceProduct, int quanlityProduct, String descriptionProduct, int sumLike, int overageCmtProduct, String idUserProduct) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
 //        this.urlImageProduct = urlImageProduct;

@@ -53,7 +53,7 @@ public class Productlist extends AppCompatActivity {
         viewPager_ScreenProductList = findViewById(R.id.viewPager_ScreenProductList);
         tabLayout_ScreenProductList = findViewById(R.id.tabLayout_ScreenProductList);
         ivAddProduct_ProductList = findViewById(R.id.ivAddProduct_ProductList);
-        toolBar_ProductList =findViewById(R.id.toolBar_ProductList);
+        toolBar_ProductList = findViewById(R.id.toolBar_ProductList);
     }
 
     private void setIntiazation() {

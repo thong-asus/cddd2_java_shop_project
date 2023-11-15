@@ -141,7 +141,7 @@ public class Product_OutOfStockAdater extends RecyclerView.Adapter<Product_OutOf
         holder.tvIdProductItem.setText(productData.getIdProduct());
         holder.tvNameProductItem.setText(productData.getNameProduct());
         holder.tvCategory.setText("Danh mục: " + category.getNameCategory());
-        holder.tvManufaceProduct.setText("Hảng: " + manuface.getNameManuface());
+        holder.tvManufaceProduct.setText("Hãng sản xuất: " + manuface.getNameManuface());
         holder.tvPriceProduct.setText("Giá: " + productData.getPriceProduct() + "VND");
         holder.tvQuanlityProduct.setText("Số lượng: " + productData.getQuanlityProduct());
         databaseReference = firebaseDatabase.getReference("ImageProducts");

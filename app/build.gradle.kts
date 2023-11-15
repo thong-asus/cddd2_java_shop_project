@@ -30,6 +30,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
@@ -42,10 +43,13 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.android.volley:volley:1.2.1")
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    //implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("id.zelory:compressor:3.0.1")
     implementation("com.google.firebase:firebase-auth")
     implementation ("com.google.firebase:firebase-auth:22.2.0")
@@ -53,4 +57,21 @@ dependencies {
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
     implementation ("com.facebook.android:facebook-login:latest.release")
     implementation ("com.facebook.android:facebook-android-sdk:[8,9)")
+    //implementation ("com.github.User:Repo:Tag")
+    implementation ("com.github.dhaval2404:imagepicker:2.1")
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+
+    implementation ("com.google.android.gms:play-services-base:17.0.0")
+    implementation ("com.google.android.gms:play-services-basement:17.0.0")
+    implementation("com.google.firebase:firebase-messaging")
+//    implementation ("com.google.firebase:firebase-bom:29.0.0")
+//    implementation (platform("com.google.firebase:firebase-bom:29.0.0"))
+
+//    appCheck {
+//        factory {
+//            tokenProviders = ["safety-net"]
+//        }
+//    }
 }
+

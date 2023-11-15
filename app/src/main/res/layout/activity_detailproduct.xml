@@ -6,25 +6,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".Detailproduct"
-    android:background="#EDECED"
+    android:background="#FFFFFF"
     >
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar_DetalProduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#0D8CA1"
+        android:background="#FFFFFF"
+        app:title="Chi tiết sản phẩm"
         >
-        <Button
-            android:id="@+id/btnUpdateProduct_DetailProduct"
-            android:layout_gravity="right"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:text="Sửa"
-            android:background="@drawable/bg_button_normal"
-            android:layout_marginRight="10dp"
-            />
-    </androidx.appcompat.widget.Toolbar>
 
+    </androidx.appcompat.widget.Toolbar>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#B0B0B0"/>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -111,12 +107,8 @@
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:shadowColor="#0E1C75"
-                    android:shadowDx="10"
-                    android:shadowDy="10"
-                    android:shadowRadius="10"
                     android:text="Tên sản phẩm"
-                    android:textColor="#5C4E4E"
+                    android:textColor="#000"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -124,8 +116,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:rotationX="7"
-                    app:cardElevation="7dp"
                     >
 
                     <TextView
@@ -153,12 +143,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:shadowColor="#0E1C75"
-                    android:shadowDx="10"
-                    android:shadowDy="10"
-                    android:shadowRadius="10"
                     android:text="Danh mục"
-                    android:textColor="#5C4E4E"
+                    android:textColor="#000"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -166,8 +152,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:rotationX="7"
-                    app:cardElevation="7dp"
                     >
 
                     <TextView
@@ -194,12 +178,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:shadowColor="#0E1C75"
-                    android:shadowDx="10"
-                    android:shadowDy="10"
-                    android:shadowRadius="10"
                     android:text="Hãng sản xuất"
-                    android:textColor="#5C4E4E"
+                    android:textColor="#000"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -207,8 +187,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:rotationX="7"
-                    app:cardElevation="7dp"
                     >
 
                     <TextView
@@ -236,12 +214,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:shadowColor="#0E1C75"
-                    android:shadowDx="10"
-                    android:shadowDy="10"
-                    android:shadowRadius="10"
                     android:text="Mô tả sản phẩm"
-                    android:textColor="#5C4E4E"
+                    android:textColor="#000"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -249,8 +223,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:rotationX="7"
-                    app:cardElevation="7dp"
                     >
 
                     <TextView
@@ -276,12 +248,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:shadowColor="#0E1C75"
-                    android:shadowDx="10"
-                    android:shadowDy="10"
-                    android:shadowRadius="10"
                     android:text="Giá sản phẩm"
-                    android:textColor="#5C4E4E"
+                    android:textColor="#000"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -289,8 +257,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:rotationX="7"
-                    app:cardElevation="7dp"
                     >
 
                     <TextView
@@ -321,12 +287,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:shadowColor="#0E1C75"
-                    android:shadowDx="10"
-                    android:shadowDy="10"
-                    android:shadowRadius="10"
                     android:text="Số lượng sản phẩm"
-                    android:textColor="#5C4E4E"
+                    android:textColor="#000"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -334,8 +296,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:rotationX="7"
-                    app:cardElevation="7dp"
                     >
 
                     <TextView

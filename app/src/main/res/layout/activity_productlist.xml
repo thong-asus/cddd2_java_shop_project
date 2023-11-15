@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Productlist"
-    >
+    tools:context=".Productlist">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -20,14 +19,18 @@
                 android:id="@+id/toolBar_ProductList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#0D8CA1"
-                />
+                android:background="#FFFFFF"
+                app:title="Sản phẩm của tôi"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#B0B0B0"/>
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout_ScreenProductList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                app:tabSelectedTextColor="#FF5722"/>
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager_ScreenProductList"
