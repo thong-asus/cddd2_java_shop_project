@@ -1,31 +1,20 @@
 package com.example.duancuahang.Class;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class MessageData implements Serializable {
     private String idSender;
-    private String contentMessage;
-    private String dateTime;
-    private boolean statusMessage;
+    private String idReceiver;
+    private ArrayList<ItemMessage> arrItemMessage;
 
     @Override
     public String toString() {
         return "MessageData{" +
                 "idSender='" + idSender + '\'' +
-                ", contentMessage='" + contentMessage + '\'' +
-                ", dateTime='" + dateTime + '\'' +
-                ", statusMessage=" + statusMessage +
+                ", idReceiver='" + idReceiver + '\'' +
+                ", arrItemMessage=" + arrItemMessage +
                 '}';
-    }
-
-    public MessageData(String idSender, String contentMessage, String dateTime, boolean statusMessage) {
-        this.idSender = idSender;
-        this.contentMessage = contentMessage;
-        this.dateTime = dateTime;
-        this.statusMessage = statusMessage;
-    }
-
-    public MessageData() {
     }
 
     public String getIdSender() {
@@ -36,18 +25,28 @@ public class MessageData implements Serializable {
         this.idSender = idSender;
     }
 
-    public String getContentMessage() {
-        return contentMessage;
+    public String getIdReceiver() {
+        return idReceiver;
     }
 
-    public void setContentMessage(String contentMessage) {
-        this.contentMessage = contentMessage;
-    }
-    public String getDateTime() {
-        return dateTime;
+    public void setIdReceiver(String idReceiver) {
+        this.idReceiver = idReceiver;
     }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
+    public ArrayList<ItemMessage> getArrItemMessage() {
+        return arrItemMessage;
+    }
+
+    public void setArrItemMessage(ArrayList<ItemMessage> arrItemMessage) {
+        this.arrItemMessage = arrItemMessage;
+    }
+
+    public MessageData() {
+    }
+
+    public MessageData(String idSender, String idReceiver, ArrayList<ItemMessage> arrItemMessage) {
+        this.idSender = idSender;
+        this.idReceiver = idReceiver;
+        this.arrItemMessage = arrItemMessage;
     }
 }
