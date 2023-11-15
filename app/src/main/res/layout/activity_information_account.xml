@@ -48,7 +48,7 @@
             android:layout_height="90dp"
             android:id="@+id/imgAvartar"
             android:src="@drawable/iconshop"
-            android:scaleType="centerInside"
+            app:civ_border_width="1dp"
             android:layout_marginLeft="130dp"/>
     </LinearLayout>
     <View

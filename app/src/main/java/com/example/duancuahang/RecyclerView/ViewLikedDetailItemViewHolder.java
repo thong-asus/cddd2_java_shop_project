@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duancuahang.R;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class ViewLikedDetailItemViewHolder extends RecyclerView.ViewHolder {
-    ImageView imgCustomerLiked;
+    CircleImageView imgCustomerLiked;
     TextView tvCustomerNameLiked;
     public ViewLikedDetailItemViewHolder(@NonNull View itemView) {
         super(itemView);

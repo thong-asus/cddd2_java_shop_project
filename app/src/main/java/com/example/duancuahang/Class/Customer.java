@@ -7,15 +7,6 @@ public class Customer implements Serializable {
     private String address;
     private String imageUser;
     private String name;
-    private String fcmToken;
-
-    public String getFcmToken() {
-        return fcmToken;
-    }
-
-    public void setFcmToken(String fcmToken) {
-        this.fcmToken = fcmToken;
-    }
 
     @Override
     public String toString() {

@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duancuahang.R;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ViewCommentedDetailItemViewHolder extends RecyclerView.ViewHolder {
-    ImageView imgCustomerCommented;
+    CircleImageView imgCustomerCommented;
     TextView tvCustomerNameCommented, tvDateCommented, tvContentCommented;
     public ViewCommentedDetailItemViewHolder(@NonNull View itemView) {
         super(itemView);

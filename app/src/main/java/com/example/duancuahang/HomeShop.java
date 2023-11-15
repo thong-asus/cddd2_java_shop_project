@@ -1,8 +1,6 @@
 package com.example.duancuahang;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -10,13 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,51 +18,34 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duancuahang.Class.ShopData;
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.example.duancuahang.Fragment.OrderWaitForTakeGoodsFragment;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeShop extends AppCompatActivity {
 
     Toolbar toolbar;
     LinearLayout linearLayout_SanPhamCuaToi_ScreenHome;
-    View linearLayout_ViewRating, linearLayout_OrderCancelled, linearLayout_WaitTakeGoods;
+    View linearLayout_ViewRating,linearLayout_OrderCancelled,linearLayout_WaitTakeGoods;
     TextView tvNameShop_ScreenHome, tvBillHistory;
-    ImageView ivAvataShop_ScreenHome;
+    CircleImageView ivAvataShop_ScreenHome;
     Context context;
-    CallbackManager callbackManager;
     private ShopData shopData = new ShopData();
-    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_shop);
-        callbackManager = CallbackManager.Factory.create();
+
+
+
+
         SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
         if (sharedPreferences.contains("informationShop")) {
-           String jsonShop = sharedPreferences.getString("informationShop", "");
-           Gson gson = new Gson();
+            String jsonShop = sharedPreferences.getString("informationShop", "");
+            Gson gson = new Gson();
             shopData = gson.fromJson(jsonShop, ShopData.class);
         } else {
             // Dữ liệu không tồn tại, có thể là người dùng đã đăng xuất hoặc lần đầu sử dụng ứng dụng
@@ -89,65 +64,83 @@ public class HomeShop extends AppCompatActivity {
 
         context = this;
         setControl();
-        setIntiazation();
+        setInitialization();
         setEvent();
         setSupportActionBar(toolbar);
 
     }
 
-    private void setIntiazation() {
-        tvNameShop_ScreenHome.setText(shopData.getShopName());
-        if (shopData.getUrlImgShopAvatar().isEmpty()) {
+    private void setInitialization() {
+            tvNameShop_ScreenHome.setText(shopData.getShopName());
+        if (shopData.getUrlImgShopAvatar().isEmpty()){
             ivAvataShop_ScreenHome.setImageResource(R.drawable.iconshop);
-        } else {
-            Picasso.get().load(shopData.getUrlImgShopAvatar()).into(ivAvataShop_ScreenHome);
         }
-
+        else {
+            Picasso.get().load(shopData.getUrlImgShopAvatar()).placeholder(R.drawable.icondowload).into(ivAvataShop_ScreenHome);
+        }
     }
 
+    //set menu
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu,menu);
         return super.onPrepareOptionsMenu(menu);
     }
 
-    //    Xu ly su kien
+    //xử lý sự kiện khi chọn menu
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+        } else if(item.getItemId() == R.id.itSetting_Actionbar){
+                Intent intent = new Intent(HomeShop.this, InformationAccountActivity.class);
+                startActivity(intent);
+                Toast.makeText(context, "Chuyển sang màn hình Cài đặt", Toast.LENGTH_SHORT).show();
+        } else if(item.getItemId() == R.id.itNotification_Actionbar){
+            Toast.makeText(context, "Chuyển sang màn hình Thông báo", Toast.LENGTH_SHORT).show();
+        } else if(item.getItemId() == R.id.itMessage_Actionbar){
+            Toast.makeText(context, "Chuyển sang màn hình Tin nhắn", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(context,MessageActivity.class);
+//            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+//    Xu ly su kien
     private void setEvent() {
+//        linearLayout_WaitTakeGoods.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.vFragmentOrderWaitTakeGoods, new OrderWaitForTakeGoodsFragment())
+//                        .commit();
+//            }
+//        });
+        linearLayout_ViewRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeShop.this, ViewRatingListActivity.class);
+                startActivity(intent);
+//                PendingIntent pendingIntent =
+            }
+        });
         linearLayout_SanPhamCuaToi_ScreenHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, Productlist.class);
+                Intent intent = new Intent(context,Productlist.class);
                 startActivity(intent);
             }
         });
         tvBillHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeShop.this, OrderListActivity.class);
+                Intent intent = new Intent(HomeShop.this,OrderListActivity.class);
                 startActivity(intent);
             }
         });
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.itMessage_Actionbar){
-            Intent intent = new Intent(context, MessageActivity.class);
-            intent.putExtra("idUser","0372907720");
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
 
     }
 
-    //    Anh xa
+//    Anh xa
     private void setControl() {
         toolbar = findViewById(R.id.toolBar_ScreenHome);
         linearLayout_SanPhamCuaToi_ScreenHome = findViewById(R.id.linearLayout_SanPhamCuaToi_ScreenHome);
@@ -159,11 +152,9 @@ public class HomeShop extends AppCompatActivity {
         linearLayout_ViewRating = findViewById(R.id.linearLayout_ViewRating);
     }
 
-    //    Thêm item và ActionBar
+//    Thêm item và ActionBar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
     }
-
-
 }

@@ -38,7 +38,7 @@
                 android:id="@+id/ivAvataShop_ScreenHome"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:background="@drawable/bg_avatar"
+                app:civ_border_width="1dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/imgdemo" />
 

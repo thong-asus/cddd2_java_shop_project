@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,17 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.duancuahang.Class.Customer;
-import com.example.duancuahang.Class.ItemMessage;
 import com.example.duancuahang.Class.MessageData;
-import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.RecyclerView.Message_Adapter;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -41,9 +36,9 @@ public class MessageActivity extends AppCompatActivity {
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
-    ArrayList<String> arrIdItemMessage = new ArrayList<>();
+    ArrayList<MessageData> arrMessageData = new ArrayList<>();
     Message_Adapter messageAdapter;
-    private ShopData shopData = new ShopData();
+    private Customer customer = new Customer();
     private String idUser = "";
 
     @Override
@@ -51,6 +46,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         context = this;
+        customer = new Customer("0123456789", "demo address", "Demo", null);
         setControl();
         setIntiazation();
         getMessageUser();
@@ -58,36 +54,25 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void sendMessage() {
-        databaseReference = firebaseDatabase.getReference("ItemMessage");
-        String keyPush = databaseReference.push().toString().substring(databaseReference.push().toString().lastIndexOf("/"));
-        ItemMessage itemMessage = new ItemMessage(keyPush,shopData.getIdShop()+"-Shop",edtInputContent_Message.getText().toString());
-        databaseReference.child(keyPush).setValue(itemMessage).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                clearInput();
-                hideKeyboard();
-                databaseReference = firebaseDatabase.getReference("Message/"+shopData.getIdShop()+"/"+idUser);
-                databaseReference.child(itemMessage.getIdItemMessage()+"/idItemMessage").setValue(itemMessage.getIdItemMessage());
-                databaseReference = firebaseDatabase.getReference("Message/"+idUser+"/"+shopData.getIdShop());
-                databaseReference.child(itemMessage.getIdItemMessage()+"/idItemMessage").setValue(itemMessage.getIdItemMessage());
-            }
-        });
-
+        databaseReference = firebaseDatabase.getReference("MessageActivity/" + customer.getId() + "/" + idUser);
+        MessageData messageData = new MessageData(customer.getId() + "-Customer", edtInputContent_Message.getText().toString(), "", false);
+        databaseReference.push().setValue(messageData);
     }
 
     private void getMessageUser() {
-        databaseReference = firebaseDatabase.getReference("Message/" + shopData.getIdShop()+"/"+idUser);
+        databaseReference = firebaseDatabase.getReference("MessageActivity/" + customer.getId() + "/" + idUser);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                arrIdItemMessage.clear();
-                if(snapshot.exists()){
-                    for (DataSnapshot itemMess:
-                         snapshot.getChildren()) {
-                        String idMessage = itemMess.child("idItemMessage").getValue().toString();
-                        arrIdItemMessage.add(idMessage);
-                        messageAdapter.notifyDataSetChanged();
+                arrMessageData.clear();
+                if (snapshot.exists()) {
+                    for (DataSnapshot itemMessage :
+                            snapshot.getChildren()) {
+                        MessageData messageData = itemMessage.getValue(MessageData.class);
+                        arrMessageData.add(messageData);
                     }
+                    messageAdapter.notifyDataSetChanged();
+                    rcvContent_Message.scrollToPosition(messageAdapter.getItemCount() - 1);
                 }
             }
 
@@ -104,6 +89,8 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (!edtInputContent_Message.getText().toString().isEmpty()) {
                     sendMessage();
+                    clearInput();
+                    hideKeyboard();
                 }
             }
         });
@@ -127,13 +114,8 @@ public class MessageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         idUser = intent.getStringExtra("idUser");
 
-        SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
-        String jsonShop = sharedPreferences.getString("informationShop", "");
-        Gson gson = new Gson();
-        shopData = gson.fromJson(jsonShop, ShopData.class);
-
 //        gán giá trị cho adapter RecyclerView message
-        messageAdapter = new Message_Adapter(arrIdItemMessage, context);
+        messageAdapter = new Message_Adapter(arrMessageData, context);
         rcvContent_Message.setLayoutManager(new LinearLayoutManager(context));
         rcvContent_Message.setAdapter(messageAdapter);
 

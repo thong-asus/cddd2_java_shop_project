@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.duancuahang.Class.Image;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.RecyclerView.ProductListViewPagerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,11 +29,13 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class InformationAccountActivity extends AppCompatActivity {
 
     Toolbar toolBar_Information;
     TextView tvChangePassword, tvShopOwner, tvShopPhoneNumber, tvShopName, tvShopEmail, tvShopAddress, tvTaxCode, tvLogOut;
-    ImageView imgAvartar;
+    CircleImageView imgAvartar;
     private ShopData shopData = new ShopData();
     Context context;
     @Override
@@ -134,7 +137,7 @@ public class InformationAccountActivity extends AppCompatActivity {
             imgAvartar.setImageResource(R.drawable.iconshop);
         }
         else {
-            Picasso.get().load(shopData.getUrlImgShopAvatar()).into(imgAvartar);
+            Picasso.get().load(shopData.getUrlImgShopAvatar()).placeholder(R.drawable.icondowload).into(imgAvartar);
         }
 //        ---------------- kích hoạt button back của toolbar
         setSupportActionBar(toolBar_Information);
