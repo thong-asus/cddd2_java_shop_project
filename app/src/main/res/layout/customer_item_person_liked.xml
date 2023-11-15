@@ -8,10 +8,10 @@
     android:layout_marginHorizontal="5dp"
     android:padding="5dp">
     <FrameLayout
-        android:layout_width="100dp"
-        android:layout_height="100dp">
+        android:layout_width="60dp"
+        android:layout_height="60dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgCustomerLiked"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,7 +38,7 @@
             android:id="@+id/tvCustomerNameLiked"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Tên người đã thích"
+            android:text="unknown_person_liked"
             android:textColor="#000"
             android:textStyle="bold" />
 

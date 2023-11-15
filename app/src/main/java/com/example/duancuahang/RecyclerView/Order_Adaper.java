@@ -49,7 +49,6 @@ public class Order_Adaper extends RecyclerView.Adapter<OrderItem_ViewHolder> {
             getInforCustomer(orderData.getIdCustomer_Order(),holder);
             getInforProduct(orderData.getIdProduct_Order(),holder);
             getImageProduct(orderData.getIdProduct_Order(),holder);
-            System.out.println("ccccccccccccccccccccccccccccccc"+orderData.getIdCustomer_Order());
 
             if (position % 2 == 0){
                 holder.itemView.setBackgroundResource(R.drawable.bg_item01);
@@ -59,7 +58,7 @@ public class Order_Adaper extends RecyclerView.Adapter<OrderItem_ViewHolder> {
             }
 
             //Chuyển sang màn hình chi tiết đơn hàng
-            holder.btnDetailOrder.setOnClickListener(new View.OnClickListener() {
+            holder.linearLayout_ItemOrderList.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 

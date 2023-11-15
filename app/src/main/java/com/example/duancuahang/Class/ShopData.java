@@ -189,52 +189,6 @@ public class ShopData implements Serializable {
     public ShopData(String shopPhoneNumber) {
         this.shopPhoneNumber = shopPhoneNumber;
     }
-
-    @Override
-    public String toString() {
-        return "ShopData{" +
-                "status=" + status +
-                ", idShop='" + idShop + '\'' +
-                ", shopPhoneNumber='" + shopPhoneNumber + '\'' +
-                ", password='" + password + '\'' +
-                ", shopOwner='" + shopOwner + '\'' +
-                ", shopName='" + shopName + '\'' +
-                ", shopAddress='" + shopAddress + '\'' +
-                ", shopEmail='" + shopEmail + '\'' +
-                ", taxCode='" + taxCode + '\'' +
-                ", urlImgCCCDFront='" + urlImgCCCDFront + '\'' +
-                ", urlImgCCCDBack='" + urlImgCCCDBack + '\'' +
-                ", urlImgShopAvatar='" + urlImgShopAvatar + '\'' +
-                '}';
-    }
-
-    @Override
-    public String toString() {
-        return "ShopData{" +
-                "status=" + status +
-                ", idShop='" + idShop + '\'' +
-                ", shopPhoneNumber='" + shopPhoneNumber + '\'' +
-                ", password='" + password + '\'' +
-                ", shopOwner='" + shopOwner + '\'' +
-                ", shopName='" + shopName + '\'' +
-                ", shopAddress='" + shopAddress + '\'' +
-                ", shopEmail='" + shopEmail + '\'' +
-                ", taxCode='" + taxCode + '\'' +
-                ", urlImgCCCDFront='" + urlImgCCCDFront + '\'' +
-                ", urlImgCCCDBack='" + urlImgCCCDBack + '\'' +
-                ", urlImgShopAvatar='" + urlImgShopAvatar + '\'' +
-                '}';
-    }
-
-    public ShopData(String shopPhoneNumber, String password) {
-        this.shopPhoneNumber = shopPhoneNumber;
-        this.password = password;
-    }
-
-    public ShopData(String shopPhoneNumber) {
-        this.shopPhoneNumber = shopPhoneNumber;
-    }
-
     @Override
     public String toString() {
         return "ShopData{" +

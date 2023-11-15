@@ -19,7 +19,7 @@ public class InputOTPSignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inputotpsignupactivity);
+        setContentView(R.layout.activity_otpverificationregistration);
         setControl();
         setEvent();
     }

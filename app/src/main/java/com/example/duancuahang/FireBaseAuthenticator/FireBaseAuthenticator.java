@@ -24,7 +24,7 @@ public class FireBaseAuthenticator {
     public static void login(final String shopPhoneNumber, final String password) {
         //Kiểm tra số điện thoại hoặc mật khẩu có bị bỏ trống hay không
         if(shopPhoneNumber.isEmpty() || password.isEmpty()){
-            ShowMessage.showMessage("Thông tin đăng nhập không được bỏ trống!!!");
+            ShowMessage.showMessage(context,"Thông tin đăng nhập không được bỏ trống!!!");
             return;
         }
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -47,10 +47,10 @@ public class FireBaseAuthenticator {
 
                             // Kiểm tra trạng thái tài khoản
                             if (storedStatus == 0 && storedPassword.equals(password)) {
-                                ShowMessage.showMessage("Tài khoản đang chờ ADMIN duyệt đăng ký. Vui lòng chờ thông báo!");
+                                ShowMessage.showMessage(context,"Tài khoản đang chờ ADMIN duyệt đăng ký. Vui lòng chờ thông báo!");
                                 return;
                             } else if (storedStatus == 2 && storedPassword.equals(password)) {
-                                ShowMessage.showMessage("Tài khoản đang bị khóa!!!");
+                                ShowMessage.showMessage(context,"Tài khoản đang bị khóa!!!");
                                 return;
                             } else {
                                 // Kiểm tra mật khẩu
@@ -60,7 +60,7 @@ public class FireBaseAuthenticator {
                                     context.startActivity(intent);
                                     return;
                                 } else {
-                                    ShowMessage.showMessage("Sai mật khẩu!!!");
+                                    ShowMessage.showMessage(context,"Sai mật khẩu!!!");
                                 }
                             }
                             found = true;
@@ -68,13 +68,13 @@ public class FireBaseAuthenticator {
                     }
                     // Không tìm thấy tài khoản
                     if(!found){
-                        ShowMessage.showMessage("Tài khoản không tồn tại!!!");
+                        ShowMessage.showMessage(context,"Tài khoản không tồn tại!!!");
                     }
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                ShowMessage.showMessage("Lỗi không truy vấn được dữ liệu");
+                ShowMessage.showMessage(context,"Lỗi không truy vấn được dữ liệu");
             }
         });
     }
