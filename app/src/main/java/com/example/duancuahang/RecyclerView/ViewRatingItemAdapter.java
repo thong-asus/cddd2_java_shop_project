@@ -1,15 +1,25 @@
 package com.example.duancuahang.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duancuahang.Class.Image;
+import com.example.duancuahang.Class.OrderData;
 import com.example.duancuahang.Class.ProductData;
+import com.example.duancuahang.Fragment.ViewLikeProductFragment;
+import com.example.duancuahang.OrderDetailActivity;
 import com.example.duancuahang.R;
+import com.example.duancuahang.ViewRatingDetailActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +36,7 @@ public class ViewRatingItemAdapter extends RecyclerView.Adapter<ViewRatingItemVi
     Context context;
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    private ProductData productData;
 
 
     public ViewRatingItemAdapter(ArrayList<ProductData> productDataArrayList, Context context) {
@@ -60,9 +71,29 @@ public class ViewRatingItemAdapter extends RecyclerView.Adapter<ViewRatingItemVi
             } else {
                 holder.itemView.setBackgroundResource(R.drawable.bg_item02);
             }
+
+            final int finalPosition = position;
+            holder.linearLayout_ItemViewRating.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ViewRatingDetailActivity.class);
+                    /////////Truyền dữ liệu qua màn hình ViewRating detail///////////
+                    ProductData productData1 = productDataArrayList.get(finalPosition);
+                    intent.putExtra("productData1", productData1);
+                    System.out.println("Dữ liệu PRODUCT DATA truyền đi tại VIEW RATING ITEM: "+productData1);
+                    ////////////////////////////////////////////////////////////
+                    context.startActivity(intent);
+                }
+            });
         }
     }
-
+//    public static ViewLikeProductFragment newInstance(ProductData productData) {
+//        ViewLikeProductFragment fragment = new ViewLikeProductFragment();
+//        Bundle args = new Bundle();
+//        args.putSerializable("productData", productData);
+//        fragment.setArguments(args);
+//        return fragment;
+//    }
 
     //Lấy hình ảnh product
     private void getImageProduct(String idProduct, ViewRatingItemViewHolder holder) {

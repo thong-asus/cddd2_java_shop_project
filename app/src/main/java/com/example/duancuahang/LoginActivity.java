@@ -76,15 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         //Kiểm tra người dùng đã đăng nhập chưa
         SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
-    createChanelNotification();
-//        getFCMToken();
-//        if (isLoggedIn) {
-//            Intent intent = new Intent(LoginActivity.this, HomeShop.class);
-//            startActivity(intent);
-//            finish();
-//        } else {
-//            setContentView(R.layout.activity_login);
-//        }
+        createChanelNotification();
     }
     private void createChanelNotification(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
@@ -94,13 +86,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-//    private void getFCMToken(){
-//        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-//            if (task.isSuccessful()){
-//                System.out.println("FCM token: " + task.getResult());
-//            }
-//        });
-//    }
     // Hàm lấy và lưu FCM Token
     private void getAndSaveFCMToken(String idShop) {
         FirebaseMessaging.getInstance().getToken()

@@ -4,18 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.FragmentTransaction;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -102,16 +98,27 @@ public class HomeShop extends AppCompatActivity {
             Toast.makeText(context, "Chuyển sang màn hình Thông báo", Toast.LENGTH_SHORT).show();
         } else if(item.getItemId() == R.id.itMessage_Actionbar){
             Toast.makeText(context, "Chuyển sang màn hình Tin nhắn", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(context,MessageActivity.class);
+//            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
 //    Xu ly su kien
     private void setEvent() {
+//        linearLayout_WaitTakeGoods.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.vFragmentOrderWaitTakeGoods, new OrderWaitForTakeGoodsFragment())
+//                        .commit();
+//            }
+//        });
         linearLayout_ViewRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeShop.this, ViewRatingActivity.class);
+                Intent intent = new Intent(HomeShop.this, ViewRatingListActivity.class);
                 startActivity(intent);
+//                PendingIntent pendingIntent =
             }
         });
         linearLayout_SanPhamCuaToi_ScreenHome.setOnClickListener(new View.OnClickListener() {

@@ -2,65 +2,100 @@ package com.example.duancuahang.Fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.example.duancuahang.Class.Customer;
+import com.example.duancuahang.Class.LikeProduct;
+import com.example.duancuahang.Class.ProductData;
+import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.R;
+import com.example.duancuahang.RecyclerView.ViewLikedDetailItemAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ViewLikeProductFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+
 public class ViewLikeProductFragment extends Fragment {
+    private RecyclerView rcvLiked;
+    private TextView tvNoLiked;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    View vFragmentViewLike;
+    private ViewLikedDetailItemAdapter viewLikedDetailItemAdapter;
+    ProductData productData = new ProductData();
+    private ShopData shopData = new ShopData();
+    private String idProduct = "";
+    private String idCustomer = "";
+    ArrayList<Customer> customerArrayList = new ArrayList<>();
+    ArrayList<LikeProduct> arrLikeProduct = new ArrayList<>();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference;
 
-    public ViewLikeProductFragment() {
-        // Required empty public constructor
+    public ViewLikeProductFragment(String idProduct){
+        this.idProduct = idProduct;
+        this.idCustomer = idCustomer;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ViewLikeProductFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ViewLikeProductFragment newInstance(String param1, String param2) {
-        ViewLikeProductFragment fragment = new ViewLikeProductFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view_like_product, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_view_like_product, container, false);
+        setControl(view);
+        setInitialization();
+        pullUserLikeProduct();
+        return view;
+    }
+
+    private void setInitialization() {
+        // Khởi tạo adapter
+        viewLikedDetailItemAdapter = new ViewLikedDetailItemAdapter(arrLikeProduct, getContext());
+        rcvLiked.setLayoutManager(new LinearLayoutManager(getContext()));
+        rcvLiked.setAdapter(viewLikedDetailItemAdapter);
+    }
+
+    private void pullUserLikeProduct() {
+        databaseReference = firebaseDatabase.getReference("LikeProduct");
+       databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+           @Override
+           public void onDataChange(@NonNull DataSnapshot snapshot) {
+               for (DataSnapshot itemCustome:
+                    snapshot.getChildren()) {
+                   for (DataSnapshot likeItem:
+                        itemCustome.getChildren()) {
+                        LikeProduct likeProduct = likeItem.getValue(LikeProduct.class);
+                        if(likeProduct.getIdProduct_LikeProduct().equals(idProduct)){
+                            arrLikeProduct.add(likeProduct);
+                            viewLikedDetailItemAdapter.notifyDataSetChanged();
+                        }
+                   }
+
+               }
+           }
+
+           @Override
+           public void onCancelled(@NonNull DatabaseError error) {
+
+           }
+       });
+    }
+
+
+    private void setControl(@NonNull View view) {
+        rcvLiked = view.findViewById(R.id.rcvLiked);
+        tvNoLiked = view.findViewById(R.id.tvNoLiked);
+        vFragmentViewLike = view.findViewById(R.id.vFragmentViewLike);
     }
 }

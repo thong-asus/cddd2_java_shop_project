@@ -10,14 +10,16 @@
     <FrameLayout
         android:layout_width="100dp"
         android:layout_height="100dp">
+
         <ImageView
-            android:layout_marginRight="10dp"
             android:id="@+id/imgCustomerLiked"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/icondowload"/>
+            android:layout_marginRight="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icondowload" />
+
         <ProgressBar
             android:id="@+id/progessBar_loadingCustomerLiked"
             android:visibility="gone"

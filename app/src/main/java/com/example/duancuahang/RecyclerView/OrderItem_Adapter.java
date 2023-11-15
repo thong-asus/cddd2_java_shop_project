@@ -88,8 +88,10 @@ public class OrderItem_Adapter extends RecyclerView.Adapter<OrderItem_ViewHolder
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    Customer customer1 = snapshot.getValue(Customer.class);
-                    holder.tvNameCustomer.setText(customer1.getName());
+//                    Customer customer1 = snapshot.getValue(Customer.class);
+//                    holder.tvNameCustomer.setText(customer1.getName());
+                    String name = snapshot.child("name").getValue(String.class);
+                    holder.tvNameCustomer.setText(name);
                 }
             }
 

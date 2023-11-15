@@ -18,8 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/edit/baseline_edit_24.xml" />
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/home/baseline_home_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/send/baseline_send_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -30,8 +29,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="737968" />
-                            <entry key="outputName" value="icon_home" />
-                            <entry key="outputName" value="ic_edit" />
+                            <entry key="outputName" value="ic_send" />
                             <entry key="sourceFile" value="E:\A_DoAnHK5\ChuyenDeDiDong\duan_cuahang" />
                           </map>
                         </option>
