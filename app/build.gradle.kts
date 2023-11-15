@@ -51,5 +51,6 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth:22.2.0")
     implementation ("com.google.code.gson:gson:2.8.7")
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
-
+    implementation ("com.facebook.android:facebook-login:latest.release")
+    implementation ("com.facebook.android:facebook-android-sdk:[8,9)")
 }

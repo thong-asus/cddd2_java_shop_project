@@ -1,12 +1,19 @@
 package com.example.duancuahang;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,10 +21,29 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.duancuahang.Class.ShopData;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 public class HomeShop extends AppCompatActivity {
 
@@ -26,7 +52,10 @@ public class HomeShop extends AppCompatActivity {
     TextView tvNameShop_ScreenHome;
     ImageView ivAvataShop_ScreenHome;
     Context context;
+    CallbackManager callbackManager;
     private ShopData shopData = new ShopData();
+    FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,13 +64,12 @@ public class HomeShop extends AppCompatActivity {
         String jsonShop = sharedPreferences1.getString("informationShop","");
         Gson gson = new Gson();
         shopData = gson.fromJson(jsonShop, ShopData.class);
-        System.out.println("Shopdata Share: " + shopData.toString());
+        callbackManager = CallbackManager.Factory.create();
         context = this;
         setControl();
         setIntiazation();
         setEvent();
         setSupportActionBar(toolbar);
-
     }
 
     private void setIntiazation() {
@@ -70,7 +98,13 @@ public class HomeShop extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 //    Anh xa
