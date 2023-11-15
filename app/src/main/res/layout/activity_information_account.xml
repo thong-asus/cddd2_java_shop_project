@@ -43,10 +43,9 @@
             android:textColor="#000"
             android:layout_gravity="center"
             android:textStyle="bold"/>
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:background="@drawable/bg_avatar"
             android:id="@+id/imgAvartar"
             android:src="@drawable/iconshop"
             android:scaleType="centerInside"

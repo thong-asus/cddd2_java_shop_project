@@ -13,15 +13,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.duancuahang.Class.CommentProduct;
-import com.example.duancuahang.Class.LikeProduct;
 import com.example.duancuahang.R;
 import com.example.duancuahang.RecyclerView.ViewCommentedDetailItemAdapter;
-import com.example.duancuahang.RecyclerView.ViewLikedDetailItemAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -40,12 +37,10 @@ public class ViewCommentProductFragment extends Fragment {
 
     public ViewCommentProductFragment(String idProduct){
         this.idProduct = idProduct;
-        //this.idCustomer = idCustomer;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_comment_product, container, false);
 
         Bundle args = getArguments();
@@ -54,94 +49,49 @@ public class ViewCommentProductFragment extends Fragment {
         }
         setControl(view);
         setInitialization();
-        //displayCommentsForProduct(idProduct);
         displayAllComment();
         return view;
-    }
-    private void displayCommentsForProduct(String idProduct) {
-        databaseReference = firebaseDatabase.getReference("CommentProduct").child(idProduct);
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot cmtItem : snapshot.getChildren()) {
-                    CommentProduct cmtProduct = cmtItem.getValue(CommentProduct.class);
-                    if (cmtProduct != null) {
-                        arrCommentProduct.add(cmtProduct);
-                    }
-                }
-                viewCommentedDetailItemAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Xử lý lỗi nếu cần
-            }
-        });
     }
     private void displayAllComment() {
         databaseReference = firebaseDatabase.getReference("CommentProduct");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean hasComment = false;
+
                 for (DataSnapshot commentSnapshot : snapshot.getChildren()) {
-                    // Lấy giá trị của comment dưới dạng Map
-                    Map<String, Object> commentMap = (Map<String, Object>) commentSnapshot.getValue();
+                    if (commentSnapshot.exists()) {
+                        // Lấy giá trị của comment dưới dạng Map
+                        Map<String, Object> commentMap = (Map<String, Object>) commentSnapshot.getValue();
 
-                    // Kiểm tra null và đảm bảo có đủ các trường thông tin
-                    if (commentMap != null && commentMap.containsKey("contentComment")
-                            && commentMap.containsKey("dateComment") && commentMap.containsKey("idCustomer")
-                            && commentMap.containsKey("idProduct")) {
+                        // Kiểm tra null và đảm bảo có đủ các trường thông tin
+                        if (commentMap != null && commentMap.containsKey("contentComment")
+                                && commentMap.containsKey("dateComment") && commentMap.containsKey("idCustomer")
+                                && commentMap.containsKey("idProduct")) {
 
-                        // Tạo đối tượng CommentProduct từ Map
-                        CommentProduct commentProduct = new CommentProduct();
-                        commentProduct.setContentComment((String) commentMap.get("contentComment"));
-                        commentProduct.setDateComment((String) commentMap.get("dateComment"));
-                        commentProduct.setIdCustomer((String) commentMap.get("idCustomer"));
-                        commentProduct.setIdProduct((String) commentMap.get("idProduct"));
+                            CommentProduct commentProduct = new CommentProduct();
+                            commentProduct.setContentComment((String) commentMap.get("contentComment"));
+                            commentProduct.setDateComment((String) commentMap.get("dateComment"));
+                            commentProduct.setIdCustomer((String) commentMap.get("idCustomer"));
+                            commentProduct.setIdProduct((String) commentMap.get("idProduct"));
 
-                        // Kiểm tra idProduct để xác định có thêm vào danh sách không
-                        if (commentProduct.getIdProduct().equals(idProduct)) {
-                            arrCommentProduct.add(commentProduct);
-                            viewCommentedDetailItemAdapter.notifyDataSetChanged();
+                            if (commentProduct.getIdProduct().equals(idProduct)) {
+                                arrCommentProduct.add(commentProduct);
+                                hasComment = true; // Đặt biến hasComment thành true khi có comment
+                                viewCommentedDetailItemAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
                 }
+                // Kiểm tra biến hasComment và ẩn/hiển thị tvNoCommented
+                tvNoCommented.setVisibility(hasComment ? View.GONE : View.VISIBLE);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Xử lý lỗi nếu cần thiết
+
             }
         });
     }
-
-
-    //        private void displayAllComment() {
-//        databaseReference = firebaseDatabase.getReference("CommentProduct");
-//            //Query query = databaseReference.orderByKey();
-//            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot itemCustomer:
-//                        snapshot.getChildren()) {
-//                    for (DataSnapshot cmtItem:
-//                            itemCustomer.getChildren()) {
-//                        CommentProduct cmtProduct = cmtItem.getValue(CommentProduct.class);
-//                        if(cmtProduct.getIdProduct().equals(idProduct)){
-//                            arrCommentProduct.add(cmtProduct);
-//                            viewCommentedDetailItemAdapter.notifyDataSetChanged();
-//                        }
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
     private void setInitialization() {
         // Khởi tạo adapter
         viewCommentedDetailItemAdapter = new ViewCommentedDetailItemAdapter(arrCommentProduct, getContext());

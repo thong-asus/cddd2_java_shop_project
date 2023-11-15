@@ -1,18 +1,22 @@
 package com.example.duancuahang;
 
 import static android.view.View.GONE;
-
+import android.Manifest;
+import android.content.Context;
+import android.net.Uri;
+import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
+import android.content.pm.PackageManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,13 +24,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.duancuahang.Class.Customer;
 import com.example.duancuahang.Class.FormatMoneyVietNam;
 import com.example.duancuahang.Class.Image;
 import com.example.duancuahang.Class.OrderData;
 import com.example.duancuahang.Class.ProductData;
-import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.Class.ShowMessage;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,7 +50,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     Context context;
     Toolbar toolBar_OrderDetail;
     TextView tvOrderDetailStatus, tvOrderDetailID, tvCustomerName_OrderDetail, tvCustomerPhoneNumber_OrderDetail, tvCustomerAddress,
-            tvCopyCustomerPhoneNumber, tvCopyOrderID;
+            tvCallCustomer, tvCopyOrderID;
     TextView tvNameProduct, tvAmountProduct_OrderDetail, tvPriceProduct, tvTotal, tvOrderTime, tvNoteContent,
             tvTitleOrderComplete_OrderDetail, tvOrderTimeComplete_OrderDetail, tvTitleOrderCancalled_OrderDetail, tvTimeOrderCancelled_OrderDetail;
     ProgressBar progessBar_loadingImageItem;
@@ -56,6 +60,7 @@ public class OrderDetailActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     OrderData orderData = new OrderData();
 
+    private static final int REQUEST_CALL_PHONE_PERMISSION = 1;
 
 
     @Override
@@ -70,8 +75,6 @@ public class OrderDetailActivity extends AppCompatActivity {
             System.out.println("Dữ liệu nhận được tại OrderDetailActivity: " + orderData);
         }
         setControl();
-
-
         getInformationOrder();
         getOrderStatus(orderData.getStatusOrder() + "");
         getInformationCustomer(orderData.getIdCustomer_Order());
@@ -82,9 +85,29 @@ public class OrderDetailActivity extends AppCompatActivity {
         context = this;
     }
 
+    private void makePhoneCall(String phoneNumber) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+            Intent dialIntent = new Intent(Intent.ACTION_DIAL);
+            dialIntent.setData(Uri.parse("tel:" + phoneNumber));
+            startActivity(dialIntent);
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL_PHONE_PERMISSION);
+        }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-
+        if (requestCode == REQUEST_CALL_PHONE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Người dùng đã cấp quyền, thực hiện cuộc gọi
+                makePhoneCall(orderData.getIdCustomer_Order());
+            } else {
+                Toast.makeText(this, "Ứng dụng cần quyền để thực hiện cuộc gọi.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
     private void setEvent() {
         /////////////////////////////////////////////COPY TO CLIPBOARD/////////////////////////////////////////////
         tvCopyOrderID.setOnClickListener(new View.OnClickListener() {
@@ -98,15 +121,10 @@ public class OrderDetailActivity extends AppCompatActivity {
                 clipboardManager.setPrimaryClip(clipData);
             }
         });
-        tvCopyCustomerPhoneNumber.setOnClickListener(new View.OnClickListener() {
+        tvCallCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String textToCopy = tvCustomerPhoneNumber_OrderDetail.getText().toString();
-                // Sao chép nội dung vào Clipboard
-                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clipData = ClipData.newPlainText("text", textToCopy);
-                ShowMessage.showMessageCopy(context,"Đã sao chép số điện thoại");
-                clipboardManager.setPrimaryClip(clipData);
+                makePhoneCall(orderData.getIdCustomer_Order());
             }
         });
         /////////////////////////////////////////////END COPY TO CLIPBOARD/////////////////////////////////////////////
@@ -360,6 +378,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvTitleOrderCancalled_OrderDetail = findViewById(R.id.tvTitleOrderCancalled_OrderDetail);
         //sao chép
         tvCopyOrderID = findViewById(R.id.tvCopyOrderID);
-        tvCopyCustomerPhoneNumber = findViewById(R.id.tvCopyCustomerPhoneNumber);
+        tvCallCustomer = findViewById(R.id.tvCallCustomer);
     }
 }

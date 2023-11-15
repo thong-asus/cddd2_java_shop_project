@@ -171,8 +171,6 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         String[] part = uriImageSelectionOnDeviceCCCDBack.getLastPathSegment().split("/");
         StorageReference imgRef = storageRef.child("imageShop/" + shopData.getShopPhoneNumber() + "/" + (part[part.length-1]));
-
-//        try {
             UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDBack);
             uploadTask.addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
@@ -185,15 +183,11 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
                     });
                 }
             });
-//        } catch (Exception e){
-//            System.out.println("Lỗi" + e);
-//        }
     }
     private void pushCCCDFront(){
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         String[] part = uriImageSelectionOnDeviceCCCDFront.getLastPathSegment().split("/");
         StorageReference imgRef = storageRef.child("imageShop/" + shopData.getShopPhoneNumber() + "/" + (part[part.length-1]));
-//        try {
             UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDFront);
             uploadTask.addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
@@ -206,9 +200,6 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
                     });
                 }
             });
-//        } catch (Exception e){
-//            System.out.println("Lỗi" + e);
-//        }
     }
 //    void uploadCCCDFront(Uri uriImgLocal) {
 //
@@ -287,25 +278,6 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
 //           System.out.println("loi uri" + e.getMessage());
 //       }
 //    }
-
-    void uploadCCCDBack(Uri uriImgLocal){
-        uriImgLocal = uriImageSelectionOnDeviceCCCDFront;
-
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        String[] part = uriImageSelectionOnDeviceCCCDBack.getLastPathSegment().split("/");
-        StorageReference imgRef = storageRef.child("imageShop/" + shopData.getShopPhoneNumber() + "/" + (part[part.length-1]));
-        UploadTask uploadTask = imgRef.putFile(uriImgLocal);
-        uploadTask.addOnCompleteListener(taskSnapshot -> {
-            imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                shopData.setUrlImgCCCDBack(uri.toString());
-                registration();
-            }).addOnFailureListener(e -> {
-                ShowMessage.showMessage(OtpVerificationRegistrationActivity.this,"Lỗi khi tải ảnh lên: "+ e);
-            });
-        });
-    }
-
-
 
     void registrationSuccessful(PhoneAuthCredential phoneAuthCredential){
         mAuth.signInWithCredential(phoneAuthCredential)

@@ -12,10 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.duancuahang.Class.Customer;
 import com.example.duancuahang.Class.LikeProduct;
-import com.example.duancuahang.Class.ProductData;
-import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.R;
 import com.example.duancuahang.RecyclerView.ViewLikedDetailItemAdapter;
 import com.google.firebase.database.DataSnapshot;
@@ -32,11 +29,8 @@ public class ViewLikeProductFragment extends Fragment {
 
     View vFragmentViewLike;
     private ViewLikedDetailItemAdapter viewLikedDetailItemAdapter;
-    ProductData productData = new ProductData();
-    private ShopData shopData = new ShopData();
     private String idProduct = "";
     private String idCustomer = "";
-    ArrayList<Customer> customerArrayList = new ArrayList<>();
     ArrayList<LikeProduct> arrLikeProduct = new ArrayList<>();
 
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -67,22 +61,26 @@ public class ViewLikeProductFragment extends Fragment {
     }
 
     private void pullUserLikeProduct() {
+
         databaseReference = firebaseDatabase.getReference("LikeProduct");
        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot snapshot) {
-               for (DataSnapshot itemCustome:
-                    snapshot.getChildren()) {
-                   for (DataSnapshot likeItem:
-                        itemCustome.getChildren()) {
-                        LikeProduct likeProduct = likeItem.getValue(LikeProduct.class);
-                        if(likeProduct.getIdProduct_LikeProduct().equals(idProduct)){
-                            arrLikeProduct.add(likeProduct);
-                            viewLikedDetailItemAdapter.notifyDataSetChanged();
-                        }
-                   }
+               boolean hasLike = false;
+               for (DataSnapshot itemCustomer : snapshot.getChildren()) {
+                   if(snapshot.exists()){
+                       for (DataSnapshot likeItem : itemCustomer.getChildren()) {
+                           LikeProduct likeProduct = likeItem.getValue(LikeProduct.class);
+                           if(likeProduct.getIdProduct_LikeProduct().equals(idProduct)){
 
+                               arrLikeProduct.add(likeProduct);
+                               hasLike = true;
+                               viewLikedDetailItemAdapter.notifyDataSetChanged();
+                           }
+                       }
+                   }
                }
+               tvNoLiked.setVisibility(hasLike ? View.GONE : View.VISIBLE);
            }
 
            @Override

@@ -128,11 +128,11 @@
                            android:textSize="17dp"/>
 
                        <TextView
-                           android:id="@+id/tvCopyCustomerPhoneNumber"
+                           android:id="@+id/tvCallCustomer"
                            android:layout_width="wrap_content"
                            android:layout_height="match_parent"
                            android:layout_marginLeft="5dp"
-                           android:text="SAO CHÉP"
+                           android:text="CALL"
                            android:textColor="#00FF19"
                            android:textSize="17dp"
                            android:textStyle="bold|italic" />

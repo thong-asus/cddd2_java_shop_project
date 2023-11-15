@@ -8,9 +8,10 @@
     android:layout_marginHorizontal="5dp"
     android:padding="5dp">
     <FrameLayout
-        android:layout_width="100dp"
-        android:layout_height="100dp">
-        <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="top">
+        <de.hdodenhof.circleimageview.CircleImageView
             android:layout_marginRight="10dp"
             android:id="@+id/imgCustomerCommented"
             android:layout_width="match_parent"
@@ -36,20 +37,21 @@
             android:id="@+id/tvCustomerNameCommented"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Tên người Comment"
+            android:text="unknown_customer_name_cmt"
             android:textColor="#000"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/tvDateCommented"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Ngày comment"
+            android:text="unknown_date_cmt"
             android:textColor="#000" />
         <TextView
             android:id="@+id/tvContentCommented"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Nội dung comment"
+            android:text="unknown_content_cmt"
+            android:textSize="17dp"
             android:textColor="#000" />
     </LinearLayout>
 </LinearLayout>

@@ -4,6 +4,7 @@ import static com.example.duancuahang.Class.ShowMessage.context;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -27,10 +28,12 @@ public class ViewCommentedDetailItemAdapter extends RecyclerView.Adapter<ViewCom
     Context context;
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
     public ViewCommentedDetailItemAdapter(ArrayList<CommentProduct> arrCommentProduct, Context context) {
         this.arrCommentProduct = arrCommentProduct;
         this.context = context;
     }
+
     @NonNull
     @Override
     public ViewCommentedDetailItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -40,30 +43,62 @@ public class ViewCommentedDetailItemAdapter extends RecyclerView.Adapter<ViewCom
     @Override
     public void onBindViewHolder(@NonNull ViewCommentedDetailItemViewHolder holder, int position) {
         CommentProduct commentProduct = arrCommentProduct.get(position);
-        getAvatarCustomer(commentProduct.getIdCustomer(),holder);
-        getCommentContent(commentProduct.getIdProduct(),holder);
+//        getAvatarCustomer(commentProduct.getIdCustomer(),holder);
+//        getCommentContent(commentProduct.getIdProduct(),holder);
+        getInformationComment(commentProduct,holder);
     }
-    private void getCommentContent(String idProduct, ViewCommentedDetailItemViewHolder holder) {
-        //databaseReference = firebaseDatabase.getReference("CommentProduct/" + idProduct);
-        databaseReference = firebaseDatabase.getReference("CommentProduct").child(idProduct);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot commentSnapshot : snapshot.getChildren()) {
-                    CommentProduct commentProduct = commentSnapshot.getValue(CommentProduct.class);
-                    if (commentProduct != null) {
-                        holder.tvDateCommented.setText(commentProduct.getDateComment());
-                        holder.tvContentCommented.setText(commentProduct.getContentComment());
+
+    private void getInformationComment(CommentProduct commentProduct, ViewCommentedDetailItemViewHolder holder) {
+        if (commentProduct != null) {
+            holder.tvContentCommented.setText(commentProduct.getContentComment()); // Lấy giá trị của TextView
+            holder.tvDateCommented.setText(commentProduct.getDateComment());    // Lấy giá trị của TextView
+
+            databaseReference = firebaseDatabase.getReference("Customer").child(commentProduct.getIdCustomer());
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        Customer customer = snapshot.getValue(Customer.class);
+                        if (customer != null) {
+                            holder.tvCustomerNameCommented.setText(customer.getName());
+                            if (!customer.getImageUser().isEmpty()) {
+                                Picasso.get().load(customer.getImageUser()).placeholder(R.drawable.icondowload).into(holder.imgCustomerCommented);
+                            } else {
+                                holder.imgCustomerCommented.setImageResource(R.drawable.icondowload);
+
+                            }
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Xử lý lỗi nếu cần
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Xử lý lỗi nếu cần
+                }
+            });
+        }
     }
+//    private void getCommentContent(String idProduct, ViewCommentedDetailItemViewHolder holder) {
+//        //databaseReference = firebaseDatabase.getReference("CommentProduct/" + idProduct);
+//        databaseReference = firebaseDatabase.getReference("CommentProduct").child(idProduct);
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for (DataSnapshot commentSnapshot : snapshot.getChildren()) {
+//                    CommentProduct commentProduct = commentSnapshot.getValue(CommentProduct.class);
+//                    if (commentProduct != null) {
+//                        holder.tvDateCommented.setText(commentProduct.getDateComment());
+//                        holder.tvContentCommented.setText(commentProduct.getContentComment());
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                // Xử lý lỗi nếu cần
+//            }
+//        });
+//    }
 
     //Lấy thông tin comment
 //    private void getCommentContent(String idProduct, ViewCommentedDetailItemViewHolder holder) {
@@ -86,24 +121,24 @@ public class ViewCommentedDetailItemAdapter extends RecyclerView.Adapter<ViewCom
 //        });
 //    }
     //Lấy hình ảnh và tên khách hàng
-    private void getAvatarCustomer(String id, ViewCommentedDetailItemViewHolder holder) {
-        databaseReference = firebaseDatabase.getReference("Customer/"+id);
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Customer customer = snapshot.getValue(Customer.class);
-                    Picasso.get().load(customer.getImageUser()).placeholder(R.drawable.icondowload).into(holder.imgCustomerCommented);
-                    holder.tvCustomerNameCommented.setText(customer.getName());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
+//    private void getAvatarCustomer(String id, ViewCommentedDetailItemViewHolder holder) {
+//        databaseReference = firebaseDatabase.getReference("Customer/"+id);
+//        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.exists()) {
+//                    Customer customer = snapshot.getValue(Customer.class);
+//                    Picasso.get().load(customer.getImageUser()).placeholder(R.drawable.icondowload).into(holder.imgCustomerCommented);
+//                    holder.tvCustomerNameCommented.setText(customer.getName());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//    }
     @Override
     public int getItemCount() {
         if (arrCommentProduct != null) {
