@@ -57,21 +57,10 @@ dependencies {
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
     implementation ("com.facebook.android:facebook-login:latest.release")
     implementation ("com.facebook.android:facebook-android-sdk:[8,9)")
-    //implementation ("com.github.User:Repo:Tag")
     implementation ("com.github.dhaval2404:imagepicker:2.1")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
-
-
     implementation ("com.google.android.gms:play-services-base:17.0.0")
     implementation ("com.google.android.gms:play-services-basement:17.0.0")
     implementation("com.google.firebase:firebase-messaging")
-//    implementation ("com.google.firebase:firebase-bom:29.0.0")
-//    implementation (platform("com.google.firebase:firebase-bom:29.0.0"))
-
-//    appCheck {
-//        factory {
-//            tokenProviders = ["safety-net"]
-//        }
-//    }
 }
 

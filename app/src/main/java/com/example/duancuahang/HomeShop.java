@@ -52,7 +52,7 @@ public class HomeShop extends AppCompatActivity {
 
     Toolbar toolbar;
     LinearLayout linearLayout_SanPhamCuaToi_ScreenHome;
-    View linearLayout_ViewRating,linearLayout_OrderCancelled,linearLayout_WaitTakeGoods;
+    View linearLayout_ViewRating, linearLayout_OrderCancelled, linearLayout_WaitTakeGoods;
     TextView tvNameShop_ScreenHome, tvBillHistory;
     ImageView ivAvataShop_ScreenHome;
     Context context;
@@ -60,24 +60,17 @@ public class HomeShop extends AppCompatActivity {
     private ShopData shopData = new ShopData();
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_shop);
-        SharedPreferences sharedPreferences1 = getSharedPreferences("InformationShop",Context.MODE_PRIVATE);
-        String jsonShop = sharedPreferences1.getString("informationShop","");
-        Gson gson = new Gson();
-        shopData = gson.fromJson(jsonShop, ShopData.class);
         callbackManager = CallbackManager.Factory.create();
-
-
-
-
         SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
         if (sharedPreferences.contains("informationShop")) {
-            String jsonShop = sharedPreferences.getString("informationShop", "");
-            Gson gson = new Gson();
+           String jsonShop = sharedPreferences.getString("informationShop", "");
+           Gson gson = new Gson();
             shopData = gson.fromJson(jsonShop, ShopData.class);
         } else {
             // Dữ liệu không tồn tại, có thể là người dùng đã đăng xuất hoặc lần đầu sử dụng ứng dụng
@@ -104,10 +97,9 @@ public class HomeShop extends AppCompatActivity {
 
     private void setIntiazation() {
         tvNameShop_ScreenHome.setText(shopData.getShopName());
-        if (shopData.getUrlImgShopAvatar().isEmpty()){
+        if (shopData.getUrlImgShopAvatar().isEmpty()) {
             ivAvataShop_ScreenHome.setImageResource(R.drawable.iconshop);
-        }
-        else {
+        } else {
             Picasso.get().load(shopData.getUrlImgShopAvatar()).into(ivAvataShop_ScreenHome);
         }
 
@@ -115,23 +107,23 @@ public class HomeShop extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu,menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return super.onPrepareOptionsMenu(menu);
     }
 
-//    Xu ly su kien
+    //    Xu ly su kien
     private void setEvent() {
         linearLayout_SanPhamCuaToi_ScreenHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,Productlist.class);
+                Intent intent = new Intent(context, Productlist.class);
                 startActivity(intent);
             }
         });
         tvBillHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeShop.this,OrderListActivity.class);
+                Intent intent = new Intent(HomeShop.this, OrderListActivity.class);
                 startActivity(intent);
             }
         });
@@ -144,7 +136,18 @@ public class HomeShop extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-//    Anh xa
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.itMessage_Actionbar){
+            Intent intent = new Intent(context, MessageActivity.class);
+            intent.putExtra("idUser","0372907720");
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    //    Anh xa
     private void setControl() {
         toolbar = findViewById(R.id.toolBar_ScreenHome);
         linearLayout_SanPhamCuaToi_ScreenHome = findViewById(R.id.linearLayout_SanPhamCuaToi_ScreenHome);
@@ -156,7 +159,7 @@ public class HomeShop extends AppCompatActivity {
         linearLayout_ViewRating = findViewById(R.id.linearLayout_ViewRating);
     }
 
-//    Thêm item và ActionBar
+    //    Thêm item và ActionBar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
