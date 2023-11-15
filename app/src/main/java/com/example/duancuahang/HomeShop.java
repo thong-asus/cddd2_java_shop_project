@@ -26,18 +26,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duancuahang.Class.ShopData;
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.example.duancuahang.Fragment.OrderWaitForTakeGoodsFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -57,7 +50,7 @@ public class HomeShop extends AppCompatActivity {
     TextView tvNameShop_ScreenHome, tvBillHistory;
     ImageView ivAvataShop_ScreenHome;
     Context context;
-    CallbackManager callbackManager;
+   // CallbackManager callbackManager;
     private ShopData shopData = new ShopData();
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
@@ -67,7 +60,7 @@ public class HomeShop extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_shop);
-        callbackManager = CallbackManager.Factory.create();
+        //callbackManager = CallbackManager.Factory.create();
         SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
         if (sharedPreferences.contains("informationShop")) {
@@ -134,7 +127,7 @@ public class HomeShop extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        //callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
