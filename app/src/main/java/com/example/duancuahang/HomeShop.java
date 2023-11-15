@@ -1,27 +1,45 @@
 package com.example.duancuahang;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.duancuahang.Class.ShopData;
-import com.facebook.CallbackManager;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.example.duancuahang.Fragment.OrderWaitForTakeGoodsFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 public class HomeShop extends AppCompatActivity {
 
@@ -30,9 +48,9 @@ public class HomeShop extends AppCompatActivity {
     LinearLayout linearLayout_SanPhamCuaToi_ScreenHome;
     View linearLayout_ViewRating, linearLayout_OrderCancelled, linearLayout_WaitTakeGoods;
     TextView tvNameShop_ScreenHome, tvBillHistory;
-    CircleImageView ivAvataShop_ScreenHome;
+    ImageView ivAvataShop_ScreenHome;
     Context context;
-    CallbackManager callbackManager;
+   // CallbackManager callbackManager;
     private ShopData shopData = new ShopData();
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
@@ -42,7 +60,7 @@ public class HomeShop extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_shop);
-        callbackManager = CallbackManager.Factory.create();
+        //callbackManager = CallbackManager.Factory.create();
         SharedPreferences sharedPreferences = getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("isLoggedIn", false);
         if (sharedPreferences.contains("informationShop")) {
@@ -90,13 +108,6 @@ public class HomeShop extends AppCompatActivity {
 
     //    Xu ly su kien
     private void setEvent() {
-        linearLayout_ViewRating.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ViewRatingListActivity.class);
-                startActivity(intent);
-            }
-        });
         linearLayout_SanPhamCuaToi_ScreenHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,7 +127,7 @@ public class HomeShop extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        //callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -125,10 +136,6 @@ public class HomeShop extends AppCompatActivity {
         if (item.getItemId() == R.id.itMessage_Actionbar){
             Intent intent = new Intent(context, MessageActivity.class);
             intent.putExtra("idUser","0372907720");
-            startActivity(intent);
-        }
-        else  if (item.getItemId() == R.id.itSetting_Actionbar){
-            Intent intent = new Intent(context, InformationAccountActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

@@ -189,6 +189,7 @@ public class ShopData implements Serializable {
     public ShopData(String shopPhoneNumber) {
         this.shopPhoneNumber = shopPhoneNumber;
     }
+
     @Override
     public String toString() {
         return "ShopData{" +
@@ -206,4 +207,6 @@ public class ShopData implements Serializable {
                 ", urlImgShopAvatar='" + urlImgShopAvatar + '\'' +
                 '}';
     }
+
+
 }
