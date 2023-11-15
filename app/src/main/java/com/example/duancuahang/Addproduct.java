@@ -431,8 +431,6 @@ public class Addproduct extends AppCompatActivity {
         databaseReference.child("Product").child(keyProductItem.concat(shopData.getIdShop())).setValue(productData);
         addImageProduct(keyProductItem.concat(shopData.getIdShop()));
         loading = false;
-        System.out.println("Id shop add: "+ shopData.getIdShop());
-        System.out.println("product add: "+ productData.toString());
 
        if (!loading){
            Intent intent = new Intent(context, Productlist.class);
@@ -480,7 +478,6 @@ public class Addproduct extends AppCompatActivity {
         for (int i = 0; i < imgaProductArrayList.size(); i++) {
             ImageProduct item = imgaProductArrayList.get(i);
             if (item.getUrlImage() != null){
-                System.out.println("uri item: " + item.getUrlImage());
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference();
                 StorageReference imgRef = storageReference.child("imageProduct/"+item.getUrlImage().getLastPathSegment());
                 UploadTask uploadTask = imgRef.putFile(item.getUrlImage());
@@ -511,7 +508,7 @@ public class Addproduct extends AppCompatActivity {
             Image image = new Image(idProduct,urlImgServe.get(i));
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference("ImageProducts");
-            databaseReference.push().setValue(image);
+            databaseReference.child(idProduct).child(i+1 +"/"+"urlImage").setValue(image.getUrlImage());
 
         }
     }

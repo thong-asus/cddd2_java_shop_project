@@ -32,6 +32,7 @@ public class ShopData implements Serializable {
         this.fcmToken = fcmToken;
     }
 
+
     public ShopData(int status, String idShop, String shopPhoneNumber, String password, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode, String urlImgCCCDFront, String urlImgCCCDBack, String urlImgShopAvatar) {
         this.status = status;
         this.idShop = idShop;
@@ -206,4 +207,6 @@ public class ShopData implements Serializable {
                 ", urlImgShopAvatar='" + urlImgShopAvatar + '\'' +
                 '}';
     }
+
+
 }
