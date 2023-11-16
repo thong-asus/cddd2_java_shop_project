@@ -97,26 +97,31 @@ public class ViewRatingItemAdapter extends RecyclerView.Adapter<ViewRatingItemVi
 
     //Lấy hình ảnh product
     private void getImageProduct(String idProduct, ViewRatingItemViewHolder holder) {
-        databaseReference = firebaseDatabase.getReference("ImageProducts");
-        Query query = databaseReference.orderByChild("idProduct").equalTo(idProduct);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference = firebaseDatabase.getReference("ImageProducts").child(idProduct);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    // Duyệt qua danh sách ảnh của sản phẩm
                     for (DataSnapshot imageItem : snapshot.getChildren()) {
-                        Image image = imageItem.getValue(Image.class);
-                        Picasso.get().load(image.getUrlImage()).placeholder(R.drawable.icondowload).into(holder.imgItemViewRating);
-                        return;
+                        // Kiểm tra xem ảnh có URL hay không
+                        if (imageItem.child("urlImage").exists()) {
+                            String imageUrl = imageItem.child("urlImage").getValue(String.class);
+                            // Hiển thị ảnh đầu tiên
+                            Picasso.get().load(imageUrl).placeholder(R.drawable.icondowload).into(holder.imgItemViewRating);
+                            return;
+                        }
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Xử lý lỗi nếu có
             }
         });
     }
+
 
     public void updateData(ArrayList<ProductData> newData) {
         if (newData != null) {

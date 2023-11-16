@@ -143,34 +143,40 @@ public class Product_InOfStockAdapter extends RecyclerView.Adapter<Product_InOfS
     }
 
 //    hàm tải lại giao diện product
-    private void setInformationProduct_Item(Product_InOfStockViewHolder holder, ProductData productData){
-        ArrayList<Image> arrImage = new ArrayList<>();
-        holder.tvIdProductItem.setText(productData.getIdProduct());
-        holder.tvNameProductItem.setText(productData.getNameProduct());
-        holder.tvPriceProduct.setText("Giá: "+productData.getPriceProduct() + "VND");
-        holder.tvQuanlityProduct.setText("Số lượng: "+productData.getQuanlityProduct());
-        databaseReference = firebaseDatabase.getReference("ImageProducts");
-        Query query = databaseReference.orderByChild("idProduct").equalTo(productData.getIdProduct());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for (DataSnapshot imageItem : snapshot.getChildren()){
-                       Image image = imageItem.getValue(Image.class);
-                        Picasso.get().load(image.getUrlImage()).placeholder(R.drawable.icondowload).into(holder.imgProductItem);
+private void setInformationProduct_Item(Product_InOfStockViewHolder holder, ProductData productData){
+    holder.tvIdProductItem.setText(productData.getIdProduct());
+    holder.tvNameProductItem.setText(productData.getNameProduct());
+    holder.tvPriceProduct.setText("Giá: " + productData.getPriceProduct() + "VND");
+    holder.tvQuanlityProduct.setText("Số lượng: " + productData.getQuanlityProduct());
+    databaseReference = firebaseDatabase.getReference("ImageProducts");
+
+    databaseReference = firebaseDatabase.getReference("ImageProducts").child(productData.getIdProduct());
+    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot snapshot) {
+            if (snapshot.exists()) {
+                // Duyệt qua danh sách ảnh của sản phẩm
+                for (DataSnapshot imageItem : snapshot.getChildren()) {
+                    // Kiểm tra xem ảnh có URL hay không
+                    if (imageItem.child("urlImage").exists()) {
+                        String imageUrl = imageItem.child("urlImage").getValue(String.class);
+                        // Hiển thị ảnh đầu tiên
+                        Picasso.get().load(imageUrl).placeholder(R.drawable.icondowload).into(holder.imgProductItem);
                         return;
                     }
                 }
             }
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+            // Xử lý lỗi nếu có
+        }
+    });
+}
 
-            }
-        });
-    }
 
-//    hàm xóa sản phẩm dựa vào id product
+    //    hàm xóa sản phẩm dựa vào id product
     private void deleteProduct(String idProduct,Product_InOfStockViewHolder holder){
         databaseReference = firebaseDatabase.getReference("Product");
         databaseReference.child(idProduct).removeValue();

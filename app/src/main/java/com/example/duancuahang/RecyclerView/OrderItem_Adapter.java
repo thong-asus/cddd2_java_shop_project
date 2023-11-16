@@ -102,28 +102,31 @@ public class OrderItem_Adapter extends RecyclerView.Adapter<OrderItem_ViewHolder
         });
     }
 
-    private void getImageProduct(String idProduct,OrderItem_ViewHolder holder){
-        ArrayList<Image> arrImage = new ArrayList<>();
-        databaseReference = firebaseDatabase.getReference("ImageProducts");
-        Query query = databaseReference.orderByChild("idProduct").equalTo(idProduct);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void getImageProduct(String idProduct, OrderItem_ViewHolder holder) {
+        databaseReference = firebaseDatabase.getReference("ImageProducts").child(idProduct);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for (DataSnapshot imageItem : snapshot.getChildren()){
-                        Image image = imageItem.getValue(Image.class);
-                        Picasso.get().load(image.getUrlImage()).placeholder(R.drawable.icondowload).into(holder.imgItemOrder_Product);
-                        return;
+                if (snapshot.exists()) {
+                    // Duyệt qua danh sách ảnh của sản phẩm
+                    for (DataSnapshot imageItem : snapshot.getChildren()) {
+                        // Kiểm tra xem ảnh có URL hay không
+                        if (imageItem.child("urlImage").exists()) {
+                            String imageUrl = imageItem.child("urlImage").getValue(String.class);
+                            Picasso.get().load(imageUrl).placeholder(R.drawable.icondowload).into(holder.imgItemOrder_Product);
+                            return;
+                        }
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Xử lý lỗi nếu có
             }
         });
     }
+
     private void getInforProduct(String idProduct, OrderItem_ViewHolder holder){
         databaseReference = firebaseDatabase.getReference("Product/"+idProduct);
         databaseReference.addValueEventListener(new ValueEventListener() {

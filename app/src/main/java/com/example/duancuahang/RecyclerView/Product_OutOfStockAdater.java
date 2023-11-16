@@ -144,16 +144,21 @@ public class Product_OutOfStockAdater extends RecyclerView.Adapter<Product_OutOf
         holder.tvManufaceProduct.setText("Hãng sản xuất: " + manuface.getNameManuface());
         holder.tvPriceProduct.setText("Giá: " + productData.getPriceProduct() + "VND");
         holder.tvQuanlityProduct.setText("Số lượng: " + productData.getQuanlityProduct());
-        databaseReference = firebaseDatabase.getReference("ImageProducts");
-        Query query = databaseReference.orderByChild("idProduct").equalTo(productData.getIdProduct());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        databaseReference = firebaseDatabase.getReference("ImageProducts").child(productData.getIdProduct());
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for (DataSnapshot imageItem : snapshot.getChildren()){
-                        Image image = imageItem.getValue(Image.class);
-                        Picasso.get().load(image.getUrlImage()).placeholder(R.drawable.icondowload).into(holder.imgProductItem);
-                        return;
+                if (snapshot.exists()) {
+                    // Duyệt qua danh sách ảnh của sản phẩm
+                    for (DataSnapshot imageItem : snapshot.getChildren()) {
+                        // Kiểm tra xem ảnh có URL hay không
+                        if (imageItem.child("urlImage").exists()) {
+                            String imageUrl = imageItem.child("urlImage").getValue(String.class);
+                            // Hiển thị ảnh đầu tiên
+                            Picasso.get().load(imageUrl).placeholder(R.drawable.icondowload).into(holder.imgProductItem);
+                            return;
+                        }
                     }
                 }
             }

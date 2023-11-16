@@ -309,16 +309,24 @@ public class OrderDetailActivity extends AppCompatActivity {
     }
 
     private void getImageProduct(String idProduct) {
-        databaseReference = firebaseDatabase.getReference("ImageProducts");
-        Query query = databaseReference.orderByChild("idProduct").equalTo(idProduct);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("ImageProducts");
+
+        // Tìm tất cả các child của "ImageProducts" có key là idProduct
+        Query query = databaseReference.orderByKey().equalTo(idProduct);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    for (DataSnapshot imageItem : snapshot.getChildren()) {
-                        Image image = imageItem.getValue(Image.class);
-                        Picasso.get().load(image.getUrlImage()).placeholder(R.drawable.icondowload).into(imgProduct);
-                        return;
+                    // Lấy child đầu tiên (idProduct) từ "ImageProducts"
+                    DataSnapshot productSnapshot = snapshot.getChildren().iterator().next();
+                    // Duyệt qua danh sách các ảnh của sản phẩm
+                    for (DataSnapshot imageSnapshot : productSnapshot.getChildren()) {
+                        Image image = imageSnapshot.getValue(Image.class);
+                        // Kiểm tra xem ảnh có URL hay không
+                        if (image != null && image.getUrlImage() != null) {
+                            Picasso.get().load(image.getUrlImage()).placeholder(R.drawable.icondowload).into(imgProduct);
+                            return;
+                        }
                     }
                 }
             }
@@ -329,6 +337,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void setInitialization() {
         //Kích hoạt nút back

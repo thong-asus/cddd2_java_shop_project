@@ -108,6 +108,13 @@ public class HomeShop extends AppCompatActivity {
 
     //    Xu ly su kien
     private void setEvent() {
+        linearLayout_ViewRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeShop.this, ViewRatingListActivity.class);
+                startActivity(intent);
+            }
+        });
         linearLayout_SanPhamCuaToi_ScreenHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,8 +145,11 @@ public class HomeShop extends AppCompatActivity {
             intent.putExtra("idUser","0372907720");
             startActivity(intent);
         }
+        if(item.getItemId() == R.id.itSetting_Actionbar){
+            Intent intent = new Intent(context, InformationAccountActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
-
     }
 
     //    Anh xa

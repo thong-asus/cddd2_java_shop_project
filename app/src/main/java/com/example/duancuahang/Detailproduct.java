@@ -98,28 +98,36 @@ public class Detailproduct extends AppCompatActivity {
         setImageProduct();
     }
 
-    private void setImageProduct(){
+    private void setImageProduct() {
         databaseReference = firebaseDatabase.getReference("ImageProducts");
-        Query query = databaseReference.orderByChild("idProduct").equalTo(productData.getIdProduct());
+        String idProduct = productData.getIdProduct();
+        Query query = databaseReference.orderByKey().equalTo(idProduct);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for (DataSnapshot imageItem : snapshot.getChildren()){
-                        Image image = imageItem.getValue(Image.class);
-                        arrImage.add(image);
+                if (snapshot.exists()) {
+                    // Lặp qua danh sách các hình ảnh của sản phẩm
+                    for (DataSnapshot productImages : snapshot.getChildren()) {
+                        for (DataSnapshot imageItem : productImages.getChildren()) {
+                            Image image = imageItem.getValue(Image.class);
+                            arrImage.add(image);
+                        }
+                        // Hiển thị hình ảnh đầu tiên trong danh sách
+                        if (!arrImage.isEmpty()) {
+                            urlImageFirebaseAdapter.notifyDataSetChanged();
+                            Picasso.get().load(arrImage.get(0).getUrlImage()).into(ivImageProduct_DetailProduct);
+                        }
                     }
-                    urlImageFirebaseAdapter.notifyDataSetChanged();
-                    Picasso.get().load(arrImage.get(0).getUrlImage()).into(ivImageProduct_DetailProduct);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Xử lý lỗi khi có
             }
         });
     }
+
 
     //    hàm đưa thông tin sản phẩm lên textView
     private void setInformationProduct() {
