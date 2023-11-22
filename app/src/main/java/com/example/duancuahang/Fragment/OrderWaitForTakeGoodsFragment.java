@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class OrderWaitForTakeGoodsFragment extends Fragment {
@@ -77,30 +78,50 @@ public class OrderWaitForTakeGoodsFragment extends Fragment {
         tvNoOrderWaitTakeGoods = view.findViewById(R.id.tvNoOrderWaitTakeGoods);
     }
 
-    private void loadOrderItem(){
-        String fullPath = "OrderProduct/" + shopData.getIdShop();
-        databaseReference = firebaseDatabase.getInstance().getReference(fullPath);
-        databaseReference.addValueEventListener(new ValueEventListener() {
+    private void loadOrderItem() {
+        databaseReference = firebaseDatabase.getReference("OrderShop/"+shopData.getIdShop());
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrayOrderData.clear();
-                if (snapshot.exists()) {
-                    for (DataSnapshot orderItem : snapshot.getChildren()) {
-                        OrderData orderData1 = orderItem.getValue(OrderData.class);
-                        if (orderData1.getStatusOrder() == 1) {
-                            arrayOrderData.add(orderData1);
-                            //System.out.println("order item: " + orderData1.toString());
-                        }
+                if(snapshot.exists()){
+                    for (DataSnapshot itemIdOrder:
+                            snapshot.getChildren()) {
+                        String idOrderItem = itemIdOrder.getKey();
+                        System.out.println("id order: "+idOrderItem);
+                        DatabaseReference databaseReference1 = firebaseDatabase.getReference("OrderProduct/"+idOrderItem);
+                        databaseReference1.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()){
+                                    OrderData orderData = snapshot.getValue(OrderData.class);
+                                    if (orderData.getStatusOrder() == 1){
+                                        arrayOrderData.add(orderData);
+                                    }
+                                    else {
+                                        arrayOrderData.removeIf(element->element.getIdOrder().equals(orderData.getIdOrder()));
+                                    }
+                                    Collections.reverse(arrayOrderData);
+                                    orderAdaper.notifyDataSetChanged();
+
+                                    if (arrayOrderData.size() <= 0) {
+                                        tvNoOrderWaitTakeGoods.setVisibility(View.VISIBLE);
+                                        rcvOrderWaitTakeGoods.setVisibility(View.GONE);
+                                    } else {
+                                        tvNoOrderWaitTakeGoods.setVisibility(View.GONE);
+                                        rcvOrderWaitTakeGoods.setVisibility(View.VISIBLE);
+                                    }
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                 }
-                if (arrayOrderData.size() <= 0) {
-                    tvNoOrderWaitTakeGoods.setVisibility(View.VISIBLE);
-                    rcvOrderWaitTakeGoods.setVisibility(View.GONE);
-                } else {
-                    tvNoOrderWaitTakeGoods.setVisibility(View.GONE);
-                    rcvOrderWaitTakeGoods.setVisibility(View.VISIBLE);
-                }
-                orderAdaper.notifyDataSetChanged();
             }
 
             @Override

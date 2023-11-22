@@ -38,12 +38,13 @@ public class ProductisinofstockFragment extends Fragment {
     DatabaseReference databaseReference;
 
     ShopData shopData = new ShopData();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_productisinofstock,container,false);
+        View view = inflater.inflate(R.layout.fragment_productisinofstock, container, false);
         SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
-        String jsonShop = sharedPreferences1.getString("informationShop","");
+        String jsonShop = sharedPreferences1.getString("informationShop", "");
         Gson gson = new Gson();
         shopData = gson.fromJson(jsonShop, ShopData.class);
         setControl(view);
@@ -54,49 +55,45 @@ public class ProductisinofstockFragment extends Fragment {
     }
 
     private void setIntiazation() {
-        productInOfStockAdapter = new Product_InOfStockAdapter(arrProductData,getContext());
+        productInOfStockAdapter = new Product_InOfStockAdapter(arrProductData, getContext());
         rcvProductisinstock_ScreenPRoductList.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvProductisinstock_ScreenPRoductList.setAdapter(productInOfStockAdapter);
         productInOfStockAdapter.notifyDataSetChanged();
     }
 
-//    hàm lấy danh sách sản phẩm còn hàng
-    private void pullProduct_IsInofStock(){
+    //    hàm lấy danh sách sản phẩm còn hàng
+    private void pullProduct_IsInofStock() {
 
         System.out.println("id shop: " + shopData.getIdShop());
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Product");
-        Query query =  databaseReference.orderByChild("idUserProduct").equalTo(shopData.getIdShop());
-        query.addValueEventListener(new ValueEventListener() {
+        databaseReference = firebaseDatabase.getReference("Product/" + shopData.getIdShop());
+//        Query query =  databaseReference.orderByChild("idUserProduct").equalTo(shopData.getIdShop());
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrProductData.clear();
-                if(snapshot.exists()){
-                    for (DataSnapshot productSnapshot : snapshot.getChildren()){
+                if (snapshot.exists()) {
+                    for (DataSnapshot productSnapshot : snapshot.getChildren()) {
                         ProductData productData = productSnapshot.getValue(ProductData.class);
-                       if (productData.getQuanlityProduct() > 0){
-                           arrProductData.add(productData);
-                       }
+                        if (productData.getQuanlityProduct() > 0) {
+                            arrProductData.add(productData);
+                        }
                     }
                 }
-                else {
 
-                    if (arrProductData.size() <= 0){
-                        tvNoProduct_InOfStock.setVisibility(View.VISIBLE);
-                        rcvProductisinstock_ScreenPRoductList.setVisibility(View.GONE);
-                    }
-                    else {
-                        tvNoProduct_InOfStock.setVisibility(View.GONE);
-                        rcvProductisinstock_ScreenPRoductList.setVisibility(View.VISIBLE);
-                    }
+                if (arrProductData.size() <= 0) {
+                    tvNoProduct_InOfStock.setVisibility(View.VISIBLE);
+                    rcvProductisinstock_ScreenPRoductList.setVisibility(View.GONE);
+                } else {
+                    tvNoProduct_InOfStock.setVisibility(View.GONE);
+                    rcvProductisinstock_ScreenPRoductList.setVisibility(View.VISIBLE);
                 }
                 productInOfStockAdapter.notifyDataSetChanged();
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                    System.out.println("loi lay san pham");
+                System.out.println("loi lay san pham");
             }
         });
 

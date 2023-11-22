@@ -95,8 +95,8 @@ public class RegistrationActivity extends AppCompatActivity {
                     // Đính kèm đối tượng ShopData vào Intent
 //
                     intent.putExtra("informationShop", shopData);
-                    intent.putExtra("urifront", uriImageSelectionOnDeviceCCCDFront);
-                    intent.putExtra("uriback", uriImageSelectionOnDeviceCCCDBack);
+//                    intent.putExtra("urifront", uriImageSelectionOnDeviceCCCDFront);
+//                    intent.putExtra("uriback", uriImageSelectionOnDeviceCCCDBack);
 
                     //uploadCCCD(edtSoDienThoai.getText().toString());
                     startActivity(intent);
@@ -239,18 +239,18 @@ public class RegistrationActivity extends AppCompatActivity {
 //            }
 //        });
 
-        imgCCCDFront.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openGallery(PICK_IMAGE_FRONT);
-            }
-        });
-        imgCCCDBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openGallery(PICK_IMAGE_BACK);
-            }
-        });
+//        imgCCCDFront.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                openGallery(PICK_IMAGE_FRONT);
+//            }
+//        });
+//        imgCCCDBack.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                openGallery(PICK_IMAGE_BACK);
+//            }
+//        });
 
 
         tvDaCoTaiKhoan.setOnClickListener(new View.OnClickListener() {
@@ -270,11 +270,10 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
     }
-
     public boolean checkInfoRegistration() {
         if (edtSoDienThoai.getText().toString().isEmpty() || edtTenNguoiDKBanHang.getText().toString().isEmpty() || edtTenCuaHang.getText().toString().isEmpty() ||
                 edtDiaChiCuaHang.getText().toString().isEmpty() || edtEmailCuaHang.getText().toString().isEmpty() || edtMaSoThue.getText().toString().isEmpty() ||
-                uriImageSelectionOnDeviceCCCDFront == null || uriImageSelectionOnDeviceCCCDBack == null || !Validates.validPhone(edtSoDienThoai.getText().toString()) ||
+                !Validates.validPhone(edtSoDienThoai.getText().toString()) ||
                 !Validates.validFullname(edtTenNguoiDKBanHang.getText().toString()) || !Validates.validShopName(edtTenCuaHang.getText().toString()) ||
                 !Validates.validShopAddress(edtDiaChiCuaHang.getText().toString()) || !Validates.validEmail(edtEmailCuaHang.getText().toString()) ||
                 !Validates.validMaSoThue(edtMaSoThue.getText().toString())) {
@@ -287,6 +286,22 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         return true;
     }
+//    public boolean checkInfoRegistration() {
+//        if (edtSoDienThoai.getText().toString().isEmpty() || edtTenNguoiDKBanHang.getText().toString().isEmpty() || edtTenCuaHang.getText().toString().isEmpty() ||
+//                edtDiaChiCuaHang.getText().toString().isEmpty() || edtEmailCuaHang.getText().toString().isEmpty() || edtMaSoThue.getText().toString().isEmpty() ||
+//                uriImageSelectionOnDeviceCCCDFront == null || uriImageSelectionOnDeviceCCCDBack == null || !Validates.validPhone(edtSoDienThoai.getText().toString()) ||
+//                !Validates.validFullname(edtTenNguoiDKBanHang.getText().toString()) || !Validates.validShopName(edtTenCuaHang.getText().toString()) ||
+//                !Validates.validShopAddress(edtDiaChiCuaHang.getText().toString()) || !Validates.validEmail(edtEmailCuaHang.getText().toString()) ||
+//                !Validates.validMaSoThue(edtMaSoThue.getText().toString())) {
+//            ShowMessage.showMessage(RegistrationActivity.this,"Không được bỏ trống bất kỳ thông tin đăng ký HOẶC Thông tin bạn nhập không đúng định dạng. Vui lòng thử lại!!!");
+//            return false;
+//        }
+//        if (!chkDongYDieuKhoan.isChecked()) {
+//            ShowMessage.showMessage(RegistrationActivity.this,"Bạn cần phải đồng ý với điều khoản dịch vụ của chúng tôi!");
+//            return false;
+//        }
+//        return true;
+//    }
 
     void openGallery(int requestCode){
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -298,25 +313,25 @@ public class RegistrationActivity extends AppCompatActivity {
 //        startActivityForResult(galleryIntent, requestCode);
 //    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data!=null) {
-            if (requestCode == PICK_IMAGE_FRONT && data!=null) {
-                // Xử lý khi chọn ảnh cho mặt trước
-                uriImageSelectionOnDeviceCCCDFront = data.getData();
-                imgCCCDFront.setImageURI(uriImageSelectionOnDeviceCCCDFront);
-                System.out.println("uri front: " + uriImageSelectionOnDeviceCCCDFront);
-            } else if (requestCode == PICK_IMAGE_BACK && data!=null) {
-                // Xử lý khi chọn ảnh cho mặt sau
-                uriImageSelectionOnDeviceCCCDBack = data.getData();
-                urlImgCCCDBack = getContentResolver().getType(uriImageSelectionOnDeviceCCCDBack);
-                imgCCCDBack.setImageURI(uriImageSelectionOnDeviceCCCDBack);
-                System.out.println("backkkkkkk" + urlImgCCCDBack);
-
-            }
-        }
-}
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == RESULT_OK && data!=null) {
+//            if (requestCode == PICK_IMAGE_FRONT && data!=null) {
+//                // Xử lý khi chọn ảnh cho mặt trước
+//                uriImageSelectionOnDeviceCCCDFront = data.getData();
+//                imgCCCDFront.setImageURI(uriImageSelectionOnDeviceCCCDFront);
+//                System.out.println("uri front: " + uriImageSelectionOnDeviceCCCDFront);
+//            } else if (requestCode == PICK_IMAGE_BACK && data!=null) {
+//                // Xử lý khi chọn ảnh cho mặt sau
+//                uriImageSelectionOnDeviceCCCDBack = data.getData();
+//                urlImgCCCDBack = getContentResolver().getType(uriImageSelectionOnDeviceCCCDBack);
+//                imgCCCDBack.setImageURI(uriImageSelectionOnDeviceCCCDBack);
+//                System.out.println("backkkkkkk" + urlImgCCCDBack);
+//
+//            }
+//        }
+//}
     //Sự kiện ẩn bàn phím
     private void hideKeyboard() {
         View view = this.getCurrentFocus();
@@ -333,8 +348,8 @@ public class RegistrationActivity extends AppCompatActivity {
         edtDiaChiCuaHang = findViewById(R.id.edtDiaChiCuaHang);
         edtEmailCuaHang = findViewById(R.id.edtEmailCuaHang);
         edtMaSoThue = findViewById(R.id.edtMaSoThue);
-        imgCCCDFront = findViewById(R.id.imgCCCDFront);
-        imgCCCDBack = findViewById(R.id.imgCCCDBack);
+//        imgCCCDFront = findViewById(R.id.imgCCCDFront);
+//        imgCCCDBack = findViewById(R.id.imgCCCDBack);
         chkDongYDieuKhoan = findViewById(R.id.chkDongYDieuKhoan);
         btnTiepTuc = findViewById(R.id.btnTiepTuc);
         tvDaCoTaiKhoan = findViewById(R.id.tvDaCoTaiKhoan);

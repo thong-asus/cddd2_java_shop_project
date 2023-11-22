@@ -286,6 +286,7 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(context, "Xác minh tài khoản thành công!", LENGTH_SHORT).show();
+
                             //pushCCCDFront();
 
                             registration();

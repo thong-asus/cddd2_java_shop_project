@@ -5,17 +5,27 @@ import java.io.Serializable;
 public class Customer implements Serializable {
     private String id;
     private String address;
-    private String imageUser;
+    public String fcmToken;
     private String name;
+    private String imageUser;
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id='" + id + '\'' +
-                ", address='" + address + '\'' +
-                ", imageUser='" + imageUser + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+    public Customer(String id, String address, String name, String imageUser,String fcmToken) {
+        this.id = id;
+        this.address = address;
+        this.name = name;
+        this.imageUser = imageUser;
+        this.fcmToken = fcmToken;
+    }
+
+    public Customer() {
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     public String getId() {
@@ -34,14 +44,6 @@ public class Customer implements Serializable {
         this.address = address;
     }
 
-    public String getImageUser() {
-        return imageUser;
-    }
-
-    public void setImageUser(String imageUser) {
-        this.imageUser = imageUser;
-    }
-
     public String getName() {
         return name;
     }
@@ -50,13 +52,22 @@ public class Customer implements Serializable {
         this.name = name;
     }
 
-    public Customer() {
+    public String getImageUser() {
+        return imageUser;
     }
 
-    public Customer(String id, String address, String imageUser, String name) {
-        this.id = id;
-        this.address = address;
+    public void setImageUser(String imageUser) {
         this.imageUser = imageUser;
-        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id='" + id + '\'' +
+                ", address='" + address + '\'' +
+                ", fcmToken='" + fcmToken + '\'' +
+                ", name='" + name + '\'' +
+                ", imageUser='" + imageUser + '\'' +
+                '}';
     }
 }

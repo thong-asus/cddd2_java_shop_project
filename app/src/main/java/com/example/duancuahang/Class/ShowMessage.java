@@ -25,7 +25,7 @@ public class ShowMessage {
 
 
     //Hiển thị thông báo trong 0.7 giây
-    public static void showMessageCopy(Context context, String message) {
+    public static void showMessageTimer(Context context, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Thông báo");
         builder.setMessage(message);
@@ -46,6 +46,6 @@ public class ShowMessage {
                     alertDialog.dismiss();
                 }
             }
-        }, 700);
+        }, 1000);
     }
 }

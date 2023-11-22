@@ -14,6 +14,7 @@ import com.example.duancuahang.Fragment.OrderDeliveredFragment;
 import com.example.duancuahang.Fragment.OrderDeliveringFragment;
 import com.example.duancuahang.Fragment.OrderWaitForConfirmFragment;
 import com.example.duancuahang.Fragment.OrderWaitForTakeGoodsFragment;
+import com.example.duancuahang.Fragment.OrderWaitShipperFragment;
 
 public class Order_ListViewPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -30,10 +31,12 @@ public class Order_ListViewPagerAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return new OrderWaitForTakeGoodsFragment();
             case 2:
-                return new OrderDeliveringFragment();
+                return new OrderWaitShipperFragment();
             case 3:
-                return new OrderDeliveredFragment();
+                return new OrderDeliveringFragment();
             case 4:
+                return new OrderDeliveredFragment();
+            case 5:
                 return new OrderCancelledFragment();
         }
         return new OrderWaitForConfirmFragment();
@@ -41,7 +44,7 @@ public class Order_ListViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return 5;
+        return 6;
     }
 
     @Nullable
@@ -56,12 +59,15 @@ public class Order_ListViewPagerAdapter extends FragmentStatePagerAdapter {
                 title = "Chờ lấy hàng";
                 break;
             case 2:
-                title = "Đang giao";
+                title = "Chờ Shipper";
                 break;
             case 3:
-                title = "Đã giao";
+                title = "Đang giao";
                 break;
             case 4:
+                title = "Đã giao";
+                break;
+            case 5:
                 title = "Đã hủy";
                 break;
         }

@@ -39,10 +39,10 @@ public class ProductListViewPagerAdapter extends FragmentStatePagerAdapter {
         String title = "";
         switch (position){
             case 0:
-                title = "Sản phẩm còn hàng";
+                title = "Còn hàng";
                 break;
             case 1:
-                title = "Sản phẩm hết hàng";
+                title = "Hết hàng";
                 break;
         }
         return title;

@@ -3,6 +3,12 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class Validates {
+    public static boolean validOrderSearch(String keySearch){
+        String strRegex = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ0-9-]+$";
+        Pattern pattern = Pattern.compile(strRegex);
+        Matcher matcher = pattern.matcher(keySearch);
+        return matcher.find();
+    }
     public static boolean validPhone(String phone) {
         String strRegex = "^0[0-9]{9}$";
         Pattern pattern = Pattern.compile(strRegex);

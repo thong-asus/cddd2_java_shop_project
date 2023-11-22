@@ -72,9 +72,9 @@ public class ViewRatingListActivity extends AppCompatActivity {
     }
     private void getAllProduct() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Product");
-        Query query = databaseReference.orderByChild("idUserProduct").equalTo(shopData.getIdShop());
-        query.addValueEventListener(new ValueEventListener() {
+        databaseReference = firebaseDatabase.getReference("Product/"+shopData.getIdShop());
+//        Query query = databaseReference.orderByChild("idUserProduct").equalTo(shopData.getIdShop());
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrayProductData.clear();

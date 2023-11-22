@@ -51,38 +51,38 @@
                 style="@style/prop_editText"
                 android:hint="Mã số thuế"
                 android:inputType="number"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#B0B0B0"
-                android:layout_marginTop="10dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="CCCD/CMND"
-                android:textColor="#000"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:layout_margin="10dp"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <ImageView
-                    android:id="@+id/imgCCCDFront"
-                    style="@style/prop_cccd"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/cccdfront"
-                    android:onClick="chooseImage"
-                    android:clickable="true"/>
-                <ImageView
-                    android:id="@+id/imgCCCDBack"
-                    style="@style/prop_cccd"
-                    android:background="@drawable/cccdback"
-                    android:onClick="chooseImage"
-                    android:clickable="true"/>
-            </LinearLayout>
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="2dp"-->
+<!--                android:background="#B0B0B0"-->
+<!--                android:layout_marginTop="10dp"/>-->
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="CCCD/CMND"-->
+<!--                android:textColor="#000"-->
+<!--                android:textSize="20dp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_margin="10dp"/>-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="center">-->
+<!--                <ImageView-->
+<!--                    android:id="@+id/imgCCCDFront"-->
+<!--                    style="@style/prop_cccd"-->
+<!--                    android:layout_marginRight="20dp"-->
+<!--                    android:background="@drawable/cccdfront"-->
+<!--                    android:onClick="chooseImage"-->
+<!--                    android:clickable="true"/>-->
+<!--                <ImageView-->
+<!--                    android:id="@+id/imgCCCDBack"-->
+<!--                    style="@style/prop_cccd"-->
+<!--                    android:background="@drawable/cccdback"-->
+<!--                    android:onClick="chooseImage"-->
+<!--                    android:clickable="true"/>-->
+<!--            </LinearLayout>-->
             <LinearLayout
                 android:layout_width="250dp"
                 android:layout_height="match_parent"

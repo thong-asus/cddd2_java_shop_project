@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,11 +32,7 @@ public class OrderListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_list);
         setControl();
         setIntiazation();
-        setEvent();
         context = this;
-    }
-    private void setEvent(){
-
     }
     private void setControl(){
         tabLayout_ScreenOrderList = findViewById(R.id.tabLayout_ScreenOrderList);
@@ -49,6 +46,10 @@ public class OrderListActivity extends AppCompatActivity {
         //Kích hoạt nút back
         setSupportActionBar(toolBar_OrderList);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+        Integer activeTab = intent.getIntExtra("tabActive",0);
+        tabLayout_ScreenOrderList.getTabAt(activeTab).select();
     }
 
 
@@ -72,9 +73,10 @@ public class OrderListActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.action_search){
             Intent intent = new Intent(OrderListActivity.this, SearchOrderActivity.class);
             startActivity(intent);
-            Toast.makeText(context, "Chuyển sang màn hình tìm kiếm", Toast.LENGTH_SHORT).show();
         } else if (item.getItemId() == R.id.action_message){
-            Toast.makeText(context, "Chuyển sang màn hình tin nhắn", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, ChatListActivity.class);
+            //intent.putExtra("idUser","0372907720");
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

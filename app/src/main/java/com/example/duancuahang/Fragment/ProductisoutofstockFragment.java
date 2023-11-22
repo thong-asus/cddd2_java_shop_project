@@ -41,9 +41,9 @@ public class ProductisoutofstockFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_productisoutofstock,container,false);
+        View view = inflater.inflate(R.layout.fragment_productisoutofstock, container, false);
         SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
-        String jsonShop = sharedPreferences1.getString("informationShop","");
+        String jsonShop = sharedPreferences1.getString("informationShop", "");
         Gson gson = new Gson();
         shopData = gson.fromJson(jsonShop, ShopData.class);
         setControl(view);
@@ -54,7 +54,7 @@ public class ProductisoutofstockFragment extends Fragment {
     }
 
     private void setIntiazation() {
-        productOutOfStockAdater = new Product_OutOfStockAdater(arrProducts,getContext());
+        productOutOfStockAdater = new Product_OutOfStockAdater(arrProducts, getContext());
         rcvProductisoutstock_ScreenProductList.setLayoutManager(new LinearLayoutManager(getContext()));
         rcvProductisoutstock_ScreenProductList.setAdapter(productOutOfStockAdater);
         productOutOfStockAdater.notifyDataSetChanged();
@@ -68,36 +68,31 @@ public class ProductisoutofstockFragment extends Fragment {
         tvNoProduct_OutOfStock = view.findViewById(R.id.tvNoProduct_OutOfStock);
     }
 
-    private void pullProductQuanlityIs_0(){
+    private void pullProductQuanlityIs_0() {
         System.out.println("id shop: " + shopData.getIdShop());
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Product");
-        Query query =  databaseReference.orderByChild("idUserProduct").equalTo(shopData.getIdShop());
-        query.addValueEventListener(new ValueEventListener() {
+        databaseReference = firebaseDatabase.getReference("Product/" + shopData.getIdShop());
+//        Query query =  databaseReference.orderByChild("idUserProduct").equalTo(shopData.getIdShop());
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 arrProducts.clear();
-                if(snapshot.exists()){
-                    for (DataSnapshot productSnapshot : snapshot.getChildren()){
+                if (snapshot.exists()) {
+                    for (DataSnapshot productSnapshot : snapshot.getChildren()) {
                         ProductData productData = productSnapshot.getValue(ProductData.class);
-                        if (productData.getQuanlityProduct() <= 0){
+                        if (productData.getQuanlityProduct() <= 0) {
                             arrProducts.add(productData);
                         }
                     }
                 }
-                else {
-
-                    if (arrProducts.size() <= 0){
-                        tvNoProduct_OutOfStock.setVisibility(View.VISIBLE);
-                        rcvProductisoutstock_ScreenProductList.setVisibility(View.GONE);
-                    }
-                    else {
-                        tvNoProduct_OutOfStock.setVisibility(View.GONE);
-                        rcvProductisoutstock_ScreenProductList.setVisibility(View.VISIBLE);
-                    }
+                if (arrProducts.size() <= 0) {
+                    tvNoProduct_OutOfStock.setVisibility(View.VISIBLE);
+                    rcvProductisoutstock_ScreenProductList.setVisibility(View.GONE);
+                } else {
+                    tvNoProduct_OutOfStock.setVisibility(View.GONE);
+                    rcvProductisoutstock_ScreenProductList.setVisibility(View.VISIBLE);
                 }
                 productOutOfStockAdater.notifyDataSetChanged();
-
             }
 
             @Override

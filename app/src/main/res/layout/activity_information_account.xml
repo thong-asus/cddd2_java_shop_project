@@ -70,7 +70,7 @@
             android:textColor="#000"
             android:textStyle="bold"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tên người đăng ký bán hàng"
             android:textSize="20dp"
@@ -97,7 +97,7 @@
             android:textColor="#000"
             android:textStyle="bold"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Điện thoại"
             android:textSize="20dp"
@@ -124,7 +124,7 @@
             android:textColor="#000"
             android:textStyle="bold"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tên cửa hàng"
             android:textSize="20dp"
@@ -151,7 +151,7 @@
             android:textColor="#000"
             android:textStyle="bold"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email"
             android:textSize="20dp"
@@ -178,7 +178,7 @@
             android:textColor="#000"
             android:textStyle="bold"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Địa chỉ"
             android:textSize="20dp"
@@ -205,7 +205,7 @@
             android:textColor="#000"
             android:textStyle="bold"/>
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mã số thuế"
             android:textSize="20dp"
@@ -221,16 +221,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginLeft="5dp">
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/linearLayout_ChangePassword">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đổi mật khẩu                                                  >"
+            android:text="Đổi mật khẩu"
             android:textSize="20dp"
             android:textColor="#000"
-            android:id="@+id/tvChangePassword"
+            android:textStyle="italic"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=">"
+            android:layout_marginLeft="250dp"
+            android:textSize="20dp"
+            android:textColor="#000"
             android:textStyle="italic"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"/>

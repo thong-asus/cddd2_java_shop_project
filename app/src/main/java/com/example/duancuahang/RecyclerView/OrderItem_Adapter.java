@@ -1,7 +1,10 @@
 package com.example.duancuahang.RecyclerView;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,8 @@ import com.example.duancuahang.Class.FormatMoneyVietNam;
 import com.example.duancuahang.Class.Image;
 import com.example.duancuahang.Class.OrderData;
 import com.example.duancuahang.Class.ProductData;
+import com.example.duancuahang.Class.Shop;
+import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.OrderDetailActivity;
 import com.example.duancuahang.R;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,15 +37,27 @@ public class OrderItem_Adapter extends RecyclerView.Adapter<OrderItem_ViewHolder
     FrameLayout frameLayout_ItemOrderList;
     ArrayList<OrderData> arrayOrderData;
     Context context;
+    ShopData shopData = new ShopData();
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
+    public void setData(ArrayList<OrderData> arrayOrderData) {
+        this.arrayOrderData = arrayOrderData;
+    }
 
     public OrderItem_Adapter(ArrayList<OrderData> arrayOrderData, Context context){
         this.arrayOrderData = arrayOrderData;
         this.context = context;
         //loadOrderItem();
-    }
+        getInforShop();
 
+    }
+    private void getInforShop(){
+        SharedPreferences sharedPreferences1 = context.getSharedPreferences("InformationShop", Context.MODE_PRIVATE);
+        String jsonShop = sharedPreferences1.getString("informationShop","");
+        Gson gson = new Gson();
+        shopData = gson.fromJson(jsonShop, ShopData.class);
+    }
 
     @NonNull
     @Override
@@ -128,7 +146,7 @@ public class OrderItem_Adapter extends RecyclerView.Adapter<OrderItem_ViewHolder
     }
 
     private void getInforProduct(String idProduct, OrderItem_ViewHolder holder){
-        databaseReference = firebaseDatabase.getReference("Product/"+idProduct);
+        databaseReference = firebaseDatabase.getReference("Product/"+shopData.getIdShop()+"/"+idProduct);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

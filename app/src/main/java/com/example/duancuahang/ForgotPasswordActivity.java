@@ -41,7 +41,6 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 
-
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     EditText edtSoDienThoai, edtInputOTP;
@@ -54,8 +53,9 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     String verificationCode = "", codesms = "";
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference ;
+    DatabaseReference databaseReference;
     Long timeoutSeconds = 60L;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,18 +69,17 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         btnTiepTuc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(edtInputOTP.getText().toString().isEmpty() || !Validates.validOTP(edtInputOTP.getText().toString())){
+                if (edtInputOTP.getText().toString().isEmpty() || !Validates.validOTP(edtInputOTP.getText().toString())) {
                     Toast.makeText(ForgotPasswordActivity.this, "OTP không được bỏ trống HOẶC OTP sai định dạng. Vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
                 } else {
                     String enteredOTP = edtInputOTP.getText().toString();
                     PhoneAuthCredential phoneAuthCredential = null;
                     try {
                         phoneAuthCredential = PhoneAuthProvider.getCredential(codesms, enteredOTP);
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
                         Toast.makeText(context, "Lỗi xác minh OTP" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                    if(phoneAuthCredential != null){
+                    if (phoneAuthCredential != null) {
                         verifyForgotPWSuccessul(phoneAuthCredential);
                     }
                 }
@@ -96,8 +95,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         edtSoDienThoai.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_DONE){
-                    if(Validates.validPhone(edtSoDienThoai.getText().toString()) == false) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    if (Validates.validPhone(edtSoDienThoai.getText().toString()) == false) {
                         edtSoDienThoai.selectAll();
                         edtSoDienThoai.requestFocus();
                         edtSoDienThoai.setError("Số điện thoại phải đủ 10 ký tự số và bắt đầu bằng số 0");
@@ -111,8 +110,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         edtInputOTP.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if(i == EditorInfo.IME_ACTION_DONE){
-                    if(Validates.validOTP(edtInputOTP.getText().toString()) == false){
+                if (i == EditorInfo.IME_ACTION_DONE) {
+                    if (Validates.validOTP(edtInputOTP.getText().toString()) == false) {
                         edtInputOTP.selectAll();
                         edtInputOTP.requestFocus();
                         edtInputOTP.setError("OTP là dãy ký tự 6 số");
@@ -139,23 +138,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         try {
                             if (task.isSuccessful()) {
-                                Toast.makeText(context, "Xác minh OTP thành công!", Toast.LENGTH_SHORT).show();
-                                databaseReference = firebaseDatabase.getReference("Shop");
+//                                Toast.makeText(context, "Xác minh OTP thành công!", Toast.LENGTH_SHORT).show();
+                                databaseReference = firebaseDatabase.getReference("Shop/" + edtSoDienThoai.getText().toString());
                                 Query query = databaseReference.child(edtSoDienThoai.getText().toString()).getParent();
                                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if(snapshot.exists()){
-                                            for (DataSnapshot item: snapshot.getChildren()) {
-                                               if(item.child("idShop").getValue().equals(edtSoDienThoai.getText().toString())){
-                                                   ShopData shopData = item.getValue(ShopData.class);
-                                                   Intent intent1 = new Intent(context,NewPasswordForgotActivity.class);
-                                                   intent1.putExtra("idShop",shopData);
-                                                   startActivity(intent1);
-                                                   finish();
-                                                   return;
-                                               }
-                                            }
+                                        if (snapshot.exists()) {
+                                            ShopData shopData = snapshot.getValue(ShopData.class);
+                                            Intent intent1 = new Intent(context, NewPasswordForgotActivity.class);
+                                            intent1.putExtra("idShop", shopData);
+                                            startActivity(intent1);
+                                            finish();
+                                        } else {
+                                            ShowMessage.showMessageTimer(context,"Số điện thoại chưa đăng ký");
                                         }
                                     }
 
@@ -167,15 +163,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                             } else {
                                 Toast.makeText(ForgotPasswordActivity.this, "Sai mã OTP. Vui lòng thử lại!!!", Toast.LENGTH_SHORT).show();
                             }
-                        } catch (Exception e){
-                            ShowMessage.showMessage(ForgotPasswordActivity.this,"Lỗi: " +e);
+                        } catch (Exception e) {
+                            ShowMessage.showMessage(ForgotPasswordActivity.this, "Lỗi: " + e);
                         }
                     }
                 });
     }
-    void sentOTP(){
+
+    void sentOTP() {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
-                .setPhoneNumber("+84"+edtSoDienThoai.getText().toString().substring(1))
+                .setPhoneNumber("+84" + edtSoDienThoai.getText().toString().substring(1))
                 .setTimeout(60L, TimeUnit.SECONDS)
                 .setActivity(this)
                 .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -183,6 +180,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                         verificationCode = phoneAuthCredential.getSmsCode();
                     }
+
                     @Override
                     public void onVerificationFailed(@NonNull FirebaseException e) {
                         System.out.println("Lỗi: " + e.getMessage());
@@ -198,6 +196,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         AlertDialog alertDialog = builder.create();
                         alertDialog.show();
                     }
+
                     @Override
                     public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                         super.onCodeSent(s, forceResendingToken);
@@ -209,23 +208,23 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     //Đếm ngược thời gian gửi lại mã
-    void resendOTP(){
+    void resendOTP() {
         btnLayMaOTP.setEnabled(false);
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 timeoutSeconds--;
-                tvTimeResend.setText(timeoutSeconds +" giây");
-                if(timeoutSeconds<=0){
-                    timeoutSeconds =60L;
+                tvTimeResend.setText(timeoutSeconds + " giây");
+                if (timeoutSeconds <= 0) {
+                    timeoutSeconds = 60L;
                     timer.cancel();
                     runOnUiThread(() -> {
                         btnLayMaOTP.setEnabled(true);
                     });
                 }
             }
-        },0,1000);
+        }, 0, 1000);
     }
 
     private void hideKeyboard() {
@@ -235,6 +234,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
     private void setControl() {
         vForgotPassword = findViewById(R.id.vForgotPassword);
         edtSoDienThoai = findViewById(R.id.edtSoDienThoai);

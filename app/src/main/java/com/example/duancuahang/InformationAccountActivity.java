@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class InformationAccountActivity extends AppCompatActivity {
 
     Toolbar toolBar_Information;
-    TextView tvChangePassword, tvShopOwner, tvShopPhoneNumber, tvShopName, tvShopEmail, tvShopAddress, tvTaxCode, tvLogOut;
+    TextView tvShopOwner, tvShopPhoneNumber, tvShopName, tvShopEmail, tvShopAddress, tvTaxCode, tvLogOut;
+    LinearLayout linearLayout_ChangePassword;
     CircleImageView imgAvartar;
     private ShopData shopData = new ShopData();
     Context context;
@@ -103,7 +105,7 @@ public class InformationAccountActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
-        tvChangePassword.setOnClickListener(new View.OnClickListener() {
+        linearLayout_ChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(InformationAccountActivity.this, ChangePasswordActivity.class);
@@ -114,7 +116,7 @@ public class InformationAccountActivity extends AppCompatActivity {
 
     private void setControl() {
         toolBar_Information = findViewById(R.id.toolBar_Information);
-        tvChangePassword = findViewById(R.id.tvChangePassword);
+        linearLayout_ChangePassword = findViewById(R.id.linearLayout_ChangePassword);
         tvShopOwner = findViewById(R.id.tvShopOwner);
         tvShopPhoneNumber = findViewById(R.id.tvShopPhoneNumber);
         tvShopName = findViewById(R.id.tvShopName);

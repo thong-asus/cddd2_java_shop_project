@@ -428,7 +428,7 @@ public class Addproduct extends AppCompatActivity {
                 edtDescriptionProduct.getText().toString(), 0, 0,shopData.getIdShop());
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
-        databaseReference.child("Product").child(keyProductItem.concat(shopData.getIdShop())).setValue(productData);
+        databaseReference.child("Product").child(shopData.getIdShop()).child(keyProductItem.concat(shopData.getIdShop())).setValue(productData);
         addImageProduct(keyProductItem.concat(shopData.getIdShop()));
         loading = false;
 

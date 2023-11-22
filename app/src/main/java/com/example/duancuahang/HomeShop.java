@@ -1,52 +1,33 @@
 package com.example.duancuahang;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.duancuahang.Class.ShopData;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.example.duancuahang.Fragment.OrderWaitForTakeGoodsFragment;
+import com.example.duancuahang.Class.ShowMessage;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 public class HomeShop extends AppCompatActivity {
 
 //    khai báo biến giao diện
     Toolbar toolbar;
     LinearLayout linearLayout_SanPhamCuaToi_ScreenHome;
-    View linearLayout_ViewRating, linearLayout_OrderCancelled, linearLayout_WaitTakeGoods;
+    View linearLayout_ViewRating, linearLayout_OrderCancelled, linearLayout_WaitTakeGoods, linearLayout_Voucher, linearLayout_Statictis;
     TextView tvNameShop_ScreenHome, tvBillHistory;
     ImageView ivAvataShop_ScreenHome;
     Context context;
@@ -108,6 +89,35 @@ public class HomeShop extends AppCompatActivity {
 
     //    Xu ly su kien
     private void setEvent() {
+        linearLayout_Voucher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeShop.this, MyVoucherActivity.class);
+                startActivity(intent);
+            }
+        });
+        linearLayout_Statictis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShowMessage.showMessageTimer(context,"Đợi xíu! Đang tìm hiểu! 😂");
+            }
+        });
+        linearLayout_WaitTakeGoods.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeShop.this,OrderListActivity.class);
+                intent.putExtra("tabActive",1);
+                startActivity(intent);
+            }
+        });
+        linearLayout_OrderCancelled.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeShop.this,OrderListActivity.class);
+                intent.putExtra("tabActive",4);
+                startActivity(intent);
+            }
+        });
         linearLayout_ViewRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,8 +151,8 @@ public class HomeShop extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.itMessage_Actionbar){
-            Intent intent = new Intent(context, MessageActivity.class);
-            intent.putExtra("idUser","0372907720");
+            Intent intent = new Intent(context, ChatListActivity.class);
+            //intent.putExtra("idUser","0372907720");
             startActivity(intent);
         }
         if(item.getItemId() == R.id.itSetting_Actionbar){
@@ -162,6 +172,8 @@ public class HomeShop extends AppCompatActivity {
         linearLayout_WaitTakeGoods = findViewById(R.id.linearLayout_WaitTakeGoods);
         linearLayout_OrderCancelled = findViewById(R.id.linearLayout_OrderCancelled);
         linearLayout_ViewRating = findViewById(R.id.linearLayout_ViewRating);
+        linearLayout_Voucher = findViewById(R.id.linearLayout_Voucher);
+        linearLayout_Statictis = findViewById(R.id.linearLayout_Statictis);
     }
 
     //    Thêm item và ActionBar

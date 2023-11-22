@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duancuahang.Class.Category;
+import com.example.duancuahang.Class.FormatMoneyVietNam;
 import com.example.duancuahang.Class.Image;
 import com.example.duancuahang.Class.Manuface;
 import com.example.duancuahang.Class.ProductData;
@@ -146,7 +147,7 @@ public class Product_InOfStockAdapter extends RecyclerView.Adapter<Product_InOfS
 private void setInformationProduct_Item(Product_InOfStockViewHolder holder, ProductData productData){
     holder.tvIdProductItem.setText(productData.getIdProduct());
     holder.tvNameProductItem.setText(productData.getNameProduct());
-    holder.tvPriceProduct.setText("Giá: " + productData.getPriceProduct() + "VND");
+    holder.tvPriceProduct.setText("Giá: " + FormatMoneyVietNam.formatMoneyVietNam(productData.getPriceProduct()) + "đ");
     holder.tvQuanlityProduct.setText("Số lượng: " + productData.getQuanlityProduct());
     databaseReference = firebaseDatabase.getReference("ImageProducts");
 

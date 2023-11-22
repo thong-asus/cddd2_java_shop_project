@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duancuahang.Class.Category;
+import com.example.duancuahang.Class.FormatMoneyVietNam;
 import com.example.duancuahang.Class.Image;
 import com.example.duancuahang.Class.Manuface;
 import com.example.duancuahang.Class.ProductData;
@@ -25,6 +26,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.Format;
 import java.util.ArrayList;
 
 public class Product_OutOfStockAdater extends RecyclerView.Adapter<Product_OutOfStockViewHolder> {
@@ -142,7 +144,7 @@ public class Product_OutOfStockAdater extends RecyclerView.Adapter<Product_OutOf
         holder.tvNameProductItem.setText(productData.getNameProduct());
         holder.tvCategory.setText("Danh mục: " + category.getNameCategory());
         holder.tvManufaceProduct.setText("Hãng sản xuất: " + manuface.getNameManuface());
-        holder.tvPriceProduct.setText("Giá: " + productData.getPriceProduct() + "VND");
+        holder.tvPriceProduct.setText("Giá: " + FormatMoneyVietNam.formatMoneyVietNam(productData.getPriceProduct()) + "đ");
         holder.tvQuanlityProduct.setText("Số lượng: " + productData.getQuanlityProduct());
 
         databaseReference = firebaseDatabase.getReference("ImageProducts").child(productData.getIdProduct());

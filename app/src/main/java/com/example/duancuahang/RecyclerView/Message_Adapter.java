@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.duancuahang.Class.Customer;
+import com.example.duancuahang.Class.ItemMessage;
 import com.example.duancuahang.Class.MessageData;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.R;
@@ -24,12 +26,12 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class Message_Adapter extends RecyclerView.Adapter<Message_ViewHolder> {
-    private ArrayList<MessageData> arrMessage = new ArrayList<>();
+    private ArrayList<String> arrMessage = new ArrayList<>();
     private Context context;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
 
-    public Message_Adapter(ArrayList<MessageData> arrMessage, Context context){
+    public Message_Adapter(ArrayList<String> arrMessage, Context context){
         this.arrMessage = arrMessage;
         this.context = context;
     }
@@ -41,38 +43,52 @@ public class Message_Adapter extends RecyclerView.Adapter<Message_ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull Message_ViewHolder holder, int position) {
-        MessageData messageData = arrMessage.get(position);
-        String nameTable = messageData.getIdSender().toString().split("-")[1];
-        String idUser = messageData.getIdSender().toString().split("-")[0];
-        System.out.println("nameTB: "+ nameTable);
-
-        if (nameTable.equals("Shop")){
-            setInformationShop(idUser,holder);
-            holder.tvContentItem_CustomerItemMessage.setText(messageData.getContentMessage());
-            holder.vItemMessage.setGravity(Gravity.RIGHT);
-            holder.ivAvataUser_CustomerItemMessage.setVisibility(View.VISIBLE);
-            holder.tvContentItem_CustomerItemMessage.setBackgroundResource(R.drawable.bg_tvcontent_user01);
-        }
-        else if (nameTable.equals("Customer")){
-            holder.ivAvataUser_CustomerItemMessage.setVisibility(View.GONE);
-            holder.tvContentItem_CustomerItemMessage.setText(messageData.getContentMessage());
-            holder.tvContentItem_CustomerItemMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-            holder.vItemMessage.setGravity(Gravity.LEFT);
-            holder.tvContentItem_CustomerItemMessage.setBackgroundResource(R.drawable.bg_tvcontent_user02);
-        }
+        String itemMessage = arrMessage.get(position);
+        getItemMessage(itemMessage,holder);
     }
-    private void setInformationShop(String idShop,Message_ViewHolder holder){
-        databaseReference = firebaseDatabase.getReference("Shop/" +idShop);
+    private void getItemMessage(String idItemMessage,Message_ViewHolder holder) {
+        databaseReference = firebaseDatabase.getReference("ItemMessage" + idItemMessage);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    ShopData shopData = snapshot.getValue(ShopData.class);
-                   if (shopData.getUrlImgShopAvatar().isEmpty()){
-                       Picasso.get().load(R.drawable.iconshop).into(holder.ivAvataUser_CustomerItemMessage);
-                   }else {
-                       Picasso.get().load(shopData.getUrlImgShopAvatar()).into(holder.ivAvataUser_CustomerItemMessage);
-                   }
+                if (snapshot.exists()) {
+                    ItemMessage itemMessage = snapshot.getValue(ItemMessage.class);
+                    String nameTable = itemMessage.getIdSender().toString().split("-")[1];
+                    String idUser = itemMessage.getIdSender().toString().split("-")[0];
+                    if (nameTable.equals("Shop")){
+                        holder.tvContentItem_CustomerItemMessage.setText(itemMessage.getContentMessage());
+                        holder.vItemMessage.setGravity(Gravity.RIGHT);
+                        holder.ivAvataUser_CustomerItemMessage.setVisibility(View.GONE);
+                        holder.tvContentItem_CustomerItemMessage.setBackgroundResource(R.drawable.bg_tvcontent_user01);
+                    } else if (nameTable.equals("Customer")) {
+                        setInformationCustomer(idUser,holder);
+                        holder.ivAvataUser_CustomerItemMessage.setVisibility(View.VISIBLE);
+                        holder.tvContentItem_CustomerItemMessage.setText(itemMessage.getContentMessage());
+                        holder.tvContentItem_CustomerItemMessage.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+                        holder.vItemMessage.setGravity(Gravity.LEFT);
+                        holder.tvContentItem_CustomerItemMessage.setBackgroundResource(R.drawable.bg_tvcontent_user02);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    private void setInformationCustomer(String idCustomer, Message_ViewHolder holder) {
+        databaseReference = firebaseDatabase.getReference("Customer/" + idCustomer);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Customer customer = snapshot.getValue(Customer.class);
+                    if (customer.getImageUser().isEmpty()) {
+                        Picasso.get().load(R.drawable.ic_chat).into(holder.ivAvataUser_CustomerItemMessage);
+                    } else {
+                        Picasso.get().load(customer.getImageUser()).into(holder.ivAvataUser_CustomerItemMessage);
+                    }
                 }
             }
 
