@@ -98,18 +98,27 @@ public class NewPasswordForgotActivity extends AppCompatActivity {
         System.out.println("asdfa: " + shopData.toString());
 
         if(checkNewPassword()){
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            DatabaseReference shopReference = firebaseDatabase.getReference("Shop");
-            if(shopReference != null){
-                shopReference.child(shopData.getIdShop()).setValue(shopData);
-                Toast.makeText(this, "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(NewPasswordForgotActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }else {
-                Toast.makeText(this, "Thay đổi mật khẩu thất bại!!!", Toast.LENGTH_SHORT).show();
-             }
+            if (checkOldAndNewPassword()) {
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+                DatabaseReference shopReference = firebaseDatabase.getReference("Shop");
+                if(shopReference != null){
+                    shopReference.child(shopData.getIdShop()).setValue(shopData);
+                    Toast.makeText(this, "Thay đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(NewPasswordForgotActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    Toast.makeText(this, "Thay đổi mật khẩu thất bại!!!", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
+    }
+    private boolean checkOldAndNewPassword(){
+        if(edtMatKhauMoi.getText().toString().equals(shopData.getPassword().toString())){
+            Toast.makeText(this, "Mật khẩu mới không được trùng mật khẩu cũ!!!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
     private boolean checkNewPassword() {
         String matKhauMoi = edtMatKhauMoi.getText().toString();

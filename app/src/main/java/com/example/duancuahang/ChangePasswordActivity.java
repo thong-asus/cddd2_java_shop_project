@@ -85,13 +85,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void updatePassword(){
-//        String oldPassword = shopData.getPassword();
-//        // Lấy mật khẩu mới và xác minh mật khẩu mới từ EditText
         String matKhauMoi = edtMatKhauMoi.getText().toString();
-//        String xacMinhMatKhau = edtXacMinhMatKhauMoi.getText().toString();
-
-
-        //System.out.println("asdfa: " + shopData.toString());
+        //Kiểm tra mật khẩu
         if(checkNewPassword()){
             if(checkOldAndNewPassword()){
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();

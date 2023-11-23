@@ -53,7 +53,7 @@ public class ViewCommentProductFragment extends Fragment {
         return view;
     }
     private void displayAllComment() {
-        databaseReference = firebaseDatabase.getReference("CommentProduct");
+        databaseReference = firebaseDatabase.getReference("CommentProduct/"+idProduct);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

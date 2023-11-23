@@ -114,7 +114,7 @@ public class HomeShop extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeShop.this,OrderListActivity.class);
-                intent.putExtra("tabActive",4);
+                intent.putExtra("tabActive",5);
                 startActivity(intent);
             }
         });

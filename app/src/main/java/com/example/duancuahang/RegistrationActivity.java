@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -39,14 +40,20 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RegistrationActivity extends AppCompatActivity {
     static EditText edtSoDienThoai, edtTenNguoiDKBanHang, edtTenCuaHang, edtDiaChiCuaHang, edtEmailCuaHang, edtMaSoThue;
@@ -196,8 +203,6 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
 
-
-
 //        imgCCCDFront.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -270,6 +275,38 @@ public class RegistrationActivity extends AppCompatActivity {
         });
 
     }
+    private boolean isAccountExists(String shopPhoneNumber) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Shop");
+
+        // Sử dụng CountDownLatch để đồng bộ hóa
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
+        AtomicBoolean exists = new AtomicBoolean(false);
+
+        databaseReference.child(shopPhoneNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                exists.set(snapshot.exists());
+                countDownLatch.countDown(); // Giảm đếm khi dữ liệu đã được xử lý
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                countDownLatch.countDown(); // Giảm đếm nếu có lỗi
+            }
+        });
+
+        try {
+            // Chờ cho đến khi đồng bộ hóa hoàn thành (timeout sau một khoảng thời gian nhất định)
+            countDownLatch.await(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return exists.get();
+    }
+
+
     public boolean checkInfoRegistration() {
         if (edtSoDienThoai.getText().toString().isEmpty() || edtTenNguoiDKBanHang.getText().toString().isEmpty() || edtTenCuaHang.getText().toString().isEmpty() ||
                 edtDiaChiCuaHang.getText().toString().isEmpty() || edtEmailCuaHang.getText().toString().isEmpty() || edtMaSoThue.getText().toString().isEmpty() ||
@@ -277,11 +314,11 @@ public class RegistrationActivity extends AppCompatActivity {
                 !Validates.validFullname(edtTenNguoiDKBanHang.getText().toString()) || !Validates.validShopName(edtTenCuaHang.getText().toString()) ||
                 !Validates.validShopAddress(edtDiaChiCuaHang.getText().toString()) || !Validates.validEmail(edtEmailCuaHang.getText().toString()) ||
                 !Validates.validMaSoThue(edtMaSoThue.getText().toString())) {
-            ShowMessage.showMessage(RegistrationActivity.this,"Không được bỏ trống bất kỳ thông tin đăng ký HOẶC Thông tin bạn nhập không đúng định dạng. Vui lòng thử lại!!!");
+            ShowMessage.showMessage(RegistrationActivity.this, "Không được bỏ trống bất kỳ thông tin đăng ký HOẶC Thông tin bạn nhập không đúng định dạng. Vui lòng thử lại!!!");
             return false;
         }
         if (!chkDongYDieuKhoan.isChecked()) {
-            ShowMessage.showMessage(RegistrationActivity.this,"Bạn cần phải đồng ý với điều khoản dịch vụ của chúng tôi!");
+            ShowMessage.showMessage(RegistrationActivity.this, "Bạn cần phải đồng ý với điều khoản dịch vụ của chúng tôi!");
             return false;
         }
         return true;
@@ -303,7 +340,7 @@ public class RegistrationActivity extends AppCompatActivity {
 //        return true;
 //    }
 
-    void openGallery(int requestCode){
+    void openGallery(int requestCode) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, requestCode);
     }
@@ -313,7 +350,7 @@ public class RegistrationActivity extends AppCompatActivity {
 //        startActivityForResult(galleryIntent, requestCode);
 //    }
 
-//    @Override
+    //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
 //        if (resultCode == RESULT_OK && data!=null) {
@@ -340,6 +377,7 @@ public class RegistrationActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
+
     private void setControl() {
         vRegistrationScreen = findViewById(R.id.vRegistrationScreen);
         edtSoDienThoai = findViewById(R.id.edtSoDienThoai);

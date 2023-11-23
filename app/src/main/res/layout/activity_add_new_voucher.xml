@@ -104,7 +104,8 @@
                     android:layout_height="wrap_content"
                     android:textSize="18dp"
                     android:inputType="text"
-                    android:textColor="#000"/>
+                    android:textColor="#000"
+                    android:textAllCaps="true"/>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"

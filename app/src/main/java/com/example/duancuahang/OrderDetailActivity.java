@@ -192,7 +192,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                         ///////////////////////////////////////////////////////////////
                         //updateOrderTimeCancelled(currentTime);
                         //cập nhật trạng thái đơn hàng thành HỦY
-                        updateOrderStatus(shopData.getIdShop(),orderData.getIdOrder(),4);
+                        updateOrderStatus(shopData.getIdShop(),orderData.getIdOrder(),5);
                         updateTimeCancelled(shopData.getIdShop(),orderData.getIdOrder(),currentTime);
                         tvTimeOrderCancelled_OrderDetail.setText(orderData.getOrderTimeCancelled());
                         //chuyển về màn hình OrderList
@@ -257,35 +257,6 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
     }
-
-
-//    private void updateOrderStatus(int newStatus) {
-//        String fullPath = "OrderProduct/" + orderData.getIdShop_Order();
-//
-//        databaseReference = FirebaseDatabase.getInstance().getReference(fullPath);
-//
-//        // Cập nhật trạng thái đơn hàng
-//        databaseReference.child("statusOrder").setValue(newStatus);
-//    }
-//
-//    private void updateOrderTimeCancelled(String timeCancelled) {
-//        String fullPath = "OrderProduct/" + orderData.getIdShop_Order() + "/" + orderData.getIdOrder();
-//        databaseReference = FirebaseDatabase.getInstance().getReference(fullPath);
-//
-//        // Cập nhật thời gian hủy đơn hàng
-//        databaseReference.child("orderTimeCancelled").setValue(timeCancelled);
-//    }
-
-    //    private void updateOrderStatus(int newStatus) {
-//        databaseReference = FirebaseDatabase.getInstance().getReference("OrderProduct/"+orderData.getIdShop_Order()+"/"+orderData.getIdOrder());
-//        //Cập nhật trạng thái đơn hàng
-//        databaseReference.child("statusOrder").setValue(newStatus);
-//    }
-//    private void updateOrderTimeCancelled(String timeCancelled) {
-//        databaseReference = FirebaseDatabase.getInstance().getReference("OrderProduct/"+orderData.getIdShop_Order()+"/"+orderData.getIdOrder());
-//        //Cập nhật thời gian hủy đơn hàng
-//        databaseReference.child("orderTimeCancelled").setValue(timeCancelled);
-//    }
     private void getOrderStatus(String statusOrder) {
         databaseReference = firebaseDatabase.getReference("StatusOrder");
         Query query = databaseReference.orderByKey().equalTo(statusOrder);
@@ -328,14 +299,14 @@ public class OrderDetailActivity extends AppCompatActivity {
         }
 
         //Kiểm tra nếu đơn hàng giao thành công thì hiển thị thời gian giao thành công
-        if(orderData.getStatusOrder()==3){
+        if(orderData.getStatusOrder()==4){
             tvOrderTimeComplete_OrderDetail.setText(orderData.getOrderTimeComplete());
             tvTitleOrderComplete_OrderDetail.setVisibility(View.VISIBLE);
             tvOrderTimeComplete_OrderDetail.setVisibility(View.VISIBLE);
         }
 
         //Kiểm tra nếu đơn đã hủy thì hiển thị thời gian hủy đơn
-        if(orderData.getStatusOrder()==4){
+        if(orderData.getStatusOrder()==5){
             tvTimeOrderCancelled_OrderDetail.setText(orderData.getOrderTimeCancelled());
             tvTitleOrderCancalled_OrderDetail.setVisibility(View.VISIBLE);
             tvTimeOrderCancelled_OrderDetail.setVisibility(View.VISIBLE);

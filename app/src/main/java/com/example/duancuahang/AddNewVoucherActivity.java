@@ -101,6 +101,17 @@ public class AddNewVoucherActivity extends AppCompatActivity {
             }
         });
     }
+//    private boolean isIdItemPercentDiscountExist(String phoneNumber, String voucherId, String idItemPercentDiscount) {
+//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Voucher/"+shopData.getIdShop());
+//
+//        // Kiểm tra xem có tồn tại số điện thoại này không
+//        if (databaseReference.child(phoneNumber).child(voucherId).exists()) {
+//            // Kiểm tra xem có tồn tại idItemPercentDiscount này không
+//            return databaseReference.child(phoneNumber).child(voucherId).child(idItemPercentDiscount).exists();
+//            return true;
+//        }
+//        return false;
+//    }
 
     private void pushDataVoucherToFirebase(){
         for (ProductData itemProduct:
@@ -108,7 +119,7 @@ public class AddNewVoucherActivity extends AppCompatActivity {
             if (!errAddVoucher){
                 Voucher voucher = new Voucher(itemProduct.getIdProduct(),Integer.parseInt(edtMaxUsage.getText().toString()),edtVoucher.getText().toString(),percentDiscountSelection.getKeyPercentDiscount(),itemProduct.getIdProduct());
                 databaseReference = FirebaseDatabase.getInstance().getReference("Voucher");
-                databaseReference.child(itemProduct.getIdProduct()).setValue(voucher).addOnFailureListener(new OnFailureListener() {
+                databaseReference.child(shopData.getIdShop()).child(itemProduct.getIdProduct()).push().setValue(voucher).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         ShowMessage.showMessageTimer(context,"Loi khi them voucher");
