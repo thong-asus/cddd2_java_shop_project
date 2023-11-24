@@ -6,6 +6,24 @@ public class Voucher {
    private String codeVoucher;
    private String idItemPercentDiscount;
    private String idProduct;
+   private String idActionToGetVoucher;
+   private String idShop;
+
+    public String getIdActionToGetVoucher() {
+        return idActionToGetVoucher;
+    }
+
+    public String getIdShop() {
+        return idShop;
+    }
+
+    public void setIdShop(String idShop) {
+        this.idShop = idShop;
+    }
+
+    public void setIdActionToGetVoucher(String idActionToGetVoucher) {
+        this.idActionToGetVoucher = idActionToGetVoucher;
+    }
 
     public String getIdProduct() {
         return idProduct;
@@ -18,13 +36,14 @@ public class Voucher {
     public Voucher() {
     }
 
-    public Voucher(String idVoucher, int maxCountUser, String codeVoucher, String idItemPercentDiscount, String idProduct) {
+    public Voucher(String idVoucher, int maxCountUser, String codeVoucher, String idItemPercentDiscount, String idProduct, String idActionToGetVoucher, String idShop) {
         this.idVoucher = idVoucher;
         this.maxCountUser = maxCountUser;
         this.codeVoucher = codeVoucher;
         this.idItemPercentDiscount = idItemPercentDiscount;
         this.idProduct = idProduct;
-
+        this.idActionToGetVoucher = idActionToGetVoucher;
+        this.idShop = idShop;
     }
 
     public String getIdItemPercentDiscount() {

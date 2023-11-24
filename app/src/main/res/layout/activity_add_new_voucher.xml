@@ -9,144 +9,181 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-
-            >
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar_AddNewVoucher"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                app:title="Tạo Voucher"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#B0B0B0"/>
-            <TextView
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:text="Thiết lập mã giảm giá"
-                android:textColor="#000"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
-                <TextView
-                    android:layout_marginLeft="5dp"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Mức giảm %"
-                    android:textColor="#000"/>
-                <Spinner
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/spChoosePercent"/>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#B0B0B0"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
-                <TextView
-                    android:layout_marginLeft="5dp"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Lượt sử dụng tối đa"
-                    android:textColor="#000"/>
-                <EditText
-                    android:id="@+id/edtMaxUsage"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textSize="18dp"
-                    android:textColor="#000"/>
-
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="#B0B0B0"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
-                <TextView
-                    android:layout_marginLeft="5dp"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:text="Mã giảm giá*"
-
-                    android:textColor="#000"/>
-                <EditText
-                    android:id="@+id/edtVoucher"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="18dp"
-                    android:inputType="text"
-                    android:textColor="#000"
-                    android:textAllCaps="true"/>
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#B0B0B0"/>
-            <TextView
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:text="Chọn sản phẩm giảm giá"
-                android:textColor="#000"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#B0B0B0"/>
+            android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+
                 >
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcvChooseProduct"
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar_AddNewVoucher"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:background="#FFFFFF"
+                    app:title="Tạo Voucher"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#B0B0B0"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:text="Thiết lập mã giảm giá"
+                    android:textColor="#000"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:text="Mức giảm %"
+                        android:textColor="#000"/>
+                    <Spinner
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spChoosePercent"/>
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#B0B0B0"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:text="Lượt sử dụng tối đa"
+                        android:textColor="#000"/>
+                    <EditText
+                        android:id="@+id/edtMaxUsage"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textSize="18dp"
+                        android:textColor="#000"/>
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#B0B0B0"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:text="Mã giảm giá*"
+
+                        android:textColor="#000"/>
+                    <EditText
+                        android:id="@+id/edtVoucher"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:inputType="text"
+                        android:textColor="#000"
+                        android:textAllCaps="true"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="18dp"
+                        android:text="Hành động để có Voucher*"
+                        android:textColor="#000"/>
+                    <Spinner
+                        android:id="@+id/spActionHaveVoucher"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="5dp"
+                        />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#B0B0B0"/>
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:text="Chọn sản phẩm giảm giá"
+                    android:textColor="#000"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#B0B0B0"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvChooseProduct"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
             </LinearLayout>
+            <Button
+                android:id="@+id/btnSaveVoucher"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_btntieptuc_clicked"
+                android:text="Lưu"
+                android:textAllCaps="false"
+                android:textSize="20dp"
+                android:layout_gravity="bottom|center"/>
+        </FrameLayout>
+        <LinearLayout
+            android:id="@+id/vLoadingAddNewVoucher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            >
+            <ProgressBar
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:indeterminate="true"
+                />
         </LinearLayout>
-        <Button
-            android:id="@+id/btnSaveVoucher"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/bg_btntieptuc_clicked"
-            android:text="Lưu"
-            android:textAllCaps="false"
-            android:textSize="20dp"
-            android:layout_gravity="bottom|center"/>
     </FrameLayout>
 
 </LinearLayout>

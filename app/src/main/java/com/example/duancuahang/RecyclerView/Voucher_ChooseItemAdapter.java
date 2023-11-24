@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duancuahang.Class.FormatMoneyVietNam;
 import com.example.duancuahang.Class.ProductData;
+import com.example.duancuahang.Class.ShowMessage;
 import com.example.duancuahang.R;
 import com.example.duancuahang.ViewRatingDetailActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -29,6 +31,10 @@ public class Voucher_ChooseItemAdapter extends RecyclerView.Adapter<Voucher_Choo
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
+    private String selectionActionVoucher = null;
+    public void setSelectionActionVoucher(String value){
+        this.selectionActionVoucher = value;
+    }
     private Voucher_ChooseItemAdapter.SelectionProductVoucher selectionProductVoucher;
     public Voucher_ChooseItemAdapter(ArrayList<ProductData> productDataArrayList, Context context, Voucher_ChooseItemAdapter.SelectionProductVoucher selectionProductVoucher){
         this.productDataArrayList = productDataArrayList;

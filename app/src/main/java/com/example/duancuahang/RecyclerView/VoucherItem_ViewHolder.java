@@ -11,15 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.duancuahang.R;
 
 public class VoucherItem_ViewHolder extends RecyclerView.ViewHolder {
-    ImageView imgVoucherProduct;
-    LinearLayout linearLayout_VoucherItem;
-    TextView itemVoucherCode, itemPercentVoucher;
+ImageView imgProduct_CustomerItemVoucher;
+TextView itemVoucherCode_CustomerItemVoucher,idProduct_CustomerItemVoucher,tvAction_CustomerItemVoucher;
+
 
     public VoucherItem_ViewHolder(@NonNull View itemView) {
         super(itemView);
-        imgVoucherProduct = itemView.findViewById(R.id.imgVoucherProduct);
-        linearLayout_VoucherItem = itemView.findViewById(R.id.linearLayout_VoucherItem);
-        itemVoucherCode = itemView.findViewById(R.id.itemVoucherCode);
-        itemPercentVoucher = itemView.findViewById(R.id.itemPercentVoucher);
+        imgProduct_CustomerItemVoucher = itemView.findViewById(R.id.imgProduct_CustomerItemVoucher);
+        itemVoucherCode_CustomerItemVoucher = itemView.findViewById(R.id.itemVoucherCode_CustomerItemVoucher);
+        idProduct_CustomerItemVoucher = itemView.findViewById(R.id.idProduct_CustomerItemVoucher);
+        tvAction_CustomerItemVoucher = itemView.findViewById(R.id.tvAction_CustomerItemVoucher);
+
     }
 }

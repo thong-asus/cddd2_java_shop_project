@@ -25,16 +25,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="#B0B0B0"/>
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayout_ScreenVoucher"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvMyVoucher_Shop"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabSelectedTextColor="#FF5722"/>
+                android:layout_height="match_parent"/>
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewPager_ScreenVoucher"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
         </LinearLayout>
         <ImageView
             android:id="@+id/imgAddNewVoucher"

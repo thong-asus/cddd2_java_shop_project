@@ -99,7 +99,8 @@ public class HomeShop extends AppCompatActivity {
         linearLayout_Statictis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShowMessage.showMessageTimer(context,"Đợi xíu! Đang tìm hiểu! 😂");
+                Intent intent = new Intent(context, Statistics.class);
+                startActivity(intent);
             }
         });
         linearLayout_WaitTakeGoods.setOnClickListener(new View.OnClickListener() {

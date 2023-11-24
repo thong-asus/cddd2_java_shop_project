@@ -63,6 +63,8 @@ dependencies {
     implementation ("com.google.android.gms:play-services-base:17.0.0")
     implementation ("com.google.android.gms:play-services-basement:17.0.0")
     implementation("com.google.firebase:firebase-messaging")
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
 //    implementation ("com.google.firebase:firebase-bom:29.0.0")
 //    implementation (platform("com.google.firebase:firebase-bom:29.0.0"))
 
