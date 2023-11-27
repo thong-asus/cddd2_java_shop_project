@@ -2,4 +2,7 @@
 <resources>
     <dimen name="dialog_width">330dp</dimen>
     <dimen name="dialog_height">550dp</dimen>
+    <dimen name="dialog_height_updatenameproduct">200dp</dimen>
+    <dimen name="dialog_height_updateDescriptionproduct">450dp</dimen>
+
 </resources>

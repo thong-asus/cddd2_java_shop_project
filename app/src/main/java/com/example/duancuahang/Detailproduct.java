@@ -93,7 +93,6 @@ public class Detailproduct extends AppCompatActivity {
     private void pushInformationProductToBackground(){
         setInformationProduct();
         setCategory(productData.getKeyCategoryProduct());
-//        setImageProduct(productData.getUrlImageProduct());
         setManuface(productData.getKeyManufaceProduct());
         setImageProduct();
     }
@@ -192,7 +191,9 @@ public class Detailproduct extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
         } else if (item.getItemId() == R.id.action_editinfor){
-            Toast.makeText(this, "Chuyển sang màn hình Edit Product", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context,UpdateProduct.class);
+            intent.putExtra("Product",productData);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

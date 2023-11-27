@@ -13,7 +13,7 @@ import com.example.duancuahang.R;
 public class Product_InOfStockViewHolder extends RecyclerView.ViewHolder {
     ImageView imgProductItem;
     TextView tvIdProductItem,tvNameProductItem, tvCategory, tvManufaceProduct, tvPriceProduct, tvQuanlityProduct;
-    Button btnUpdateProductItem, btnDeleteProductItem, btnDetailProductItem;
+    Button  btnDeleteProductItem, btnDetailProductItem;
     public Product_InOfStockViewHolder(@NonNull View itemView) {
         super(itemView);
         tvIdProductItem = itemView.findViewById(R.id.tvIdProductItem);
@@ -22,7 +22,6 @@ public class Product_InOfStockViewHolder extends RecyclerView.ViewHolder {
         tvManufaceProduct = itemView.findViewById(R.id.tvManufaceProductItem);
         tvPriceProduct = itemView.findViewById(R.id.tvPriceProduct_OrderDetail);
         tvQuanlityProduct = itemView.findViewById(R.id.tvQuanlityProduct);
-        btnUpdateProductItem = itemView.findViewById(R.id.btnUpdateProductItem);
         btnDeleteProductItem = itemView.findViewById(R.id.btnDeleteProductItem);
         btnDetailProductItem = itemView.findViewById(R.id.btnDetailProducItem);
         imgProductItem = itemView.findViewById(R.id.ivProduct_ScreenCustomerItemProductList);

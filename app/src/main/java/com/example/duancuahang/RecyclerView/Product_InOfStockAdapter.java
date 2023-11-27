@@ -8,21 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.duancuahang.Class.Category;
 import com.example.duancuahang.Class.FormatMoneyVietNam;
-import com.example.duancuahang.Class.Image;
 import com.example.duancuahang.Class.Manuface;
 import com.example.duancuahang.Class.ProductData;
+import com.example.duancuahang.Class.ShowMessage;
 import com.example.duancuahang.Detailproduct;
 import com.example.duancuahang.R;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -33,7 +37,9 @@ public class Product_InOfStockAdapter extends RecyclerView.Adapter<Product_InOfS
     ArrayList<ProductData> products;
     Context context;
     DatabaseReference databaseReference;
+
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference dataRefTransaction = firebaseDatabase.getReference();
     private  boolean loadingData = false;
 
 
@@ -71,7 +77,7 @@ public class Product_InOfStockAdapter extends RecyclerView.Adapter<Product_InOfS
                     builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            deleteProduct(product.getIdProduct(),holder);
+                            deleteProduct(product,holder);
                         }
                     });
                     builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
@@ -149,23 +155,14 @@ private void setInformationProduct_Item(Product_InOfStockViewHolder holder, Prod
     holder.tvNameProductItem.setText(productData.getNameProduct());
     holder.tvPriceProduct.setText("Giá: " + FormatMoneyVietNam.formatMoneyVietNam(productData.getPriceProduct()) + "đ");
     holder.tvQuanlityProduct.setText("Số lượng: " + productData.getQuanlityProduct());
-    databaseReference = firebaseDatabase.getReference("ImageProducts");
 
-    databaseReference = firebaseDatabase.getReference("ImageProducts").child(productData.getIdProduct());
+    databaseReference = firebaseDatabase.getReference("ImageProducts/"+productData.getIdProduct()+"/1");
     databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             if (snapshot.exists()) {
-                // Duyệt qua danh sách ảnh của sản phẩm
-                for (DataSnapshot imageItem : snapshot.getChildren()) {
-                    // Kiểm tra xem ảnh có URL hay không
-                    if (imageItem.child("urlImage").exists()) {
-                        String imageUrl = imageItem.child("urlImage").getValue(String.class);
-                        // Hiển thị ảnh đầu tiên
-                        Picasso.get().load(imageUrl).placeholder(R.drawable.icondowload).into(holder.imgProductItem);
-                        return;
-                    }
-                }
+               String url = snapshot.child("urlImage").getValue().toString();
+               Picasso.get().load(url).placeholder(R.drawable.icondowload).into(holder.imgProductItem);
             }
         }
 
@@ -178,10 +175,44 @@ private void setInformationProduct_Item(Product_InOfStockViewHolder holder, Prod
 
 
     //    hàm xóa sản phẩm dựa vào id product
-    private void deleteProduct(String idProduct,Product_InOfStockViewHolder holder){
-        databaseReference = firebaseDatabase.getReference("Product");
-        databaseReference.child(idProduct).removeValue();
+    private void deleteProduct(ProductData productData,Product_InOfStockViewHolder holder){
+        databaseReference = firebaseDatabase.getReference("OrderProduct");
+        Query query = databaseReference.orderByChild("idProduct_Order").equalTo(productData.getIdProduct());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Thông báo");
+                    builder.setMessage("Sản phẩm đang trong thời kỳ giao dịch. Vui lòng kết thúc giao dịch trước khi xóa");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+                else {
+                    databaseReference = firebaseDatabase.getReference("Product/"+productData.getIdUserProduct()+"/"+productData.getIdProduct());
+                    databaseReference.removeValue().addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            ShowMessage.showMessageTimer(context,"Xóa sản phẩm thất bại. Vui lòng kiểm tra lại");
+                        }
+                    })
+                    ;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
+
 
 
 

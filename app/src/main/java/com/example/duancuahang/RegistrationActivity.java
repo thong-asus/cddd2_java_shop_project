@@ -2,6 +2,7 @@ package com.example.duancuahang;
 
 import static android.content.Intent.ACTION_PICK;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +21,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;

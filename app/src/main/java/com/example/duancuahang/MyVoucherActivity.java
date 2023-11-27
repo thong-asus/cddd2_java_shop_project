@@ -57,6 +57,7 @@ public class MyVoucherActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                arrVoucher.clear();
                 if(snapshot.exists()){
                     for (DataSnapshot itemProduct:
                          snapshot.getChildren()) {
