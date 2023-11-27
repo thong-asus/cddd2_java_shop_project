@@ -65,12 +65,12 @@ public class RegistrationActivity extends AppCompatActivity {
     View vRegistrationScreen;
     private Context context;
     // Tạo biến chọn hình ảnh
-    private static final int PICK_IMAGE_FRONT = 2;
-    private static final int PICK_IMAGE_BACK = 3;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    ShopData shopData = new ShopData();
     // Uri của mặt trước, mặt sau
      Uri uriImageSelectionOnDeviceCCCDFront = null;
      Uri uriImageSelectionOnDeviceCCCDBack = null;
+     String urlCCCDFront = "", urlCCCDBack = "";
     private int positionCCCD = 1;
 
     @Override
@@ -89,31 +89,9 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Kiểm tra dữ liệu nhập vào hợp lệ
                 if (checkInfoRegistration()) {
-                    Intent intent = new Intent(context, OtpVerificationRegistrationActivity.class);
-                    //Khởi tạo ShopData
-                    ShopData shopData = new ShopData(0, edtSoDienThoai.getText().toString(), edtSoDienThoai.getText().toString(), "", edtTenNguoiDKBanHang.getText().toString(),
-                            edtTenCuaHang.getText().toString(), edtDiaChiCuaHang.getText().toString(), edtEmailCuaHang.getText().toString(),
-                            edtMaSoThue.getText().toString());
-                    // Đính kèm đối tượng ShopData vào Intent
-//
-                    intent.putExtra("informationShop", shopData);
-                    intent.putExtra("urifront", uriImageSelectionOnDeviceCCCDFront);
-                    intent.putExtra("uriback", uriImageSelectionOnDeviceCCCDBack);
-
-                    //uploadCCCD(edtSoDienThoai.getText().toString());
-                    startActivity(intent);
-                    finish();
+                    pushCCCDFontToFirebase();
                 }
-//                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-//                StorageReference imgRef = storageReference.child("imageShop/"+uriImageSelectionOnDeviceCCCDFront.getLastPathSegment());
-//                UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDFront);
-//                uploadTask.addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()){
-//                        imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
-//                           System.out.println("uri"+uri.toString());
-//                        });
-//                    }
-//                });
+
             }
         });
         edtSoDienThoai.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -393,6 +371,43 @@ public class RegistrationActivity extends AppCompatActivity {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    private void pushCCCDFontToFirebase(){
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference imgRef = storageReference.child("imageShop/"+uriImageSelectionOnDeviceCCCDFront.getLastPathSegment());
+        UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDFront);
+        uploadTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                   urlCCCDFront = uri.toString();
+                   pushCCCDBackToFirebase();
+                });
+            }
+        });
+    }
+    private void pushCCCDBackToFirebase(){
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference imgRef = storageReference.child("imageShop/"+uriImageSelectionOnDeviceCCCDBack.getLastPathSegment());
+        UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDBack);
+        uploadTask.addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    urlCCCDBack = uri.toString();
+                    Intent intent = new Intent(context, OtpVerificationRegistrationActivity.class);
+                    //Khởi tạo ShopData
+                    shopData = new ShopData(0, edtSoDienThoai.getText().toString(), edtSoDienThoai.getText().toString(), "", edtTenNguoiDKBanHang.getText().toString(),
+                            edtTenCuaHang.getText().toString(), edtDiaChiCuaHang.getText().toString(), edtEmailCuaHang.getText().toString(),
+                            edtMaSoThue.getText().toString(),urlCCCDFront,urlCCCDBack);
+                    // Đính kèm đối tượng ShopData vào Intent
+//
+                    intent.putExtra("informationShop", shopData);
+                    //uploadCCCD(edtSoDienThoai.getText().toString());
+                    startActivity(intent);
+                    finish();
+                });
+            }
+        });
     }
 
     private void setControl() {

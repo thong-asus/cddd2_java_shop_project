@@ -48,7 +48,7 @@ public class ShopData implements Serializable {
         this.urlImgShopAvatar = urlImgShopAvatar;
     }
 
-    public ShopData(int status, String idShop, String shopPhoneNumber, String password, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode) {
+    public ShopData(int status, String idShop, String shopPhoneNumber, String password, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode,String urlFont,String urlBack) {
         this.status = status;
         this.idShop = idShop;
         this.shopPhoneNumber = shopPhoneNumber;
@@ -58,9 +58,11 @@ public class ShopData implements Serializable {
         this.shopAddress = shopAddress;
         this.shopEmail = shopEmail;
         this.taxCode = taxCode;
+        this.urlImgCCCDFront = urlFont;
+        this.urlImgCCCDBack = urlBack;
     }
 
-    //    public ShopData(String idShop, String shopPhoneNumber, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode, String urlImgCCCDFront, String urlImgCCCDBack) {
+//        public ShopData(String idShop, String shopPhoneNumber, String shopOwner, String shopName, String shopAddress, String shopEmail, String taxCode, String urlImgCCCDFront, String urlImgCCCDBack) {
 //        this.idShop = idShop;
 //        this.shopPhoneNumber = shopPhoneNumber;
 //        this.shopOwner = shopOwner;
