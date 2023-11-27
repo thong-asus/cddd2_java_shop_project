@@ -13,6 +13,7 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.example.duancuahang.ChatListActivity;
 import com.example.duancuahang.HomeShop;
 import com.example.duancuahang.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -52,6 +53,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .setContentIntent(pendingIntent);
         }
        else if (notificationType.equals("chat")){
+            intent = new Intent(this, ChatListActivity.class);
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             notificationCompat = new NotificationCompat.Builder(this, NotificationType.NotificationNormal())
                     .setContentTitle(title)
                     .setContentText(strMessage)

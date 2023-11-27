@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="unknown_customer_name"
-            android:textSize="20dp"
-            android:id="@+id/tvCustomerNameChat"
-            android:textColor="#000"
-            android:textStyle="bold"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="unknown_customer_name"-->
+<!--            android:textSize="20dp"-->
+<!--            android:id="@+id/tvCustomerNameChat"-->
+<!--            android:textColor="#000"-->
+<!--            android:textStyle="bold"/>-->
     </androidx.appcompat.widget.Toolbar>
     <View
         android:layout_width="match_parent"
@@ -28,10 +28,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_gravity="bottom"
             android:id="@+id/rcvContent_Message"
             android:paddingHorizontal="5dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="60dp"
             />
         <LinearLayout

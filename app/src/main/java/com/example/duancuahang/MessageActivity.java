@@ -130,6 +130,7 @@ public class MessageActivity extends AppCompatActivity {
                         arrMessageData.add(idMessage);
                         messageAdapter.notifyDataSetChanged();
                     }
+                    rcvContent_Message.smoothScrollToPosition(messageAdapter.getItemCount() -1);
                 }
             }
 
