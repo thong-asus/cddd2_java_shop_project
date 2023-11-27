@@ -64,8 +64,8 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
     Button btnLayMaOTP, btnXacMinhOTP;
     TextView tvTimeResend;
     ProgressBar progressInputOtp;
-   private Uri uriImageSelectionOnDeviceCCCDFront = null;
-   private Uri uriImageSelectionOnDeviceCCCDBack = null;
+    Uri uriImageSelectionOnDeviceCCCDFront = null;
+    Uri uriImageSelectionOnDeviceCCCDBack = null;
     View vOtpVerificationRegistration;
 
     //////////////////////////////////BIẾN XỬ LÝ
@@ -100,31 +100,31 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-//        btnXacMinhOTP.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //uploadCCCDFront();
-//                registration();
-//                //uploadCCCDBack();
-//            }
-//        });
-        btnXacMinhOTP.setOnClickListener(v -> {
-            if(edtInputOTP.getText().toString().isEmpty() || !Validates.validOTP(edtInputOTP.getText().toString())){
-                Toast.makeText(OtpVerificationRegistrationActivity.this, "OTP không được bỏ trống HOẶC OTP sai định dạng. Vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
-            } else {
-                String enteredOTP = edtInputOTP.getText().toString();
-                PhoneAuthCredential phoneAuthCredential = null;
-                try {
-                    phoneAuthCredential = PhoneAuthProvider.getCredential(codesms, enteredOTP);
-                }
-                catch (Exception e){
-                    Toast.makeText(context, "Lỗi xác minh OTP" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-                if(phoneAuthCredential != null){
-                    registrationSuccessful(phoneAuthCredential);
-                }
+        btnXacMinhOTP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pushCCCDFront();
+                //registration();
+                //uploadCCCDBack();
             }
-    });
+        });
+//        btnXacMinhOTP.setOnClickListener(v -> {
+//            if(edtInputOTP.getText().toString().isEmpty() || !Validates.validOTP(edtInputOTP.getText().toString())){
+//                Toast.makeText(OtpVerificationRegistrationActivity.this, "OTP không được bỏ trống HOẶC OTP sai định dạng. Vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
+//            } else {
+//                String enteredOTP = edtInputOTP.getText().toString();
+//                PhoneAuthCredential phoneAuthCredential = null;
+//                try {
+//                    phoneAuthCredential = PhoneAuthProvider.getCredential(codesms, enteredOTP);
+//                }
+//                catch (Exception e){
+//                    Toast.makeText(context, "Lỗi xác minh OTP" + e.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+//                if(phoneAuthCredential != null){
+//                    registrationSuccessful(phoneAuthCredential);
+//                }
+//            }
+//    });
         btnLayMaOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -168,42 +168,12 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
 
 
     private void pushCCCDBack(){
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        String[] part = uriImageSelectionOnDeviceCCCDBack.getLastPathSegment().split("/");
-        StorageReference imgRef = storageRef.child("imageShop/" + shopData.getShopPhoneNumber() + "/" + (part[part.length-1]));
-            UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDBack);
-            uploadTask.addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
-                    imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        shopData.setUrlImgCCCDFront(uri.toString());
-                        if (!bPushImage){
-                            registration();
-                            bPushImage = true;
-                        }
-                    });
-                }
-            });
+
     }
     private void pushCCCDFront(){
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-        String[] part = uriImageSelectionOnDeviceCCCDFront.getLastPathSegment().split("/");
-        StorageReference imgRef = storageRef.child("imageShop/" + shopData.getShopPhoneNumber() + "/" + (part[part.length-1]));
-            UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDFront);
-            uploadTask.addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
-                    imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        shopData.setUrlImgCCCDFront(uri.toString());
-                        if (!bPushImage){
-                            pushCCCDBack();
-                            bPushImage = true;
-                        }
-                    });
-                }
-            });
+
     }
 //    void uploadCCCDFront(Uri uriImgLocal) {
-//
-//
 //        /////////////////////////////////////////////////
 //        uriImgLocal = uriImageSelectionOnDeviceCCCDFront;
 //        System.out.println("sdt shop: " + uriImageSelectionOnDeviceCCCDFront.toString());
@@ -229,7 +199,7 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
 //            Toast.makeText(context, "Lỗi khi tải ảnh lên: " + e.getMessage(), LENGTH_SHORT).show();
 //            System.out.println("Lỗi khi tải ảnh lên: " + e.getMessage());
 //        });
-
+//
 //        uploadTask.addOnCompleteListener(taskSnapshot -> {
 //            if (taskSnapshot.isSuccessful()) {
 //                imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
@@ -245,7 +215,7 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
 //            }
 //        });
 //    }
-
+//
 //    void uploadCCCDFront() {
 //        System.out.println("sdt shop: " + uriImageSelectionOnDeviceCCCDFront.toString());
 //        StorageReference storageRef = FirebaseStorage.getInstance().getReference();

@@ -45,7 +45,7 @@ public class MessageActivity extends AppCompatActivity {
     Button btnSend_Message;
     Context context;
 
-    TextView tvCustomerNameChat;
+//    TextView tvCustomerNameChat;
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
 //    ArrayList<MessageData> arrMessageData = new ArrayList<>();
@@ -197,6 +197,6 @@ public class MessageActivity extends AppCompatActivity {
         rcvContent_Message = findViewById(R.id.rcvContent_Message);
         edtInputContent_Message = findViewById(R.id.edtInputContent_Message);
         btnSend_Message = findViewById(R.id.btnSend_Message);
-        tvCustomerNameChat = findViewById(R.id.tvCustomerNameChat);
+//        tvCustomerNameChat = findViewById(R.id.tvCustomerNameChat);
     }
 }

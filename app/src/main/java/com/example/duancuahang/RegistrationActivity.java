@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.duancuahang.Class.ImageProduct;
 import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.Class.ShowMessage;
 import com.example.duancuahang.Class.Validates;
@@ -66,17 +67,11 @@ public class RegistrationActivity extends AppCompatActivity {
     // Tạo biến chọn hình ảnh
     private static final int PICK_IMAGE_FRONT = 2;
     private static final int PICK_IMAGE_BACK = 3;
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
-    private static final int REQUEST_IMAGE_PICK = 1;
-
-    // Tạo biến lưu link hình ảnh trên firebase
-    private static String urlImgCCCDFront, urlImgCCCDBack;
-
     // Uri của mặt trước, mặt sau
-    static Uri uriImageSelectionOnDeviceCCCDFront = null;
-    static Uri uriImageSelectionOnDeviceCCCDBack = null;
-    private int dem = 1;
+     Uri uriImageSelectionOnDeviceCCCDFront = null;
+     Uri uriImageSelectionOnDeviceCCCDBack = null;
+    private int positionCCCD = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,13 +97,23 @@ public class RegistrationActivity extends AppCompatActivity {
                     // Đính kèm đối tượng ShopData vào Intent
 //
                     intent.putExtra("informationShop", shopData);
-//                    intent.putExtra("urifront", uriImageSelectionOnDeviceCCCDFront);
-//                    intent.putExtra("uriback", uriImageSelectionOnDeviceCCCDBack);
+                    intent.putExtra("urifront", uriImageSelectionOnDeviceCCCDFront);
+                    intent.putExtra("uriback", uriImageSelectionOnDeviceCCCDBack);
 
                     //uploadCCCD(edtSoDienThoai.getText().toString());
                     startActivity(intent);
                     finish();
                 }
+//                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+//                StorageReference imgRef = storageReference.child("imageShop/"+uriImageSelectionOnDeviceCCCDFront.getLastPathSegment());
+//                UploadTask uploadTask = imgRef.putFile(uriImageSelectionOnDeviceCCCDFront);
+//                uploadTask.addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()){
+//                        imgRef.getDownloadUrl().addOnSuccessListener(uri -> {
+//                           System.out.println("uri"+uri.toString());
+//                        });
+//                    }
+//                });
             }
         });
         edtSoDienThoai.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -201,36 +206,38 @@ public class RegistrationActivity extends AppCompatActivity {
                 return false;
             }
         });
+        imgCCCDFront.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                positionCCCD = 1;
+                if (ContextCompat.checkSelfPermission(RegistrationActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    pickImageFromGallery();
+                } else {
+                    ActivityCompat.requestPermissions(RegistrationActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    pickImageFromGallery();
+                }
+
+            }
+        });
+
+        imgCCCDBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                positionCCCD = 2;
+                if (ContextCompat.checkSelfPermission(RegistrationActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    pickImageFromGallery();
+                } else {
+                    ActivityCompat.requestPermissions(RegistrationActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    pickImageFromGallery();
+                }
+            }
+        });
 
 
 //        imgCCCDFront.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                if (ContextCompat.checkSelfPermission(RegistrationActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-//                    openGallery(PICK_IMAGE_FRONT);
-//                } else {
-//                    ActivityCompat.requestPermissions(RegistrationActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-//                }
-//            }
-//        });
-//
-//        imgCCCDBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (ContextCompat.checkSelfPermission(RegistrationActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-//                    openGallery(PICK_IMAGE_BACK);
-//                } else {
-//                    ActivityCompat.requestPermissions(RegistrationActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-//                }
-//            }
-//        });
-
-
-//Chọn hình CCCD Mặt trước
-//        imgCCCDFront.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dem = 1;
+//                positionCCCD = 1;
 //                pickImageFromGallery(PICK_IMAGE_FRONT);
 //            }
 //        });
@@ -243,7 +250,7 @@ public class RegistrationActivity extends AppCompatActivity {
 //                pickImageFromGallery(PICK_IMAGE_BACK);
 //            }
 //        });
-
+//
 //        imgCCCDFront.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -340,35 +347,45 @@ public class RegistrationActivity extends AppCompatActivity {
 //        return true;
 //    }
 
-    void openGallery(int requestCode) {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, requestCode);
-    }
-    //Hàm chọn ảnh từ thư viện
-//    private void pickImageFromGallery(int requestCode) {
-//        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        startActivityForResult(galleryIntent, requestCode);
+//    void openGallery(int requestCode) {
+//        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        startActivityForResult(intent, requestCode);
 //    }
+    //Hàm chọn ảnh từ thư viện
+    private void pickImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 1);
+    }
 
-    //    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK && data!=null) {
-//            if (requestCode == PICK_IMAGE_FRONT && data!=null) {
-//                // Xử lý khi chọn ảnh cho mặt trước
-//                uriImageSelectionOnDeviceCCCDFront = data.getData();
-//                imgCCCDFront.setImageURI(uriImageSelectionOnDeviceCCCDFront);
-//                System.out.println("uri front: " + uriImageSelectionOnDeviceCCCDFront);
-//            } else if (requestCode == PICK_IMAGE_BACK && data!=null) {
-//                // Xử lý khi chọn ảnh cho mặt sau
-//                uriImageSelectionOnDeviceCCCDBack = data.getData();
-//                urlImgCCCDBack = getContentResolver().getType(uriImageSelectionOnDeviceCCCDBack);
-//                imgCCCDBack.setImageURI(uriImageSelectionOnDeviceCCCDBack);
-//                System.out.println("backkkkkkk" + urlImgCCCDBack);
-//
-//            }
-//        }
-//}
+        @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+            Uri uriImage = data.getData();
+        if (resultCode == RESULT_OK || resultCode == 1) {
+            if (positionCCCD == 1){
+                InputStream inputStream = null;
+                try {
+                    inputStream = getContentResolver().openInputStream(uriImage);
+                    Bitmap selectionImg = BitmapFactory.decodeStream(inputStream);
+                    imgCCCDFront.setImageBitmap(selectionImg);
+                    uriImageSelectionOnDeviceCCCDFront = uriImage;
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else if (positionCCCD == 2){
+                InputStream inputStream = null;
+                try {
+                    inputStream = getContentResolver().openInputStream(uriImage);
+                    Bitmap selectionImg = BitmapFactory.decodeStream(inputStream);
+                    imgCCCDBack.setImageBitmap(selectionImg);
+                    uriImageSelectionOnDeviceCCCDBack = uriImage;
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+}
     //Sự kiện ẩn bàn phím
     private void hideKeyboard() {
         View view = this.getCurrentFocus();
@@ -386,8 +403,8 @@ public class RegistrationActivity extends AppCompatActivity {
         edtDiaChiCuaHang = findViewById(R.id.edtDiaChiCuaHang);
         edtEmailCuaHang = findViewById(R.id.edtEmailCuaHang);
         edtMaSoThue = findViewById(R.id.edtMaSoThue);
-//        imgCCCDFront = findViewById(R.id.imgCCCDFront);
-//        imgCCCDBack = findViewById(R.id.imgCCCDBack);
+        imgCCCDFront = findViewById(R.id.imgCCCDFront);
+        imgCCCDBack = findViewById(R.id.imgCCCDBack);
         chkDongYDieuKhoan = findViewById(R.id.chkDongYDieuKhoan);
         btnTiepTuc = findViewById(R.id.btnTiepTuc);
         tvDaCoTaiKhoan = findViewById(R.id.tvDaCoTaiKhoan);
