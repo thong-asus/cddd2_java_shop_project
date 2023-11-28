@@ -46,6 +46,7 @@ import com.example.duancuahang.Class.ShopData;
 import com.example.duancuahang.Class.Validates;
 import com.example.duancuahang.RecyclerView.ListImageProductViewHolder;
 import com.example.duancuahang.RecyclerView.ListImageProduct_Adapter;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -428,15 +429,14 @@ public class Addproduct extends AppCompatActivity {
                 edtDescriptionProduct.getText().toString(), 0, 0,shopData.getIdShop());
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
-        databaseReference.child("Product").child(shopData.getIdShop()).child(keyProductItem.concat(shopData.getIdShop())).setValue(productData);
-        addImageProduct(keyProductItem.concat(shopData.getIdShop()));
-        loading = false;
+        databaseReference.child("Product").child(shopData.getIdShop()).child(keyProductItem.concat(shopData.getIdShop())).setValue(productData).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                addImageProduct(keyProductItem.concat(shopData.getIdShop()));
+            }
+        });
 
-       if (!loading){
-           Intent intent = new Intent(context, Productlist.class);
-           startActivity(intent);
-           finish();
-       }
+
 
     }
 
@@ -508,7 +508,18 @@ public class Addproduct extends AppCompatActivity {
             Image image = new Image(idProduct,urlImgServe.get(i));
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference("ImageProducts");
-            databaseReference.child(idProduct).child(i+1 +"/"+"urlImage").setValue(image.getUrlImage());
+            databaseReference.child(idProduct).child(i+1 +"/"+"urlImage").setValue(image.getUrlImage()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    loading = false;
+
+                    if (!loading){
+                        Intent intent = new Intent(context, Productlist.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            });
 
         }
     }
