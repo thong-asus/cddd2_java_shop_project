@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference;
     Long timeoutSeconds = 60L;
+    LinearLayout linearLayout_TimeResend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +71,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         btnTiepTuc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edtInputOTP.getText().toString().isEmpty() || !Validates.validOTP(edtInputOTP.getText().toString())) {
-                    Toast.makeText(ForgotPasswordActivity.this, "OTP không được bỏ trống HOẶC OTP sai định dạng. Vui lòng kiểm tra lại", Toast.LENGTH_SHORT).show();
+                if ( edtSoDienThoai.getText().toString().isEmpty() || Validates.validPhone(edtSoDienThoai.getText().toString()) || edtInputOTP.getText().toString().isEmpty() || !Validates.validOTP(edtInputOTP.getText().toString())) {
+                    ShowMessage.showMessageTimer(context,"1. Số điện thoai không hợp lệ\n2. OTP không được bỏ trống HOẶC OTP sai định dạng. Vui lòng kiểm tra lại");
                 } else {
                     String enteredOTP = edtInputOTP.getText().toString();
                     PhoneAuthCredential phoneAuthCredential = null;
@@ -88,8 +90,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         btnLayMaOTP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sentOTP();
-                resendOTP();
+                if(Validates.validPhone(edtSoDienThoai.getText().toString())){
+                    sentOTP();
+                    resendOTP();
+                    linearLayout_TimeResend.setVisibility(View.VISIBLE);
+                } else {
+                    ShowMessage.showMessageTimer(context, "Vui lòng nhập số điện thoại!");
+                }
             }
         });
         edtSoDienThoai.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -161,7 +168,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                     }
                                 });
                             } else {
-                                Toast.makeText(ForgotPasswordActivity.this, "Sai mã OTP. Vui lòng thử lại!!!", Toast.LENGTH_SHORT).show();
+                                ShowMessage.showMessageTimer(context,"Sai mã OTP. Vui lòng thử lại!!!");
                             }
                         } catch (Exception e) {
                             ShowMessage.showMessage(ForgotPasswordActivity.this, "Lỗi: " + e);
@@ -237,6 +244,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void setControl() {
         vForgotPassword = findViewById(R.id.vForgotPassword);
+        linearLayout_TimeResend = findViewById(R.id.linearLayout_TimeResend);
         edtSoDienThoai = findViewById(R.id.edtSoDienThoai);
         edtInputOTP = findViewById(R.id.edtInputOTP);
         btnLayMaOTP = findViewById(R.id.btnLayMaOTP);

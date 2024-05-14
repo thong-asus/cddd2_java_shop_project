@@ -23,6 +23,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,6 +80,7 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
 
     Context context;
     boolean bPushImage;
+    LinearLayout linearLayout_ResendTimerRegistration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +118,16 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 sentOTP();
                 resendOTP();
+                linearLayout_ResendTimerRegistration.setVisibility(View.VISIBLE);
             }
         });
+//        btnLayMaOTP.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                sentOTP();
+//                resendOTP();
+//            }
+//        });
         edtInputOTP.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -343,6 +353,7 @@ public class OtpVerificationRegistrationActivity extends AppCompatActivity {
 
     private void setControl() {
         vOtpVerificationRegistration = findViewById(R.id.vOtpVerificationRegistration);
+        linearLayout_ResendTimerRegistration = findViewById(R.id.linearLayout_ResendTimerRegistration);
         edtInputOTP = findViewById(R.id.edtInputOTP);
         btnLayMaOTP = findViewById(R.id.btnLayMaOTP);
         btnXacMinhOTP = findViewById(R.id.btnXacMinhOTP);
